@@ -89,6 +89,11 @@ export default defineComponent({
   background-color: $bgColor;
   padding-top: 27px;
   color: #fff;
+  :deep(.van-nav-bar__title) {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+  }
 }
 main {
   padding-left: 18px;
@@ -200,15 +205,5 @@ h1 {
       }
     }
   }
-}
-</style>
-<style scoped>
-.earnMoneyDetail >>> .van-nav-bar__title {
-  color: #fff;
-  font-weight: bold;
-  font-size: 18px;
-}
-.van-nav-bar >>> .van-icon {
-  color: #fff;
 }
 </style>

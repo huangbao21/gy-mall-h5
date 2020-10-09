@@ -83,6 +83,11 @@ export default defineComponent({
   min-height: 100%;
   background-color: $bgColor;
   padding-top: 27px;
+  :deep(.van-nav-bar__title) {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+  }
 }
 
 .profit {
@@ -145,15 +150,5 @@ export default defineComponent({
       }
     }
   }
-}
-</style>
-<style scoped>
-.earnMoneyCenter >>> .van-nav-bar__title {
-  color: #fff;
-  font-weight: bold;
-  font-size: 18px;
-}
-.van-nav-bar >>> .van-icon {
-  color: #fff;
 }
 </style>
