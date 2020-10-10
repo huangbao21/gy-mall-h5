@@ -61,12 +61,27 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-// import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+import { fetchMissionList } from "@/services/earn";
+import { PostData } from '@/axios';
 
 export default defineComponent({
   name: "earnMoneyCenter",
   components: {
     // HelloWorld
+  },
+  setup(props) {
+    let repositories;
+    const getMissionData = async () => {
+      repositories = await fetchMissionList({
+        current: 1,
+        size: 10,
+        token: "123",
+      });
+    };
+    return {
+      repositories,
+      getMissionData
+    };
   },
   methods: {
     toView() {

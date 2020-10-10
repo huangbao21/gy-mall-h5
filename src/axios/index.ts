@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { Toast } from 'vant';
 export interface PostData {
-  code: string;
-  action: string;
   msg: string;
-  result?: any;
+  status: string;
+  data: any;
 }
 export class StatusCode {
-  static SUCCESS = 'S';
-  static ERROR = 'E';
+  static SUCCESS = '000000';
+  // static ERROR = 'E';
 }
 const service = axios.create({
   headers: { 'content-Type': 'appliaction/json' },
@@ -23,12 +22,6 @@ service.interceptors.request.use(
       let index = url.lastIndexOf('/');
       splitUrl.push(url.substring(0, index), url.substring(index + 1, url.length));
     }
-    // if (Utils.APP_TOKEN.indexOf(splitUrl[1])!=-1){
-    //   if(localStorage['APP_TOKEN']){
-    //     config.headers.common['Authorization'] = `Beear ${localStorage['APP_TOKEN']}`;
-    //   }
-    // }else{
-    // }
     if (localStorage.token) {
       config.headers.common['Authorization'] = localStorage.token;
     }
@@ -46,7 +39,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res: PostData = response.data
-    if (res.code != StatusCode.SUCCESS || res.code == StatusCode.ERROR) {
+    if (res.status != StatusCode.SUCCESS) {
       if (res.msg) {
         Toast({ message: res.msg, forbidClick: true });
       }
