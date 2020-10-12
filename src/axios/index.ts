@@ -11,12 +11,11 @@ export class StatusCode {
 }
 const service = axios.create({
   headers: { 'content-Type': 'appliaction/json' },
-  timeout: 6000
+  timeout: 60000
 })
 service.interceptors.request.use(
   config => {
     const splitUrl = [];
-    debugger
     const url = config.url;
     Toast.loading({ duration: 0, forbidClick: true });
     if (url) {
@@ -25,6 +24,8 @@ service.interceptors.request.use(
     }
     if (localStorage.token) {
       config.headers.common.Authorization = localStorage.token;
+    } else {
+      config.headers.common.token = '123'
     }
     return config
   },

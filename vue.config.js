@@ -3,6 +3,15 @@ const merge = require('webpack-merge');
 const tsImportPluginFactory = require('ts-import-plugin');
 module.exports = {
   parallel: false,
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://172.16.1.9:9531',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      }
+    }
+  },
   chainWebpack: config => {
     config
       .plugin('html')
