@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { fetchMissionList } from "@/services/earn";
 import { PostData } from '@/axios';
 
@@ -78,6 +78,7 @@ export default defineComponent({
         token: "123",
       });
     };
+    onMounted(getMissionData)
     return {
       repositories,
       getMissionData

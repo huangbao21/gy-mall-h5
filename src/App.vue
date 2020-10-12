@@ -8,7 +8,8 @@
   padding: 0;
   box-sizing: border-box;
 }
-body,html{
+body,
+html {
   height: 100%;
 }
 #app {
