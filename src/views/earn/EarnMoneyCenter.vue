@@ -78,7 +78,7 @@ export default defineComponent({
         token: "123",
       });
     };
-    onMounted(getMissionData)
+    // onMounted(getMissionData)
     return {
       repositories,
       getMissionData
