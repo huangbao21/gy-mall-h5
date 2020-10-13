@@ -1,9 +1,10 @@
 export default class Utils {
   static isIOS() {
     const u = navigator.userAgent;
-    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
     return isiOS
   }
+
   static forbidDefaultForIOS() {
     // 禁用双击缩放
     document.addEventListener("touchstart", function (event) {
@@ -11,11 +12,11 @@ export default class Utils {
         event.preventDefault();
       }
     });
-    var lastTouchEnd = 0;
+    let lastTouchEnd = 0;
     document.addEventListener(
       "touchend",
       function (event) {
-        var now = new Date().getTime();
+        const now = new Date().getTime();
         if (now - lastTouchEnd <= 300) {
           event.preventDefault();
         }
@@ -31,6 +32,7 @@ export default class Utils {
       e.preventDefault();
     }, { passive: false });
   }
+
   // 禁止微信浏览器拖动
   static forbidSlide() {
     document.body.addEventListener('touchmove', function (evt) {
