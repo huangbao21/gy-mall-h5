@@ -2,6 +2,18 @@
   <router-view />
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+import Utils from "@/utils";
+
+export default defineComponent({
+  // setup() {},
+  mounted() {
+    Utils.adjustViewport()
+  },
+});
+</script>
+
 <style lang="scss">
 * {
   margin: 0;

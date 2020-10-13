@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 export default class Utils {
   static isIOS() {
     const u = navigator.userAgent;
@@ -5,7 +6,7 @@ export default class Utils {
     return isiOS
   }
 
-  static forbidDefaultForIOS() {
+  static forbidDefaultForIOS(): void {
     // 禁用双击缩放
     document.addEventListener("touchstart", function (event) {
       if (event.touches.length > 1) {
@@ -34,9 +35,18 @@ export default class Utils {
   }
 
   // 禁止微信浏览器拖动
-  static forbidSlide() {
+  static forbidSlide(): void {
     document.body.addEventListener('touchmove', function (evt) {
       evt.preventDefault()
     }, { passive: false })
+  }
+
+  // 动态更改viewport
+  static adjustViewport(): void {
+    const clientWidth = document.documentElement.clientWidth;
+    const viewport = document.querySelector('#viewport');
+    const viewportWidth = 375;
+    const viewportScale = clientWidth / viewportWidth;
+    viewport?.setAttribute("content", `width=${viewportWidth}, initial-scale=${viewportScale}, maximum-scale=${viewportScale}, user-scalable=no`);
   }
 }

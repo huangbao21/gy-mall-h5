@@ -74,11 +74,10 @@ export default defineComponent({
     const getMissionData = async () => {
       repositories = await fetchMissionList({
         current: 1,
-        size: 10,
-        token: "123",
+        size: 10
       });
     };
-    // onMounted(getMissionData)
+    onMounted(getMissionData)
     return {
       repositories,
       getMissionData

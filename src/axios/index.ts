@@ -25,7 +25,7 @@ service.interceptors.request.use(
     if (localStorage.token) {
       config.headers.common.Authorization = localStorage.token;
     } else {
-      config.headers.common.token = '123'
+      config.headers.common.token = 'Larq9tKLi6hTGGZ1P5DRPJMbxPLH3hwl'
     }
     return config
   },
@@ -38,7 +38,8 @@ service.interceptors.response.use(
     const res: PostData = response.data
     if (res.status !== StatusCode.SUCCESS) {
       if (res.msg) {
-        Toast({ message: res.msg, forbidClick: true });
+        Toast.clear();
+        Toast({ message: res.msg, forbidClick: true, duration: 2000 });
       }
       return Promise.reject(res);
     }
