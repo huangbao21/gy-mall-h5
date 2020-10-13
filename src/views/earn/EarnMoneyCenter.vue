@@ -4,7 +4,7 @@
       title="赚钱中心"
       left-arrow
       :border="false"
-      @click-left="onClickLeft"
+      @click-left="toBackApp"
     >
       <template #left>
         <img
@@ -18,74 +18,98 @@
         <span class="profit-info__text">已赚</span>
         <div class="profit-info__gold">
           <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-          <span>2000000000</span>
+          <span>{{ bounty }}</span>
         </div>
       </div>
       <div class="profit-icon">
         <van-icon name="arrow" />
       </div>
     </div>
-    <div class="items">
-      <div class="items-row first">
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/视频任务.png" />
-        </div>
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/邀请好友.png" />
-        </div>
+
+    <van-list
+      v-model:loading="loading"
+      loading-text=""
+      :finished="finished"
+      @load="onLoad"
+    >
+      <div class="items">
+        <template v-for="(item, index) in list" :key="item.id">
+          <div
+            class="items-row"
+            :class="index === 0 ? 'first' : ''"
+            v-if="index % 2 === 0"
+          >
+            <div class="item">
+              <img :src="item.iconUrl" />
+            </div>
+            <div class="item" v-if="index + 1 < list.length">
+              <img :src="list[index + 1].iconUrl" />
+            </div>
+          </div>
+        </template>
       </div>
-      <div class="items-row">
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/高佣巨赚.png" />
-        </div>
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/高佣巨赚二.png" />
-        </div>
-      </div>
-      <div class="items-row">
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/游戏赚钱.png" />
-        </div>
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/注册赚钱.png" />
-        </div>
-      </div>
-      <div class="items-row">
-        <div class="item">
-          <img src="./../../assets/imgs/earnMoney/阅读赚钱.png" />
-        </div>
-      </div>
-    </div>
+    </van-list>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { fetchMissionList } from "@/services/earn";
-import { PostData } from '@/axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { defineComponent } from "vue";
+import { fetchMissionList, fetchBounty } from "@/services/earn";
+import useBackAppApi from "@/composables/useBackAppApi";
 
 export default defineComponent({
   name: "earnMoneyCenter",
   components: {
     // HelloWorld
   },
-  setup(props) {
-    let repositories;
-    const getMissionData = async () => {
-      repositories = await fetchMissionList({
-        current: 1,
-        size: 10
-      });
-    };
-    onMounted(getMissionData)
+  setup() {
+    const { toBackApp } = useBackAppApi();
     return {
-      repositories,
-      getMissionData
+      toBackApp,
     };
+  },
+  data() {
+    return {
+      current: 0,
+      size: 10,
+      list: [] as object[],
+      loading: false,
+      finished: false,
+      bounty: 0,
+    };
+  },
+  mounted() {
+    this.getBounty();
   },
   methods: {
     toView() {
       this.$router.push("/earnMoneyDetail");
+    },
+    async getBounty() {
+      const res = await fetchBounty();
+      this.bounty = res.data;
+    },
+    async getMissionData() {
+      const res = await fetchMissionList({
+        current: this.current,
+        size: this.size,
+      }).catch((err) => {
+        this.loading = false;
+        this.finished = true;
+        return Promise.reject(err);
+      });
+      this.loading = false;
+      if (this.size > res.data.records) {
+        this.finished = true;
+      } else {
+        this.list.push(...this.list, ...res.data.records);
+      }
+      console.log(this.list[0], 222);
+    },
+    onLoad() {
+      this.current += 1;
+      // this.getMissionData();
     },
   },
 });

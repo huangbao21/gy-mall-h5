@@ -5,4 +5,5 @@ export default class API {
 
   // 赚钱中心
   static MISSION_LIST = `${APP_SERVICE}authc/mission/find_page`
+  static BOUNTY_NUM = `${APP_SERVICE}authc/mission/find_bounty_number`
 }

@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Toast } from 'vant';
 export interface PostData {
   msg: string;
   status: string;
-  data: unknown;
+  data: any;
 }
 export class StatusCode {
   static SUCCESS = '000000';
   // static ERROR = 'E';
 }
+// axios.defaults.headers.post['Content-Type'] = 'appliaction/json';
+
 const service = axios.create({
-  headers: { 'content-Type': 'appliaction/json' },
   timeout: 60000
 })
 service.interceptors.request.use(
@@ -25,8 +27,9 @@ service.interceptors.request.use(
     if (localStorage.token) {
       config.headers.common.Authorization = localStorage.token;
     } else {
-      config.headers.common.token = 'Larq9tKLi6hTGGZ1P5DRPJMbxPLH3hwl'
+      config.headers.common.token = 'zG7D7bA3i9BEywoYyuHKznmSgMveCpU8'
     }
+    debugger
     return config
   },
   error => {

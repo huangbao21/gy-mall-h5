@@ -7,7 +7,6 @@ import { defineComponent } from "vue";
 import Utils from "@/utils";
 
 export default defineComponent({
-  // setup() {},
   mounted() {
     Utils.adjustViewport()
   },
