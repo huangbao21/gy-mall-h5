@@ -47,6 +47,6 @@ export default class Utils {
     const viewport = document.querySelector('#viewport');
     const viewportWidth = 375;
     const viewportScale = clientWidth / viewportWidth;
-    viewport?.setAttribute("content", `width=${viewportWidth}, initial-scale=${viewportScale}, maximum-scale=${viewportScale}, user-scalable=no`);
+    viewport?.setAttribute("content", `width=${viewportWidth}, initial-scale=${viewportScale}, maximum-scale=${viewportScale}, user-scalable=no,viewport-fit=cover`);
   }
 }

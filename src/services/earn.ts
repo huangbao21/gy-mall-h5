@@ -7,3 +7,9 @@ export function fetchMissionList(data: { current: number; size: number }): Promi
 export function fetchBounty(): Promise<PostData> {
   return axios.post(API.BOUNTY_NUM, {})
 }
+export function fetchBountyList(data: { current: number; size: number }): Promise<PostData> {
+  return axios.post(API.BOUNTY_LIST, data)
+}
+export function saveMission(data: { bountyQuantity: number; id: number; verify: string; verifyStr: string }): Promise<PostData> {
+  return axios.post(API.MISSION_SAVE, data);
+}

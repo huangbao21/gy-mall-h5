@@ -26,12 +26,7 @@
       </div>
     </div>
 
-    <van-list
-      v-model:loading="loading"
-      loading-text=""
-      :finished="finished"
-      @load="onLoad"
-    >
+    <van-list v-model:loading="loading" :finished="finished" @load="onLoad">
       <div class="items">
         <template v-for="(item, index) in list" :key="item.id">
           <div
@@ -57,6 +52,7 @@
 import { defineComponent } from "vue";
 import { fetchMissionList, fetchBounty } from "@/services/earn";
 import useBackAppApi from "@/composables/useBackAppApi";
+import { toCompleteMission } from "@/services/native";
 
 export default defineComponent({
   name: "earnMoneyCenter",
@@ -84,7 +80,14 @@ export default defineComponent({
   },
   methods: {
     toView() {
-      this.$router.push("/earnMoneyDetail");
+      // this.$router.push("/earnMoneyDetail");
+      toCompleteMission({
+        url: "gycn://m.gy.cn/videoMission",
+        bountyQuantity: 12,
+        id: 1,
+        verify: "123",
+        verifyStr: "123",
+      });
     },
     async getBounty() {
       const res = await fetchBounty();
@@ -120,7 +123,6 @@ export default defineComponent({
   background-size: contain;
   min-height: 100%;
   background-color: $bgColor;
-  padding-top: 27px;
 }
 
 .profit {

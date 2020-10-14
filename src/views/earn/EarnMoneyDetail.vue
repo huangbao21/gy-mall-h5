@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyDetail">
+  <div class="earnMoneyDetail nav-bar">
     <van-nav-bar
       title="已赚明细"
       left-arrow
@@ -19,7 +19,7 @@
         <div class="earned">
           <div class="earned-info">
             <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-            <span class="earned--val">200000000</span>
+            <span class="earned--val">{{ bounty }}</span>
           </div>
           <span class="earned__btn">立即提现</span>
         </div>
@@ -41,43 +41,71 @@
         </div>
       </div>
       <h1>明细</h1>
-      <div class="log-items">
-        <div class="item">
-          <div class="item-key">
-            <span class="title">视频赚钱</span>
-            <div class="des">
-              <p>初级任务A</p>
-              <p class="time">2020-09-20 12:54</p>
+      <van-list v-model:loading="loading" :finished="finished" @load="onLoad">
+        <div class="log-items">
+          <div class="item" v-for="item in list" :key="item.id">
+            <div class="item-key">
+              <span class="title">{{ item.name }}</span>
+              <div class="des">
+                <p>{{ item.desc }}</p>
+                <p class="time">{{ item.time }}</p>
+              </div>
+            </div>
+            <div class="item-state">
+              <span class="val">{{ `+${item.amount}` }}</span>
+              <!-- <span class="status">待结算</span> -->
             </div>
           </div>
-          <div class="item-state">
-            <span class="val">+99</span>
-            <span class="status">待结算</span>
-          </div>
         </div>
-        <div class="item">
-          <div class="item-key">
-            <span class="title">视频赚钱</span>
-            <div class="des">
-              <p>初级任务A</p>
-              <p class="time">2020-09-20 12:54</p>
-            </div>
-          </div>
-          <div class="item-state">
-            <span class="val">+99</span>
-          </div>
-        </div>
-      </div>
+      </van-list>
     </main>
   </div>
 </template>
 <script lang="ts">
+import { fetchBountyList, fetchBounty } from "@/services/earn";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "earnMoneyDetail",
+  data() {
+    return {
+      current: 0,
+      size: 10,
+      list: [] as object[],
+      loading: false,
+      finished: false,
+      bounty: 0,
+    };
+  },
+  mounted() {
+    this.getBounty();
+  },
   methods: {
     toView() {
       this.$router.go(-1);
+    },
+    async getBounty() {
+      const res = await fetchBounty();
+      this.bounty = res.data.rewardTotal ? res.data.rewardTotal : 0;
+    },
+    async getBountyList() {
+      const res = await fetchBountyList({
+        current: this.current,
+        size: this.size,
+      }).catch((err) => {
+        this.loading = false;
+        this.finished = true;
+        return Promise.reject(err);
+      });
+      this.loading = false;
+      if (this.size > res.data.records) {
+        this.finished = true;
+      } else {
+        this.list.push(...this.list, ...res.data.records);
+      }
+    },
+    onLoad() {
+      this.current += 1;
+      this.getBountyList();
     },
   },
 });
