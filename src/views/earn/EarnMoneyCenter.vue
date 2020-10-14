@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyCenter">
+  <div class="earnMoneyCenter nav-bar">
     <van-nav-bar
       title="赚钱中心"
       left-arrow
@@ -88,7 +88,7 @@ export default defineComponent({
     },
     async getBounty() {
       const res = await fetchBounty();
-      this.bounty = res.data;
+      this.bounty = res.data.rewardTotal ? res.data.rewardTotal : 0;
     },
     async getMissionData() {
       const res = await fetchMissionList({
@@ -105,28 +105,22 @@ export default defineComponent({
       } else {
         this.list.push(...this.list, ...res.data.records);
       }
-      console.log(this.list[0], 222);
     },
     onLoad() {
       this.current += 1;
-      // this.getMissionData();
+      this.getMissionData();
     },
   },
 });
 </script>
 <style lang="scss" scoped>
-@import "./style.scss";
+@import "@/styles/base.scss";
 .earnMoneyCenter {
   background: url(./../../assets/imgs/earnMoney/bg.png) no-repeat;
   background-size: contain;
   min-height: 100%;
   background-color: $bgColor;
   padding-top: 27px;
-  :deep(.van-nav-bar__title) {
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-  }
 }
 
 .profit {

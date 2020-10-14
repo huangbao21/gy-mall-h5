@@ -29,7 +29,6 @@ service.interceptors.request.use(
     } else {
       config.headers.common.token = 'zG7D7bA3i9BEywoYyuHKznmSgMveCpU8'
     }
-    debugger
     return config
   },
   error => {

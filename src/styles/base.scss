@@ -6,3 +6,10 @@ $bgColor :#0f0525;
     height: 32px;
   }
 }
+.nav-bar{
+  :deep(.van-nav-bar__title) {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}

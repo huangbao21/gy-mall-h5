@@ -83,17 +83,12 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-@import "./style.scss";
+@import "@/styles/base.scss";
 .earnMoneyDetail {
   min-height: 100%;
   background-color: $bgColor;
   padding-top: 27px;
   color: #fff;
-  :deep(.van-nav-bar__title) {
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-  }
 }
 main {
   padding-left: 18px;
