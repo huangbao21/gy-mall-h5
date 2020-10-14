@@ -80,14 +80,14 @@ export default defineComponent({
   },
   methods: {
     toView() {
-      // this.$router.push("/earnMoneyDetail");
-      toCompleteMission({
-        url: "gycn://m.gy.cn/videoMission",
-        bountyQuantity: 12,
-        id: 1,
-        verify: "123",
-        verifyStr: "123",
-      });
+      this.$router.push("/earnMoneyDetail");
+      // toCompleteMission({
+      //   url: "gycn://m.gy.cn/videoMission",
+      //   bountyQuantity: 12,
+      //   id: 1,
+      //   verify: "123",
+      //   verifyStr: "123",
+      // });
     },
     async getBounty() {
       const res = await fetchBounty();

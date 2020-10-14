@@ -115,7 +115,6 @@ export default defineComponent({
 .earnMoneyDetail {
   min-height: 100%;
   background-color: $bgColor;
-  padding-top: 27px;
   color: #fff;
 }
 main {
@@ -149,7 +148,7 @@ main {
         width: 24px;
         height: 24px;
         margin-right: 6px;
-        margin-top: 3px;
+        margin-top: 1px;
       }
     }
     &__btn {

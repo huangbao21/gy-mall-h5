@@ -8,7 +8,7 @@ import Utils from "@/utils";
 
 export default defineComponent({
   mounted() {
-    Utils.adjustViewport();
+    // Utils.adjustViewport();
   },
 });
 </script>
