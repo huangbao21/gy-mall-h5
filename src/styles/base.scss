@@ -20,6 +20,9 @@ $contentBgColor: #1e183c;
   background-color: $contentBgColor;
   color: #fff;
   font-size: 16px;
+  :deep(.van-field__label) {
+    color: #fff;
+  }
   :deep(input) {
     color: #fff;
     &::placeholder {
