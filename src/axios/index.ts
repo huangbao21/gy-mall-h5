@@ -27,7 +27,7 @@ service.interceptors.request.use(
     if (localStorage.token) {
       config.headers.common.Authorization = localStorage.token;
     } else {
-      config.headers.common.token = 'zG7D7bA3i9BEywoYyuHKznmSgMveCpU8'
+      config.headers.common.token = 'yuUE0cmIU1zV6BTF2pXhl8FvGk5AOnGp'
     }
     return config
   },
@@ -49,7 +49,7 @@ service.interceptors.response.use(
     return response.data;
   },
   error => {
-    Toast('网络超时，请刷新重试');
+    Toast('网络异常，请稍后再试');
     return Promise.reject(error)
   }
 )

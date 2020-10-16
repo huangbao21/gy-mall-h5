@@ -21,21 +21,23 @@
             <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
             <span class="earned--val">{{ bounty }}</span>
           </div>
-          <span class="earned__btn">立即提现</span>
+          <span class="earned__btn" @click="toView('/withdrawGold')"
+            >立即划转</span
+          >
         </div>
         <div class="statistic">
           <div class="statistic-date">
             <span class="des">今日赚钱</span>
             <div class="statistic-info">
               <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-              <span class="statistic--val">200000000</span>
+              <span class="statistic--val">{{ todayRewardTotal }}</span>
             </div>
           </div>
           <div class="statistic-date">
             <span class="des">累计赚钱</span>
             <div class="statistic-info">
               <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-              <span class="statistic--val">200000000</span>
+              <span class="statistic--val">{{balance}}</span>
             </div>
           </div>
         </div>
@@ -47,13 +49,13 @@
             <div class="item-key">
               <span class="title">{{ item.name }}</span>
               <div class="des">
-                <p>{{ item.desc }}</p>
+                <p>{{ item.remark }}</p>
                 <p class="time">{{ item.time }}</p>
               </div>
             </div>
             <div class="item-state">
               <span class="val">{{ `+${item.amount}` }}</span>
-              <!-- <span class="status">待结算</span> -->
+              <span class="status" v-if="item.status===0">待结算</span>
             </div>
           </div>
         </div>
@@ -74,18 +76,26 @@ export default defineComponent({
       loading: false,
       finished: false,
       bounty: 0,
+      todayRewardTotal: 0,
+      balance: 0,
     };
   },
   mounted() {
     this.getBounty();
   },
   methods: {
-    toView() {
-      this.$router.go(-1);
+    toView(url: string) {
+      if (url) {
+        this.$router.push(url);
+      } else {
+        this.$router.go(-1);
+      }
     },
     async getBounty() {
       const res = await fetchBounty();
       this.bounty = res.data.rewardTotal ? res.data.rewardTotal : 0;
+      this.todayRewardTotal = res.data.todayRewardTotal;
+      this.balance = res.data.balance;
     },
     async getBountyList() {
       const res = await fetchBountyList({
@@ -97,11 +107,10 @@ export default defineComponent({
         return Promise.reject(err);
       });
       this.loading = false;
-      if (this.size > res.data.records) {
+      if (this.size > res.data.records.length) {
         this.finished = true;
-      } else {
-        this.list.push(...this.list, ...res.data.records);
       }
+      this.list.push(...res.data.records);
     },
     onLoad() {
       this.current += 1;

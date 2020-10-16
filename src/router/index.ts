@@ -27,6 +27,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EarnMoneyDetail',
     component: () => import(/* webpackChunkName: "earn" */ '../views/earn/EarnMoneyDetail.vue'),
     meta: { title: '已赚明细' }
+  },
+  {
+    path: '/withdrawGold',
+    name: 'WithdrawGold',
+    component: () => import(/* webpackChunkName: "earn" */ '../views/earn/WithdrawGold.vue'),
+    meta: { title: '金币提现' }
   }
 ]
 

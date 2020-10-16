@@ -8,7 +8,7 @@ import Utils from "@/utils";
 
 export default defineComponent({
   mounted() {
-    // Utils.adjustViewport();
+    Utils.adjustViewport();
   },
 });
 </script>
@@ -22,6 +22,9 @@ export default defineComponent({
 body,
 html {
   height: 100%;
+}
+body {
+  background: #0f0525;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
