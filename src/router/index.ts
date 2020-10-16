@@ -27,7 +27,20 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EarnMoneyDetail',
     component: () => import(/* webpackChunkName: "earn" */ '../views/earn/EarnMoneyDetail.vue'),
     meta: { title: '已赚明细' }
-  }
+  },
+  {
+    path: '/systemManagement',
+    name: 'SystemManagement',
+    component: () => import(/* webpackChunkName: "earn" */ '../views/system/SystemManagement.vue'),
+    meta: { title: '体系管理' }
+  },
+  {
+    path: '/enterprise',
+    name: 'Enterprise',
+    component: () => import(/* webpackChunkName: "earn" */ '../views/enterprise/Enterprise.vue'),
+    meta: { title: '企业认证' }
+  },
+
 ]
 
 const router = createRouter({
