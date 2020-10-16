@@ -19,7 +19,6 @@
     </div>
     <div class="account-input">
       <span>划转金币数量</span>
-      <input
     </div>
   </div>
 </template>
