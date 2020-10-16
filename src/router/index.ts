@@ -40,7 +40,24 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "earn" */ '../views/enterprise/Enterprise.vue'),
     meta: { title: '企业认证' }
   },
-
+  {
+    path: '/goodsAdd',
+    name: 'GoodsAdd',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsAdd.vue'),
+    meta: { title: '新增商品' }
+  },
+  {
+    path: '/goodsCategory',
+    name: 'GoodsCategory',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsCategory.vue'),
+    meta: { title: '商品类目' }
+  },
+  {
+    path: '/goodsSKU',
+    name: 'GoodsSKU',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsSKU.vue'),
+    meta: { title: '价格库存' }
+  }
 ]
 
 const router = createRouter({
