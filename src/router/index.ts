@@ -27,6 +27,24 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EarnMoneyDetail',
     component: () => import(/* webpackChunkName: "earn" */ '../views/earn/EarnMoneyDetail.vue'),
     meta: { title: '已赚明细' }
+  },
+  {
+    path: '/goodsAdd',
+    name: 'GoodsAdd',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsAdd.vue'),
+    meta: { title: '新增商品' }
+  },
+  {
+    path: '/goodsCategory',
+    name: 'GoodsCategory',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsCategory.vue'),
+    meta: { title: '商品类目' }
+  },
+  {
+    path: '/goodsSKU',
+    name: 'GoodsSKU',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsSKU.vue'),
+    meta: { title: '价格库存' }
   }
 ]
 
