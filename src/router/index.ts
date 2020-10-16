@@ -29,10 +29,42 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '已赚明细' }
   },
   {
+
     path: '/withdrawGold',
     name: 'WithdrawGold',
     component: () => import(/* webpackChunkName: "earn" */ '../views/earn/WithdrawGold.vue'),
     meta: { title: '金币提现' }
+  },
+  {
+    path: '/systemManagement',
+    name: 'SystemManagement',
+    component: () => import(/* webpackChunkName: "earn" */ '../views/system/SystemManagement.vue'),
+    meta: { title: '体系管理' }
+  },
+  {
+    path: '/enterprise',
+    name: 'Enterprise',
+    component: () => import(/* webpackChunkName: "earn" */ '../views/enterprise/Enterprise.vue'),
+    meta: { title: '企业认证' }
+  },
+  {
+    path: '/goodsAdd',
+    name: 'GoodsAdd',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsAdd.vue'),
+    meta: { title: '新增商品' }
+  },
+  {
+    path: '/goodsCategory',
+    name: 'GoodsCategory',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsCategory.vue'),
+    meta: { title: '商品类目' }
+  },
+  {
+    path: '/goodsSKU',
+    name: 'GoodsSKU',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsSKU.vue'),
+    meta: { title: '价格库存' }
+
   }
 ]
 
