@@ -8,4 +8,6 @@ export default class API {
   static BOUNTY_NUM = `${APP_SERVICE}authc/mission/find_bounty_number`
   static BOUNTY_LIST = `${APP_SERVICE}authc/mission/find_page_bounty_number`
   static MISSION_SAVE = `${APP_SERVICE}authc/mission/save`
+  static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
+  static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
 }

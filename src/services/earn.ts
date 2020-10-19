@@ -13,3 +13,9 @@ export function fetchBountyList(data: { current: number; size: number }): Promis
 export function saveMission(data: { bountyQuantity: number; id: number; verify: string; verifyStr: string }): Promise<PostData> {
   return axios.post(API.MISSION_SAVE, data);
 }
+export function fetchBountyAndRank(): Promise<PostData> {
+  return axios.post(API.BOUNTY_RANK, {})
+}
+export function updateTransfer(data: { amount: number; zone: string }): Promise<PostData> {
+  return axios.post(API.UPDATE_TRANSFER, data)
+}
