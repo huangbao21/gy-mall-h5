@@ -18,7 +18,7 @@
         <span class="profit-info__text">已赚</span>
         <div class="profit-info__gold">
           <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-          <span>{{ bounty }}</span>
+          <span>{{ bounty }}23</span>
         </div>
       </div>
       <div class="profit-icon">
