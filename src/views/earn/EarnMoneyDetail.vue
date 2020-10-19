@@ -37,7 +37,7 @@
             <span class="des">累计赚钱</span>
             <div class="statistic-info">
               <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-              <span class="statistic--val">{{balance}}</span>
+              <span class="statistic--val">{{ balance }}</span>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="item-state">
               <span class="val">{{ `+${item.amount}` }}</span>
-              <span class="status" v-if="item.status===0">待结算</span>
+              <span class="status" v-if="item.status === 0">待结算</span>
             </div>
           </div>
         </div>
@@ -85,9 +85,10 @@ export default defineComponent({
   },
   methods: {
     toView(url: string) {
-      if (url) {
+      if (url && typeof url === "string") {
         this.$router.push(url);
       } else {
+        console.log(23);
         this.$router.go(-1);
       }
     },
