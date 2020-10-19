@@ -171,6 +171,8 @@ export default defineComponent({
             id: item.id,
             verify: item.verify,
             verifyStr: item.verifyStr,
+            androidPid: item.androidPid,
+            iosPid: item.iosPid,
           });
           return;
         }
@@ -180,6 +182,8 @@ export default defineComponent({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
             id: item.id,
+            androidPid: item.androidPid,
+            iosPid: item.iosPid,
             verify: item.verify,
             verifyStr: item.verifyStr,
           });
