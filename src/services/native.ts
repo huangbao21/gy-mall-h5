@@ -9,7 +9,9 @@ export function toCompleteMission(data: { url: string; bountyQuantity: number; i
     bountyQuantity: data.bountyQuantity,
     id: data.id,
     verify: data.verify,
-    verifyStr: data.verifyStr
+    verifyStr: data.verifyStr,
+    androidPid: data.androidPid,
+    iosPid: data.iosPid,
   })
   window.location.href = `${data.url}?${params}`;
 }
