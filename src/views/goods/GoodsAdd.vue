@@ -11,105 +11,107 @@
       </template>
     </van-nav-bar>
 
-    <div class="goods-cover-wrapper">
-      <div class="goods-cover-preview">
-        <van-uploader :after-read="afterRead" v-if="coverImgList.length == 0">
-          <div class="goods-upload-photo-wrapper">
-            <van-icon name="photo" size="40" />
-            <p class="van-uploader-text">添加商品封面</p>
-          </div>
-        </van-uploader>
-        <van-image
-          width="375"
-          height="375"
-          :src="
-            coverImgList[currentCoverIndex]
-              ? coverImgList[currentCoverIndex]
-              : ''
-          "
-        />
-      </div>
-      <div class="goods-img-operate-area" v-if="coverImgList.length > 0">
-        <van-uploader
-          v-if="coverImgList.length != maxCount"
-          :after-read="afterRead"
-        >
-          <van-button icon="plus"></van-button>
-        </van-uploader>
-        <div class="goods-img-list">
-          <div
-            class="goods-img-item"
-            v-for="(item, i) in coverImgList"
-            :key="item"
+    <div class="goods-add-content-wrapper">
+      <div class="goods-cover-wrapper">
+        <div class="goods-cover-preview">
+          <van-uploader :after-read="afterRead" v-if="coverImgList.length == 0">
+            <div class="goods-upload-photo-wrapper">
+              <van-icon name="photo" size="40" />
+              <p class="van-uploader-text">添加商品封面</p>
+            </div>
+          </van-uploader>
+          <van-image
+            width="375"
+            height="375"
+            :src="
+              coverImgList[currentCoverIndex].fileUrl
+                ? coverImgList[currentCoverIndex].fileUrl
+                : ''
+            "
+          />
+        </div>
+        <div class="goods-img-operate-area" v-if="coverImgList.length > 0">
+          <van-uploader
+            v-if="coverImgList.length != maxCount"
+            :after-read="afterRead"
           >
-            <van-image
-              class="goods-img-sm-preview"
-              width="48"
-              height="48"
-              :src="item"
-              @click="handleItemClick(i)"
+            <van-button icon="plus"></van-button>
+          </van-uploader>
+          <div class="goods-img-list">
+            <div
+              class="goods-img-item"
+              v-for="(item, i) in coverImgList"
+              :key="item.id"
             >
               <van-image
-                class="goods-img-preview-delete"
-                :src="require('./../../assets/imgs/common/icon-close.png')"
-                @click="deleteImgFromList(i)"
-            /></van-image>
+                class="goods-img-sm-preview"
+                width="48"
+                height="48"
+                :src="item.fileUrl"
+                @click="handleItemClick(i)"
+              >
+                <van-image
+                  class="goods-img-preview-delete"
+                  :src="require('./../../assets/imgs/common/icon-close.png')"
+                  @click="deleteImgFromList(i)"
+              /></van-image>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <van-field
-      class="goods-title"
-      v-model="goodsTitle"
-      rows="2"
-      type="textarea"
-      maxlength="40"
-      placeholder="请输入商品名称(最多40个字)"
-      show-word-limit
-    />
-    <div class="goods-cells-edit">
-      <van-cell title="商品类目" is-link @click="handleCategoryClick" />
-      <van-cell title="价格/分佣/库存" is-link @click="handleSkuClick" />
-      <van-cell class="goods-express" title="运费" value="免邮" />
-    </div>
-    <div class="goods-detail-img-wrapper">
-      <div class="goods-detail-img-plus" v-if="detailImgList.length==0">
-        <van-uploader style="width: 375px" :after-read="detailAfterRead">
-          <van-icon name="plus" />
-          <span>添加详情图</span>
-        </van-uploader>
+      <van-field
+        class="goods-title"
+        v-model="goodsTitle"
+        rows="2"
+        type="textarea"
+        maxlength="40"
+        placeholder="请输入商品名称(最多40个字)"
+        show-word-limit
+      />
+      <div class="goods-cells-edit">
+        <van-cell title="商品类目" is-link @click="handleCategoryClick" />
+        <van-cell title="价格/分佣/库存" is-link @click="handleSkuClick" />
+        <van-cell class="goods-express" title="运费" value="免邮" />
       </div>
-      <div class="goods-img-operate-area" v-if="detailImgList.length > 0">
-        <van-uploader :after-read="detailAfterRead">
-          <van-button icon="plus"></van-button>
-        </van-uploader>
-        <div class="goods-img-list">
-          <div
-            class="goods-img-item"
-            v-for="(item, i) in detailImgList"
-            :key="item"
-          >
-            <van-image
-              class="goods-img-sm-preview"
-              width="48"
-              height="48"
-              :src="item"
+      <div class="goods-detail-img-wrapper">
+        <div class="goods-detail-img-plus" v-if="detailImgList.length == 0">
+          <van-uploader style="width: 375px" :after-read="detailAfterRead">
+            <van-icon name="plus" />
+            <span>添加详情图</span>
+          </van-uploader>
+        </div>
+        <div class="goods-img-operate-area" v-if="detailImgList.length > 0">
+          <van-uploader :after-read="detailAfterRead">
+            <van-button icon="plus"></van-button>
+          </van-uploader>
+          <div class="goods-img-list">
+            <div
+              class="goods-img-item"
+              v-for="(item, i) in detailImgList"
+              :key="item"
             >
               <van-image
-                class="goods-img-preview-delete"
-                :src="require('./../../assets/imgs/common/icon-close.png')"
-                @click="deleteDetailImgFromList(i)"
-            /></van-image>
+                class="goods-img-sm-preview"
+                width="48"
+                height="48"
+                :src="item"
+              >
+                <van-image
+                  class="goods-img-preview-delete"
+                  :src="require('./../../assets/imgs/common/icon-close.png')"
+                  @click="deleteDetailImgFromList(i)"
+              /></van-image>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="goods-detail-img-list">
-        <div
-          class="goods-detail-img-item"
-          v-for="item in detailImgList"
-          :key="item"
-        >
-          <van-image width="375" :src="item" />
+        <div class="goods-detail-img-list">
+          <div
+            class="goods-detail-img-item"
+            v-for="item in detailImgList"
+            :key="item"
+          >
+            <van-image width="375" :src="item" />
+          </div>
         </div>
       </div>
     </div>
@@ -118,16 +120,23 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Toast } from "vant";
+import { fetchCategoryList } from "@/services/goods";
+import { uploadFile } from "@/services/common";
 export default defineComponent({
   name: "GoodsAdd",
   data() {
     return {
       coverImgList: [
-        "https://img.yzcdn.cn/vant/cat.jpeg",
-        "https://img.yzcdn.cn/vant/cat.jpeg",
-        "https://img.yzcdn.cn/vant/cat.jpeg",
-        "https://img.yzcdn.cn/vant/cat.jpeg",
-        "https://img.yzcdn.cn/vant/cat.jpeg",
+        {
+          id: 1,
+          mainStatus: 1,
+          fileUrl: "https://img.yzcdn.cn/vant/cat.jpeg",
+        },
+        {
+          id: 2,
+          mainStatus: 0,
+          fileUrl: "https://img.yzcdn.cn/vant/cat.jpeg",
+        },
       ],
       detailImgList: [
         "https://img.yzcdn.cn/vant/cat.jpeg",
@@ -138,6 +147,9 @@ export default defineComponent({
       maxCount: 6,
       goodsTitle: "",
     };
+  },
+  mounted() {
+    this.fetchCategoryList();
   },
   methods: {
     onClickRight() {
@@ -155,6 +167,9 @@ export default defineComponent({
       console.log(file);
       this.coverImgList.push(file.content);
       this.currentCoverIndex = this.coverImgList.length - 1;
+      const formData = new FormData();
+      formData.append("file", file.file);
+      this.uploadFile(formData);
     },
     handleCategoryClick() {
       this.$router.replace({ path: "/goodsCategory" });
@@ -168,15 +183,27 @@ export default defineComponent({
     deleteDetailImgFromList(index: number) {
       this.detailImgList.splice(index, 1);
     },
+    async fetchCategoryList() {
+      const res = await fetchCategoryList();
+      console.log(res);
+    },
+    async uploadFile(file: FormData) {
+      const res = await uploadFile(file);
+      console.log(res);
+    },
   },
 });
 </script>
 <style lang="scss" scoped>
 @import "../../styles/base";
 .goods-add-page {
+  height: 100%;
+}
+.goods-add-content-wrapper {
+  height: calc(100% - 30px);
   background-color: $bgColor;
-  min-height: 100%;
-  padding-top: 27px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .goods-cover-preview {
   background-color: #1e183c;
@@ -212,6 +239,9 @@ export default defineComponent({
     overflow-x: scroll;
     width: 100%;
     padding: 12px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .goods-img-item {
       padding: 0 16px 0 0;
       display: flex;
@@ -268,6 +298,11 @@ export default defineComponent({
       justify-content: center;
       background-color: #1e183c;
       color: #fff;
+    }
+  }
+  .goods-detail-img-list {
+    .van-image {
+      vertical-align: top;
     }
   }
 }

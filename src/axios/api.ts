@@ -8,4 +8,10 @@ export default class API {
   static BOUNTY_NUM = `${APP_SERVICE}authc/mission/find_bounty_number`
   static BOUNTY_LIST = `${APP_SERVICE}authc/mission/find_page_bounty_number`
   static MISSION_SAVE = `${APP_SERVICE}authc/mission/save`
+
+  // 商品类目
+  static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
+
+  // 上传文件
+  static UPLOAD_FILE=`${APP_SERVICE}upload`
 }
