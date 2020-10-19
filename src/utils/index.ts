@@ -49,4 +49,12 @@ export default class Utils {
     const viewportScale = clientWidth / viewportWidth;
     viewport?.setAttribute("content", `width=${viewportWidth}, initial-scale=${viewportScale}, maximum-scale=${viewportScale}, user-scalable=no,viewport-fit=cover`);
   }
+
+  static setLoginCookie(obj: any) {
+    localStorage.token = obj.token;
+  }
+
+  static clearLoginCookie() {
+    localStorage.token = '';
+  }
 }

@@ -32,7 +32,7 @@
           }}</span
         ></span
       >
-      <span class="gold__withdraw">全部划转</span>
+      <span class="gold__withdraw" @click="transferAll">全部划转</span>
     </div>
     <div class="account-sel">
       <van-radio-group v-model="transferWay">
@@ -63,7 +63,9 @@
         </div>
       </van-radio-group>
     </div>
-    <div class="btn">立即划转</div>
+    <div class="btn" @click="transfer" :class="{ disabled: !goldValue }">
+      立即划转
+    </div>
     <div class="indicate">
       <article>
         <header>划转说明：</header>
@@ -105,12 +107,15 @@ export default defineComponent({
     toView() {
       this.$router.go(-1);
     },
+    transferAll() {
+      this.goldValue = String(this.balance);
+    },
     async getBountyRank() {
       const res = await fetchBountyAndRank();
       this.balance = res.data.balance;
       this.level = res.data.level;
     },
-    async updateTransfer() {
+    async transfer() {
       await updateTransfer({
         amount: Number(this.goldValue),
         zone: this.transferWay,
@@ -137,6 +142,9 @@ export default defineComponent({
   line-height: 44px;
   font-weight: bold;
   margin-top: 50px;
+  &.disabled {
+    opacity: 40%;
+  }
 }
 .account {
   display: flex;

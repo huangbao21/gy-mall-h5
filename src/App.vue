@@ -5,10 +5,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Utils from "@/utils";
+import qs from "qs";
 
 export default defineComponent({
   mounted() {
     Utils.adjustViewport();
+    const paramsStr = location.search.split("?");
+    const params = qs.parse(paramsStr[1]);
+    if (params.token) {
+      Utils.setLoginCookie(params);
+    }
   },
 });
 </script>

@@ -25,9 +25,10 @@ service.interceptors.request.use(
       splitUrl.push(url.substring(0, index), url.substring(index + 1, url.length));
     }
     if (localStorage.token) {
-      config.headers.common.Authorization = localStorage.token;
+      // config.headers.common.Authorization = localStorage.token;
+      config.headers.common.token = localStorage.token;
     } else {
-      config.headers.common.token = '4BLtW35huxzalNA80aexGzNf2GOTWRwb'
+      Toast('请先登录哦~')
     }
     return config
   },
