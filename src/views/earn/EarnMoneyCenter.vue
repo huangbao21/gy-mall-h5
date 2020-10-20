@@ -143,10 +143,6 @@ export default defineComponent({
   },
   mounted() {
     this.getBounty();
-    this.$dialog.confirm({
-      message: "我是一只小小小小小鸟",
-      className: "gy-dialog",
-    });
     const paramsStr = location.search.split("?");
     const params = qs.parse(paramsStr[1]);
     if (
