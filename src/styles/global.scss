@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+}
+body {
+  background: #0f0525;
+}
+
+.gy-dialog.van-dialog {
+  background-color: #28244d;
+  color: #fff;
+  .van-dialog__message {
+    font-size: 16px;
+  }
+  .van-dialog__confirm{
+    color:#00FFD2;
+    &:active{
+      color:#00FFD2;
+    }
+  }
+  .van-button--default{
+    background-color: #28244d;
+  }
+}
