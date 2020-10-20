@@ -143,7 +143,7 @@ export default defineComponent({
   },
   mounted() {
     this.getBounty();
-    this.$dialog.alert({
+    this.$dialog.confirm({
       message: "我是一只小小小小小鸟",
       className: "gy-dialog",
     });

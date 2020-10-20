@@ -17,13 +17,16 @@ body {
   .van-dialog__message {
     font-size: 16px;
   }
-  .van-dialog__confirm{
-    color:#00FFD2;
-    &:active{
-      color:#00FFD2;
+  .van-dialog__confirm {
+    color: #00ffd2;
+    &:active {
+      color: #00ffd2;
     }
   }
-  .van-button--default{
+  .van-dialog__cancel {
+    color: #00ffd2;
+  }
+  .van-button--default {
     background-color: #28244d;
   }
 }
