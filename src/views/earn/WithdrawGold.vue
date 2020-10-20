@@ -15,7 +15,7 @@
     </van-nav-bar>
     <main>
       <div class="account">
-        <span><small>￥</small>0</span>
+        <span><small>￥</small>{{ goldValue ? goldValue : 0 }}</span>
         <span class="des">到账金币</span>
       </div>
       <div class="account-input">
@@ -64,7 +64,11 @@
           </div>
         </van-radio-group>
       </div>
-      <div class="btn" @click="transfer" :class="{ disabled: !goldValue }">
+      <div
+        class="btn"
+        @click="transfer"
+        :class="{ disabled: !goldValue || goldValue === '0' }"
+      >
         立即划转
       </div>
       <div class="indicate">
@@ -118,10 +122,20 @@ export default defineComponent({
       this.level = res.data.level;
     },
     async transfer() {
-      await updateTransfer({
-        amount: Number(this.goldValue),
-        zone: this.transferWay,
-      });
+      if (this.goldValue || this.goldValue === "0") {
+        const res = await updateTransfer({
+          amount: Number(this.goldValue),
+          zone: this.transferWay,
+        });
+        this.goldValue = "";
+        this.$toast.success({
+          message: res.msg,
+          forbidClick: true,
+          onClose: () => {
+            this.getBountyRank();
+          },
+        });
+      }
     },
   },
 });
