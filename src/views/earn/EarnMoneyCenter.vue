@@ -142,6 +142,7 @@ export default defineComponent({
     };
   },
   mounted() {
+    this.getBounty();
     const paramsStr = location.search.split("?");
     const params = qs.parse(paramsStr[1]);
     if (
@@ -152,7 +153,6 @@ export default defineComponent({
     ) {
       this.saveMission(params);
     } else {
-      this.getBounty();
       this.onLoad();
       (this.$refs as any).vanList.check();
     }
