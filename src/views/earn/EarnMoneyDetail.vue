@@ -88,7 +88,6 @@ export default defineComponent({
       if (url && typeof url === "string") {
         this.$router.push(url);
       } else {
-        console.log(23);
         this.$router.go(-1);
       }
     },
