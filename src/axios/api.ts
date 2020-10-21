@@ -10,10 +10,13 @@ export default class API {
   static MISSION_SAVE = `${APP_SERVICE}authc/mission/save`
 
   // 商品类目
-  static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
+  static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`
 
   // 上传文件
   static UPLOAD_FILE=`${APP_SERVICE}upload`
   static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
   static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
+
+  // 企业认证
+  static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
 }
