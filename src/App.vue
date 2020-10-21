@@ -5,27 +5,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Utils from "@/utils";
+import qs from "qs";
 
 export default defineComponent({
   mounted() {
     Utils.adjustViewport();
+    const paramsStr = location.search.split("?");
+    const params = qs.parse(paramsStr[1]);
+    if (params.token) {
+      Utils.setLoginCookie(params);
+    }
   },
 });
 </script>
-
 <style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body,
-html {
-  height: 100%;
-}
-body {
-  background: #0f0525;
-}
+@import "@/styles/global.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

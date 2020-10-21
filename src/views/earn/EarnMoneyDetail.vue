@@ -19,7 +19,7 @@
         <div class="earned">
           <div class="earned-info">
             <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-            <span class="earned--val">{{ bounty }}</span>
+            <span class="earned--val">{{ balance }}</span>
           </div>
           <span class="earned__btn" @click="toView('/withdrawGold')"
             >立即划转</span
@@ -37,7 +37,7 @@
             <span class="des">累计赚钱</span>
             <div class="statistic-info">
               <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-              <span class="statistic--val">{{balance}}</span>
+              <span class="statistic--val">{{ rewardTotal }}</span>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="item-state">
               <span class="val">{{ `+${item.amount}` }}</span>
-              <span class="status" v-if="item.status===0">待结算</span>
+              <span class="status" v-if="item.status === 0">待结算</span>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default defineComponent({
       list: [] as object[],
       loading: false,
       finished: false,
-      bounty: 0,
+      rewardTotal: 0,
       todayRewardTotal: 0,
       balance: 0,
     };
@@ -85,7 +85,7 @@ export default defineComponent({
   },
   methods: {
     toView(url: string) {
-      if (url) {
+      if (url && typeof url === "string") {
         this.$router.push(url);
       } else {
         this.$router.go(-1);
@@ -93,7 +93,7 @@ export default defineComponent({
     },
     async getBounty() {
       const res = await fetchBounty();
-      this.bounty = res.data.rewardTotal ? res.data.rewardTotal : 0;
+      this.rewardTotal = res.data.rewardTotal ? res.data.rewardTotal : 0;
       this.todayRewardTotal = res.data.todayRewardTotal;
       this.balance = res.data.balance;
     },
