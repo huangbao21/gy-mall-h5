@@ -1,5 +1,5 @@
 <template>
-  <div class="withdrawGold nav-bar">
+  <div class="withdraw-gold nav-bar">
     <van-nav-bar
       title="金币划转"
       left-arrow
@@ -91,7 +91,7 @@ import { defineComponent } from "vue";
 import usePropsCom from "@/composables/usePropsCom";
 import { fetchBountyAndRank, updateTransfer } from "@/services/earn";
 export default defineComponent({
-  name: "withdrawGold",
+  name: "WithdrawGold",
   setup() {
     const { checkRadioColor } = usePropsCom();
     return {
@@ -142,7 +142,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.withdrawGold {
+.withdraw-gold  {
   min-height: 100%;
   background-color: $bgColor;
   padding-bottom: 20px;

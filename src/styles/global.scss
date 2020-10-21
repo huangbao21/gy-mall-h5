@@ -1,3 +1,4 @@
+@import "./const.scss";
 * {
   margin: 0;
   padding: 0;
@@ -28,5 +29,22 @@ body {
   }
   .van-button--default {
     background-color: #28244d;
+  }
+}
+.gy-tabs {
+  .van-tabs__wrap {
+    border-bottom: 1px solid rgba($color: #fff, $alpha: 0.4);
+  }
+  .van-tabs__nav {
+    background-color: $bgColor;
+  }
+  .van-tab {
+    color: rgba($color: #fff, $alpha: 0.6);
+  }
+  .van-tab--active {
+    color: #fff;
+  }
+  .van-tabs__line {
+    background-color: #00ffd2;
   }
 }

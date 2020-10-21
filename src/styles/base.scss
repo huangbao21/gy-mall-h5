@@ -41,21 +41,22 @@
       color: #fff;
     }
   }
-  .van-hairline--bottom::after {
-    border: none;
-  }
-  @mixin gy-input {
-    background-color: $contentBgColor;
+}
+.van-hairline--bottom::after {
+  border: none;
+}
+
+@mixin gy-input {
+  background-color: $contentBgColor;
+  color: #fff;
+  font-size: 16px;
+  :deep(.van-field__label) {
     color: #fff;
-    font-size: 16px;
-    :deep(.van-field__label) {
-      color: #fff;
-    }
-    :deep(input) {
-      color: #fff;
-      &::placeholder {
-        color: rgba($color: #fff, $alpha: 0.6);
-      }
+  }
+  :deep(input) {
+    color: #fff;
+    &::placeholder {
+      color: rgba($color: #fff, $alpha: 0.6);
     }
   }
 }

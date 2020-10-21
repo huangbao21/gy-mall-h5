@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyCenter nav-bar">
+  <div class="earn-money-center nav-bar">
     <van-nav-bar
       title="赚钱中心"
       left-arrow
@@ -121,7 +121,7 @@ import moment from "moment";
 import { Toast } from "vant";
 
 export default defineComponent({
-  name: "earnMoneyCenter",
+  name: "EarnMoneyCenter",
   components: {
     // HelloWorld
   },
@@ -243,7 +243,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.earnMoneyCenter {
+.earn-money-center {
   background: url(./../../assets/imgs/earnMoney/bg.png) no-repeat;
   background-size: contain;
   min-height: 100%;
