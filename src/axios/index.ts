@@ -28,7 +28,7 @@ service.interceptors.request.use(
       // config.headers.common.Authorization = localStorage.token;
       config.headers.common.token = localStorage.token;
     } else {
-      config.headers.common.token = '6GVoiyj631Rb8G4DGgCgQYUCQTYcaRbj'
+      config.headers.common.token = 'ssA4i0pgSpTD6456wmgRnl7pnEMrtkcn'
     }
     return config
   },

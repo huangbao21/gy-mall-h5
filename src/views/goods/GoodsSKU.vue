@@ -19,6 +19,7 @@
         label="¥"
         type="number"
         autosize
+        maxlength="10"
         placeholder="请输入市场价格"
       />
       <p>销售价格</p>
@@ -28,6 +29,7 @@
         label="¥"
         autosize
         type="number"
+        maxlength="10"
         placeholder="请输入销售价格"
       />
       <p>经销商返佣</p>
@@ -37,6 +39,7 @@
         label="¥"
         autosize
         type="number"
+        maxlength="10"
         placeholder="请输入返佣金额"
       />
       <p>总库存</p>
@@ -45,6 +48,7 @@
         rows="1"
         autosize
         type="number"
+        maxlength="10"
         placeholder="请输入库存数"
       />
     </div>
@@ -53,7 +57,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Toast } from "vant";
-import { fetchCategoryList } from "@/services/goods";
 export default defineComponent({
   name: "GoodsSKU",
   data() {
@@ -65,6 +68,15 @@ export default defineComponent({
         storeNumber: "",
       },
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.price !== undefined) {
+      next((vm: any) => {
+        vm.goods = { ...vm.goods, ...to.query };
+      });
+    } else {
+      next();
+    }
   },
   methods: {
     handleEditOk() {
@@ -85,10 +97,25 @@ export default defineComponent({
         Toast("库存不能为空");
         return;
       }
-      this.$router.replace({ path: "/goodsAdd", query: { ...this.goods } });
+      this.$router.replace({
+        path: "/goodsAdd",
+        query: {
+          price: Number(this.goods.price),
+          retailPrice: Number(this.goods.retailPrice),
+          profit: Number(this.goods.profit),
+          storeNumber: Number(this.goods.storeNumber),
+        },
+      });
     },
     onClickLeft() {
-      this.$router.replace({ path: "/goodsAdd" });
+      this.$dialog
+        .confirm({
+          message: "规格信息未保存，确认返回",
+          className: "gy-dialog",
+        })
+        .then(() => {
+          this.$router.replace({ path: "/goodsAdd" });
+        });
     },
   },
 });

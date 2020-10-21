@@ -16,7 +16,6 @@
       v-model:active-id="activeId"
       v-model:main-active-index="activeIndex"
       :items="goodsCategory"
-      @click-nav="handleNavClick"
       @click-item="handleItemClick"
     />
   </div>
@@ -71,6 +70,16 @@ export default defineComponent({
       ],
     };
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.activeId !== undefined) {
+      next((vm: any) => {
+        vm.activeId = Number(to.query.activeId);
+        vm.activeIndex = to.query.activeIndex;
+      });
+    } else {
+      next();
+    }
+  },
   mounted() {
     this.fetchCategoryList();
   },
@@ -84,7 +93,8 @@ export default defineComponent({
         path: "/goodsAdd",
         query: {
           categoryId: this.activeId,
-          categoryText: `${this.navText}/${this.itemText}`,
+          categoryText: `${this.goodsCategory[this.activeIndex].text}/${this.itemText}`,
+          activeIndex: this.activeIndex,
         },
       });
     },
@@ -96,11 +106,7 @@ export default defineComponent({
       this.goodsCategory = res.data;
     },
     handleItemClick(data: { text: string; id: number }) {
-      console.log(data);
       this.itemText = data.text;
-    },
-    handleNavClick(index: number) {
-      this.navText = this.goodsCategory[index].text;
     },
   },
 });

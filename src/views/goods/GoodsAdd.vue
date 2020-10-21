@@ -4,6 +4,7 @@
       title="新增商品"
       right-text="完成"
       left-arrow
+      @click-left="onClickLeft"
       @click-right="onSave"
     >
       <template #left>
@@ -75,7 +76,10 @@
         placeholder="请输入商品名称(最多40个字)"
         show-word-limit
       />
-      <div class="goods-price-info">
+      <div
+        class="goods-price-info"
+        v-if="goodsInfo.productSkuList[0].price.length"
+      >
         <van-cell>
           <van-col class="goods-price" span="7"
             >¥
@@ -90,10 +94,10 @@
           >
         </van-cell>
         <van-cell class="goods-origin-wrapper">
-          <van-col class="goods-origin-price" span="16"
+          <van-col class="goods-origin-price" span="14"
             >淘宝价：¥{{ goodsInfo.productSkuList[0].retailPrice }}</van-col
           >
-          <van-col span="8" style="text-align: right"
+          <van-col span="10" style="text-align: right"
             >库存{{ goodsInfo.productSkuList[0].storeNumber }}件</van-col
           >
         </van-cell>
@@ -103,7 +107,7 @@
           title="商品类目"
           is-link
           @click="handleCategoryClick"
-          :value="categoryText"
+          :value="goodsInfo.categoryText"
         />
         <van-cell title="价格/分佣/库存" is-link @click="handleSkuClick" />
         <van-cell class="goods-express" title="运费" value="免邮" />
@@ -172,31 +176,29 @@ export default defineComponent({
         productInfoList: [] as object[],
         name: "",
         categoryId: -1,
+        categoryText: "",
+        activeIndex: 0,
         productSkuList: [
           {
             id: 0,
             idList: [0],
             param: "string",
-            price: 100,
-            profit: 40,
-            retailPrice: 60,
+            price: "",
+            profit: "",
+            retailPrice: "",
             sign: "string",
             skuJson: "string",
-            storeNumber: 10,
+            storeNumber: "",
           },
         ] as object[],
       },
-      categoryText: "",
       currentCoverIndex: 0,
       maxCount: 6,
     };
   },
   beforeRouteEnter(to, from, next) {
-    console.log(to);
-    console.log(from);
     if (to.query.price !== undefined) {
       next((vm: any) => {
-        console.log(`价格执行`);
         vm.goodsInfo.productSkuList[0] = {
           ...vm.goodsInfo.productSkuList[0],
           ...to.query,
@@ -204,15 +206,13 @@ export default defineComponent({
       });
     } else if (to.query.categoryId !== undefined) {
       next((vm: any) => {
-        vm.goodsInfo.categoryId = to.query.categoryId;
-        vm.categoryText = to.query.categoryText;
+        vm.goodsInfo = { ...vm.goodsInfo, ...to.query };
       });
     } else {
       next();
     }
   },
   created() {
-    console.log(`创建完组件实例`);
     const tempGoodsInfo = localStorage.getItem("tempGoodsInfo");
     if (tempGoodsInfo) {
       this.goodsInfo = JSON.parse(tempGoodsInfo);
@@ -222,9 +222,6 @@ export default defineComponent({
     console.log(`组件挂载`);
   },
   methods: {
-    onClickRight() {
-      Toast("按钮");
-    },
     handleItemClick(index: number) {
       this.currentCoverIndex = index;
     },
@@ -252,11 +249,21 @@ export default defineComponent({
       localStorage.setItem("tempGoodsInfo", "");
     },
     handleCategoryClick() {
-      this.$router.replace({ path: "/goodsCategory" });
+      this.saveTempData();
+      this.$router.replace({
+        path: "/goodsCategory",
+        query: {
+          activeIndex: this.goodsInfo.activeIndex,
+          activeId: this.goodsInfo.categoryId,
+        },
+      });
     },
     handleSkuClick() {
       this.saveTempData();
-      this.$router.replace({ path: "/goodsSKU" });
+      this.$router.replace({
+        path: "/goodsSKU",
+        query: { ...this.goodsInfo.productSkuList[0] },
+      });
     },
     async detailAfterRead(file: any) {
       const formData = new FormData();
@@ -268,7 +275,6 @@ export default defineComponent({
         fileUrl: res.data.fileUrl,
         sort: 0,
       });
-      console.log(`详情图片`, this.goodsInfo.productInfoList);
     },
     deleteDetailImgFromList(index: number) {
       this.goodsInfo.productInfoList.splice(index, 1);
@@ -282,6 +288,16 @@ export default defineComponent({
         ...this.goodsInfo,
       });
       this.clearTempData();
+    },
+    onClickLeft() {
+      this.$dialog
+        .confirm({
+          message: "商品信息未保存，确认返回",
+          className: "gy-dialog",
+        })
+        .then(() => {
+          this.$router.go(-1);
+        });
     },
   },
 });
@@ -424,6 +440,7 @@ export default defineComponent({
   }
 }
 .goods-detail-img-wrapper {
+  padding-bottom: 40px;
   .goods-detail-img-plus {
     :deep(.van-uploader__input-wrapper) {
       width: 375px;
