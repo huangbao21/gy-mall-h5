@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyDetail nav-bar">
+  <div class="earn-money-detail nav-bar">
     <van-nav-bar
       title="已赚明细"
       left-arrow
@@ -19,7 +19,7 @@
         <div class="earned">
           <div class="earned-info">
             <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-            <span class="earned--val">{{ bounty }}</span>
+            <span class="earned--val">{{ balance }}</span>
           </div>
           <span class="earned__btn" @click="toView('/withdrawGold')"
             >立即划转</span
@@ -37,7 +37,7 @@
             <span class="des">累计赚钱</span>
             <div class="statistic-info">
               <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-              <span class="statistic--val">{{ balance }}</span>
+              <span class="statistic--val">{{ rewardTotal }}</span>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@
 import { fetchBountyList, fetchBounty } from "@/services/earn";
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "earnMoneyDetail",
+  name: "EarnMoneyDetail",
   data() {
     return {
       current: 0,
@@ -75,7 +75,7 @@ export default defineComponent({
       list: [] as object[],
       loading: false,
       finished: false,
-      bounty: 0,
+      rewardTotal: 0,
       todayRewardTotal: 0,
       balance: 0,
     };
@@ -88,13 +88,12 @@ export default defineComponent({
       if (url && typeof url === "string") {
         this.$router.push(url);
       } else {
-        console.log(23);
         this.$router.go(-1);
       }
     },
     async getBounty() {
       const res = await fetchBounty();
-      this.bounty = res.data.rewardTotal ? res.data.rewardTotal : 0;
+      this.rewardTotal = res.data.rewardTotal ? res.data.rewardTotal : 0;
       this.todayRewardTotal = res.data.todayRewardTotal;
       this.balance = res.data.balance;
     },
@@ -122,7 +121,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.earnMoneyDetail {
+.earn-money-detail {
   min-height: 100%;
   background-color: $bgColor;
   color: #fff;

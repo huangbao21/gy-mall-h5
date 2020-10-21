@@ -18,20 +18,9 @@ export default defineComponent({
   },
 });
 </script>
-
 <style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body,
-html {
-  height: 100%;
-}
-body {
-  background: #0f0525;
-}
+@import "@/styles/global.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

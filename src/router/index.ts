@@ -71,6 +71,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsSKU.vue'),
     meta: { title: '价格库存' }
 
+  },
+  {
+    path: '/goodsManage',
+    name: 'GoodsManage',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsManage.vue'),
+    meta: { title: '商品管理' }
+
   }
 ]
 

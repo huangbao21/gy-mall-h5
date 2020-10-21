@@ -1,0 +1,50 @@
+@import "./const.scss";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+}
+body {
+  background: #0f0525;
+}
+
+.gy-dialog.van-dialog {
+  background-color: #28244d;
+  color: #fff;
+  .van-dialog__message {
+    font-size: 16px;
+  }
+  .van-dialog__confirm {
+    color: #00ffd2;
+    &:active {
+      color: #00ffd2;
+    }
+  }
+  .van-dialog__cancel {
+    color: #00ffd2;
+  }
+  .van-button--default {
+    background-color: #28244d;
+  }
+}
+.gy-tabs {
+  .van-tabs__wrap {
+    border-bottom: 1px solid rgba($color: #fff, $alpha: 0.4);
+  }
+  .van-tabs__nav {
+    background-color: $bgColor;
+  }
+  .van-tab {
+    color: rgba($color: #fff, $alpha: 0.6);
+  }
+  .van-tab--active {
+    color: #fff;
+  }
+  .van-tabs__line {
+    background-color: #00ffd2;
+  }
+}

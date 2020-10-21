@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyCenter nav-bar">
+  <div class="earn-money-center nav-bar">
     <van-nav-bar
       title="赚钱中心"
       left-arrow
@@ -18,7 +18,7 @@
         <span class="profit-info__text">已赚</span>
         <div class="profit-info__gold">
           <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
-          <span>{{ bounty }}23</span>
+          <span>{{ bounty }}</span>
         </div>
       </div>
       <div class="profit-icon">
@@ -121,7 +121,7 @@ import moment from "moment";
 import { Toast } from "vant";
 
 export default defineComponent({
-  name: "earnMoneyCenter",
+  name: "EarnMoneyCenter",
   components: {
     // HelloWorld
   },
@@ -171,6 +171,8 @@ export default defineComponent({
             id: item.id,
             verify: item.verify,
             verifyStr: item.verifyStr,
+            androidPid: item.androidPid,
+            iosPid: item.iosPid,
           });
           return;
         }
@@ -180,6 +182,8 @@ export default defineComponent({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
             id: item.id,
+            androidPid: item.androidPid,
+            iosPid: item.iosPid,
             verify: item.verify,
             verifyStr: item.verifyStr,
           });
@@ -207,6 +211,7 @@ export default defineComponent({
         (this.$refs as any).vanList.check();
         return Promise.reject(err);
       });
+      this.getBounty();
       this.onLoad();
       (this.$refs as any).vanList.check();
     },
@@ -238,7 +243,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.earnMoneyCenter {
+.earn-money-center {
   background: url(./../../assets/imgs/earnMoney/bg.png) no-repeat;
   background-size: contain;
   min-height: 100%;

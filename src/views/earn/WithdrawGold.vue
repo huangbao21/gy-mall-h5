@@ -1,5 +1,5 @@
 <template>
-  <div class="withdrawGold nav-bar">
+  <div class="withdraw-gold nav-bar">
     <van-nav-bar
       title="金币划转"
       left-arrow
@@ -15,7 +15,7 @@
     </van-nav-bar>
     <main>
       <div class="account">
-        <span><small>￥</small>0</span>
+        <span><small>￥</small>{{ goldValue ? goldValue : 0 }}</span>
         <span class="des">到账金币</span>
       </div>
       <div class="account-input">
@@ -64,7 +64,11 @@
           </div>
         </van-radio-group>
       </div>
-      <div class="btn" @click="transfer" :class="{ disabled: !goldValue }">
+      <div
+        class="btn"
+        @click="transfer"
+        :class="{ disabled: !goldValue || goldValue === '0' }"
+      >
         立即划转
       </div>
       <div class="indicate">
@@ -87,7 +91,7 @@ import { defineComponent } from "vue";
 import usePropsCom from "@/composables/usePropsCom";
 import { fetchBountyAndRank, updateTransfer } from "@/services/earn";
 export default defineComponent({
-  name: "withdrawGold",
+  name: "WithdrawGold",
   setup() {
     const { checkRadioColor } = usePropsCom();
     return {
@@ -118,17 +122,27 @@ export default defineComponent({
       this.level = res.data.level;
     },
     async transfer() {
-      await updateTransfer({
-        amount: Number(this.goldValue),
-        zone: this.transferWay,
-      });
+      if (this.goldValue || this.goldValue === "0") {
+        const res = await updateTransfer({
+          amount: Number(this.goldValue),
+          zone: this.transferWay,
+        });
+        this.goldValue = "";
+        this.$toast.success({
+          message: res.msg,
+          forbidClick: true,
+          onClose: () => {
+            this.getBountyRank();
+          },
+        });
+      }
     },
   },
 });
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.withdrawGold {
+.withdraw-gold  {
   min-height: 100%;
   background-color: $bgColor;
   padding-bottom: 20px;

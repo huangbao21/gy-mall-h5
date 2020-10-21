@@ -10,7 +10,8 @@ export default class API {
   static MISSION_SAVE = `${APP_SERVICE}authc/mission/save`
 
   // 商品类目
-  static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`
+  static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
+  static GOODS_SAVE=`${APP_SERVICE}authc/product/save`;
 
   // 上传文件
   static UPLOAD_FILE=`${APP_SERVICE}upload`

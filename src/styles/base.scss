@@ -1,11 +1,10 @@
-$bgColor: #0f0525;
-$contentBgColor: #1e183c;
+@import "./const.scss";
 .van-nav-bar {
   background: rgba($color: #000000, $alpha: 0);
   height: 44px;
   .leftIcon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
   }
 }
 .nav-bar {
@@ -16,6 +15,37 @@ $contentBgColor: #1e183c;
     font-size: 18px;
   }
 }
+.nav-bar-search {
+  @extend .nav-bar;
+  :deep(.van-nav-bar__title) {
+    max-width: unset;
+    width: 100%;
+    margin-left: 50px;
+    margin-right: 18px;
+  }
+  .van-field {
+    background-color: $contentBgColor;
+    border-radius: 18px;
+    height: 36px;
+    line-height: unset;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 36px;
+    :deep(.van-icon) {
+      font-size: 15px;
+      color: #fff;
+      line-height: 36px;
+    }
+    :deep(input) {
+      font-size: 16px;
+      color: #fff;
+    }
+  }
+}
+.van-hairline--bottom::after {
+  border: none;
+}
+
 @mixin gy-input {
   background-color: $contentBgColor;
   color: #fff;
