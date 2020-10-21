@@ -5,28 +5,34 @@
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="onClickRight"
+      @click-right="onSelectedOk"
     >
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
     <van-tree-select
+      class="goods-category-tree"
       v-model:active-id="activeId"
       v-model:main-active-index="activeIndex"
       :items="goodsCategory"
+      @click-nav="handleNavClick"
+      @click-item="handleItemClick"
     />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { fetchCategoryList } from "@/services/goods";
 import { Toast } from "vant";
 export default defineComponent({
   name: "GoodsAdd",
   data() {
     return {
-      activeId: 1,
+      activeId: -1,
       activeIndex: 0,
+      itemText: "",
+      navText: "",
       goodsCategory: [
         {
           text: "食品",
@@ -65,12 +71,36 @@ export default defineComponent({
       ],
     };
   },
+  mounted() {
+    this.fetchCategoryList();
+  },
   methods: {
-    onClickRight() {
-      Toast("按钮");
+    onSelectedOk() {
+      if (this.activeId < 0) {
+        Toast(`请选择类目`);
+        return;
+      }
+      this.$router.push({
+        path: "/goodsAdd",
+        query: {
+          categoryId: this.activeId,
+          categoryText: `${this.navText}/${this.itemText}`,
+        },
+      });
     },
     onClickLeft() {
       this.$router.replace({ path: "/goodsAdd" });
+    },
+    async fetchCategoryList() {
+      const res = await fetchCategoryList();
+      this.goodsCategory = res.data;
+    },
+    handleItemClick(data: { text: string; id: number }) {
+      console.log(data);
+      this.itemText = data.text;
+    },
+    handleNavClick(index: number) {
+      this.navText = this.goodsCategory[index].text;
     },
   },
 });
@@ -79,6 +109,24 @@ export default defineComponent({
 @import "../../styles/base";
 .goods-category-page {
   background-color: $bgColor;
-  min-height: 100%;
+  height: 100%;
+  .goods-category-tree {
+    height: calc(100% - 44px) !important;
+    :deep(.van-sidebar) {
+      background-color: $bgColor;
+      .van-sidebar-item {
+        background-color: $bgColor;
+        color: rgba(255, 255, 255, 0.4);
+        &--select {
+          background-color: #1e183c;
+          color: #fff;
+        }
+      }
+    }
+    :deep(.van-tree-select__content) {
+      background-color: #1e183c;
+      color: #fff;
+    }
+  }
 }
 </style>

@@ -5,7 +5,7 @@
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="onClickRight"
+      @click-right="handleEditOk"
     >
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
@@ -14,7 +14,7 @@
     <div class="goods-sku-wrapper">
       <p>市场价格</p>
       <van-field
-        v-model="marketPrice"
+        v-model="goods.retailPrice"
         rows="1"
         label="¥"
         type="number"
@@ -23,7 +23,7 @@
       />
       <p>销售价格</p>
       <van-field
-        v-model="price"
+        v-model="goods.price"
         rows="1"
         label="¥"
         autosize
@@ -32,7 +32,7 @@
       />
       <p>经销商返佣</p>
       <van-field
-        v-model="commissions"
+        v-model="goods.profit"
         rows="1"
         label="¥"
         autosize
@@ -41,7 +41,7 @@
       />
       <p>总库存</p>
       <van-field
-        v-model="stock"
+        v-model="goods.storeNumber"
         rows="1"
         autosize
         type="number"
@@ -53,21 +53,39 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Toast } from "vant";
+import { fetchCategoryList } from "@/services/goods";
 export default defineComponent({
   name: "GoodsSKU",
   data() {
     return {
       goods: {
-        price: 0,
-        marketPrice: 0,
-        commissions: 0,
-        stock: 0,
+        price: "",
+        retailPrice: "",
+        profit: "",
+        storeNumber: "",
       },
     };
   },
   methods: {
-    onClickRight() {
+    handleEditOk() {
       Toast("按钮");
+      if (!this.goods.retailPrice.length) {
+        Toast("市场价格不能为空");
+        return;
+      }
+      if (!this.goods.price.length) {
+        Toast("销售价格不能为空");
+        return;
+      }
+      if (!this.goods.profit.length) {
+        Toast("佣金不能为空");
+        return;
+      }
+      if (!this.goods.storeNumber.length) {
+        Toast("库存不能为空");
+        return;
+      }
+      this.$router.replace({ path: "/goodsAdd", query: { ...this.goods } });
     },
     onClickLeft() {
       this.$router.replace({ path: "/goodsAdd" });
@@ -89,6 +107,7 @@ export default defineComponent({
     height: 50px;
     border-radius: 8px;
     align-items: center;
+    @include gy-input;
     &::after {
       border-bottom: none;
     }
@@ -99,9 +118,6 @@ export default defineComponent({
       margin-right: 4px;
       flex: 1;
       text-align: center;
-    }
-    :deep(.van-field__control) {
-      color: #fff;
     }
   }
   p {

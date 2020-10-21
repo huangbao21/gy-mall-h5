@@ -16,6 +16,9 @@ $contentBgColor: #1e183c;
     font-size: 18px;
   }
 }
+.van-hairline--bottom::after{
+  border:none;
+}
 @mixin gy-input {
   background-color: $contentBgColor;
   color: #fff;
