@@ -12,6 +12,7 @@ import {
   Uploader,
   Image as VanImage,
   TreeSelect,
+  Col,
   Dialog,
   Toast,
   Tab,
@@ -32,6 +33,7 @@ export default function (app: any) {
     .use(Uploader)
     .use(VanImage)
     .use(TreeSelect)
+    .use(Col)
     .use(Dialog)
     .use(Toast).use(Tab).use(Tabs)
 }
