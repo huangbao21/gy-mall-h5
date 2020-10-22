@@ -8,15 +8,18 @@ export default class API {
   static BOUNTY_NUM = `${APP_SERVICE}authc/mission/find_bounty_number`
   static BOUNTY_LIST = `${APP_SERVICE}authc/mission/find_page_bounty_number`
   static MISSION_SAVE = `${APP_SERVICE}authc/mission/save`
+  static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
+  static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
 
   // 商品类目
   static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
-  static GOODS_SAVE=`${APP_SERVICE}authc/product/save`;
+  static GOODS_SAVE = `${APP_SERVICE}authc/product/save`;
+
+  // 商品管理
+  static GOODS_LIST = `${APP_SERVICE}authc/product/find_page_for_supplier`
 
   // 上传文件
-  static UPLOAD_FILE=`${APP_SERVICE}upload`
-  static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
-  static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
+  static UPLOAD_FILE = `${APP_SERVICE}upload`
 
   // 企业认证
   static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`

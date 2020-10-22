@@ -17,7 +17,7 @@ import {
   Toast,
   Tab,
   Tabs,
-  Search, Lazyload
+  Search
 } from "vant";
 
 export default function (app: any) {
@@ -39,8 +39,5 @@ export default function (app: any) {
     .use(Toast)
     .use(Tab)
     .use(Tabs)
-    .use(Search)
-    .use(Lazyload), {
-    lazyComponent: true
-  };
+    .use(Search);
 }

@@ -9,7 +9,7 @@
       <template #left>
         <img
           class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
+          src="./../../assets/imgs/common/icon-left.png"
         />
       </template>
     </van-nav-bar>
@@ -161,6 +161,10 @@ export default defineComponent({
     toView() {
       this.$router.push("/earnMoneyDetail");
     },
+    onLoad() {
+      this.current += 1;
+      this.getMissionData();
+    },
     activeMission(item: any) {
       if (item.toApp) {
         // 第三方限制
@@ -233,10 +237,6 @@ export default defineComponent({
         this.finished = true;
       }
       this.list.push(...res.data.records);
-    },
-    onLoad() {
-      this.current += 1;
-      this.getMissionData();
     },
   },
 });

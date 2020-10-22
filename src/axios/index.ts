@@ -29,6 +29,7 @@ service.interceptors.request.use(
       config.headers.common.token = localStorage.token;
     } else {
       config.headers.common.token = 'ssA4i0pgSpTD6456wmgRnl7pnEMrtkcn'
+      // Toast('请先登录哦~')
     }
     return config
   },

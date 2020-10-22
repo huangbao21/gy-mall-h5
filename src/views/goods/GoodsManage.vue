@@ -4,7 +4,7 @@
       <template #left>
         <img
           class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
+          src="./../../assets/imgs/common/icon-left.png"
         />
       </template>
       <template #title>
@@ -23,50 +23,56 @@
     <van-tabs v-model:active="active" class="gy-tabs">
       <van-tab title="全部(4)">
         <div class="cards">
-          <div class="card-good">
-            <van-image :src="require('@/assets/logo.png')" />
-            <div class="card-good-info">
-              <div class="card-good-info__title">
-                三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
-              </div>
-              <div class="card-good-info__des">
-                <span class="card-good-info__des--key">售价</span>
-                <div class="card-good-info__des--val">￥ 209.65</div>
-              </div>
-              <div class="card-good-info__des">
-                <span class="card-good-info__des--key">分佣</span>
-                <div class="card-good-info__des--red">￥ 209.65</div>
-              </div>
-              <div class="card-good-info-sku">
-                <div class="card-good-info-sku__profile">
-                  <span>库存 10</span>
-                  <span>销量 12</span>
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            @load="onLoad"
+          >
+            <div class="card-good">
+              <van-image :src="require('@/assets/logo.png')" />
+              <div class="card-good-info">
+                <div class="card-good-info__title">
+                  三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
+                </div>
+                <div class="card-good-info__des">
+                  <span class="card-good-info__des--key">售价</span>
+                  <div class="card-good-info__des--val">￥ 209.65</div>
+                </div>
+                <div class="card-good-info__des">
+                  <span class="card-good-info__des--key">分佣</span>
+                  <div class="card-good-info__des--red">￥ 209.65</div>
+                </div>
+                <div class="card-good-info-sku">
+                  <div class="card-good-info-sku__profile">
+                    <span>库存 10</span>
+                    <span>销量 12</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card-good">
-            <van-image :src="require('@/assets/logo.png')" />
-            <div class="card-good-info">
-              <div class="card-good-info__title">
-                三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
-              </div>
-              <div class="card-good-info__des">
-                <span class="card-good-info__des--key">售价</span>
-                <div class="card-good-info__des--val">￥ 209.65</div>
-              </div>
-              <div class="card-good-info__des">
-                <span class="card-good-info__des--key">分佣</span>
-                <div class="card-good-info__des--red">￥ 209.65</div>
-              </div>
-              <div class="card-good-info-sku">
-                <div class="card-good-info-sku__profile">
-                  <span>库存 10</span>
-                  <span>销量 12</span>
+            <div class="card-good">
+              <van-image :src="require('@/assets/logo.png')" />
+              <div class="card-good-info">
+                <div class="card-good-info__title">
+                  三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
+                </div>
+                <div class="card-good-info__des">
+                  <span class="card-good-info__des--key">售价</span>
+                  <div class="card-good-info__des--val">￥ 209.65</div>
+                </div>
+                <div class="card-good-info__des">
+                  <span class="card-good-info__des--key">分佣</span>
+                  <div class="card-good-info__des--red">￥ 209.65</div>
+                </div>
+                <div class="card-good-info-sku">
+                  <div class="card-good-info-sku__profile">
+                    <span>库存 10</span>
+                    <span>销量 12</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </van-list>
         </div>
       </van-tab>
       <van-tab title="待审核(2)">内容 2</van-tab>
@@ -79,16 +85,45 @@
     <van-button round plain type="primary">批量管理</van-button>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
+import { fetchGoodsList } from "@/services/goods";
 export default defineComponent({
   name: "GoodsManage",
   data() {
-    return { searchValue: "", active: 0 };
+    return {
+      searchValue: "",
+      active: 0,
+      current: 0,
+      size: 10,
+      list: [] as object[],
+      loading: false,
+      finished: false,
+    };
   },
   methods: {
     toView() {
       this.$router.go(-1);
+    },
+
+    onLoad() {
+      this.current += 1;
+      this.getGoodsList();
+    },
+    async getGoodsList() {
+      const res = await fetchGoodsList({
+        current: this.current,
+        size: this.size,
+      }).catch((err) => {
+        this.loading = false;
+        this.finished = true;
+        return Promise.reject(err);
+      });
+      this.loading = false;
+      if (this.size > res.data.records.length) {
+        this.finished = true;
+      }
+      this.list.push(...res.data.records);
     },
   },
 });
@@ -158,8 +193,13 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
   background-color: $contentBgColor;
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 7px;
+  padding-bottom: 27px;
+  justify-content: space-between;
   .van-button--primary {
     @include gy-btn-primary;
     width: 160px;
