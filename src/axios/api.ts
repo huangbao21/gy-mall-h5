@@ -20,4 +20,6 @@ export default class API {
 
   // 企业认证
   static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
+  // 保存资质信息
+  static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
 }
