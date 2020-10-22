@@ -2,17 +2,9 @@
   <div class="goods-manage nav-bar-search">
     <van-nav-bar :border="false" @click-left="toView">
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/common/icon-left.png"
-        />
+        <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
       <template #title>
-        <!-- <van-field
-          left-icon="search"
-          placeholder="搜索商品订单"
-          v-model="searchValue"
-        /> -->
         <van-search
           v-model="searchValue"
           shape="round"
@@ -31,6 +23,24 @@
             <div class="card-good">
               <van-image :src="require('@/assets/logo.png')" />
               <div class="card-good-info">
+                <div class="card-good-actions">
+                  <div class="card-good__action card-good__action--editor">
+                    <img src="@/assets/imgs/common/ic_editor.png" />
+                    <span>编辑</span>
+                  </div>
+                  <div class="card-good__action card-good__action--putaway">
+                    <img src="@/assets/imgs/common/ic_putaway.png" />
+                    <span>上架</span>
+                  </div>
+                  <!-- <div class="card-good__action card-good__action--soldout">
+                    <img src="@/assets/imgs/common/ic_putaway.png" />
+                    <span>下架</span>
+                  </div> -->
+                  <div class="card-good__action card-good__action--delete">
+                    <img src="@/assets/imgs/common/ic_delete.png" />
+                    <span>删除</span>
+                  </div>
+                </div>
                 <div class="card-good-info__title">
                   三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
                 </div>
@@ -153,17 +163,13 @@ export default defineComponent({
       height: 94px;
     }
   }
-  img {
-    width: 94px;
-    height: 94px;
-    border-radius: 6px;
-    background-color: #8d8d8d;
-  }
   &-info {
     margin-left: 10px;
     text-align: left;
     font-size: 12px;
     color: #fff;
+    position: relative;
+
     &__title {
       margin-bottom: 8px;
     }
@@ -185,6 +191,30 @@ export default defineComponent({
         justify-content: space-between;
         color: rgba($color: #fff, $alpha: 0.6);
       }
+    }
+  }
+  &-actions {
+    position: absolute;
+    background-color: rgba($color: $contentBgColor, $alpha: 0.9);
+    position: absolute;
+    background-color: rgba(30, 24, 60, 0.9);
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  &__action{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+      width: 14px;
+      height: 14px;
+      margin-bottom: 10px;
     }
   }
 }
