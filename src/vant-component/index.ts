@@ -16,7 +16,8 @@ import {
   Dialog,
   Toast,
   Tab,
-  Tabs
+  Tabs,
+  Search, Lazyload
 } from "vant";
 
 export default function (app: any) {
@@ -35,5 +36,11 @@ export default function (app: any) {
     .use(TreeSelect)
     .use(Col)
     .use(Dialog)
-    .use(Toast).use(Tab).use(Tabs)
+    .use(Toast)
+    .use(Tab)
+    .use(Tabs)
+    .use(Search)
+    .use(Lazyload), {
+    lazyComponent: true
+  };
 }
