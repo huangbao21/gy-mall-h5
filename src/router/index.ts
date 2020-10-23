@@ -65,6 +65,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsSKU.vue'),
     meta: { title: '价格库存' }
 
+  },
+  {
+    path: '/commissionSetting',
+    name: 'CommissionSetting',
+    component: () => import('../views/reseller/CommissionSetting.vue'),
+    meta: { title: '新增权益' }
+  },
+  {
+    path: '/resellerManagement',
+    name: 'ResellerManagement',
+    component: () => import('../views/reseller/ResellerManagement.vue'),
+    meta: { title: '分销商管理' }
   }
 ]
 
