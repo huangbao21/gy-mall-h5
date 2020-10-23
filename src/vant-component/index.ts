@@ -17,7 +17,8 @@ import {
   Toast,
   Tab,
   Tabs,
-  Search
+  Search,
+  Checkbox
 } from "vant";
 
 export default function (app: any) {
@@ -39,5 +40,6 @@ export default function (app: any) {
     .use(Toast)
     .use(Tab)
     .use(Tabs)
-    .use(Search);
+    .use(Search)
+    .use(Checkbox);
 }

@@ -20,64 +20,70 @@
             :finished="finished"
             @load="onLoad"
           >
-            <div class="card-good">
-              <van-image :src="require('@/assets/logo.png')" />
-              <div class="card-good-info">
-                <div class="card-good-actions">
-                  <div class="card-good__action card-good__action--editor">
-                    <img src="@/assets/imgs/common/ic_editor.png" />
-                    <span>编辑</span>
-                  </div>
-                  <div class="card-good__action card-good__action--putaway">
-                    <img src="@/assets/imgs/common/ic_putaway.png" />
-                    <span>上架</span>
-                  </div>
-                  <!-- <div class="card-good__action card-good__action--soldout">
+            <div class="cell">
+              <div class="card-good">
+                <van-image :src="require('@/assets/logo.png')">
+                  <span class="card-good--status">待申请</span>
+                </van-image>
+                <div class="card-good-info">
+                  <div class="card-good-actions">
+                    <div class="card-good__action card-good__action--editor">
+                      <img src="@/assets/imgs/common/ic_editor.png" />
+                      <span>编辑</span>
+                    </div>
+                    <div class="card-good__action card-good__action--putaway">
+                      <img src="@/assets/imgs/common/ic_putaway.png" />
+                      <span>上架</span>
+                    </div>
+                    <!-- <div class="card-good__action card-good__action--soldout">
                     <img src="@/assets/imgs/common/ic_putaway.png" />
                     <span>下架</span>
                   </div> -->
-                  <div class="card-good__action card-good__action--delete">
-                    <img src="@/assets/imgs/common/ic_delete.png" />
-                    <span>删除</span>
+                    <div class="card-good__action card-good__action--delete">
+                      <img src="@/assets/imgs/common/ic_delete.png" />
+                      <span>删除</span>
+                    </div>
                   </div>
-                </div>
-                <div class="card-good-info__title">
-                  三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
-                </div>
-                <div class="card-good-info__des">
-                  <span class="card-good-info__des--key">售价</span>
-                  <div class="card-good-info__des--val">￥ 209.65</div>
-                </div>
-                <div class="card-good-info__des">
-                  <span class="card-good-info__des--key">分佣</span>
-                  <div class="card-good-info__des--red">￥ 209.65</div>
-                </div>
-                <div class="card-good-info-sku">
-                  <div class="card-good-info-sku__profile">
-                    <span>库存 10</span>
-                    <span>销量 12</span>
+                  <div class="card-good-info__title">
+                    三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
+                  </div>
+                  <div class="card-good-info__des">
+                    <span class="card-good-info__des--key">售价</span>
+                    <div class="card-good-info__des--val">￥ 209.65</div>
+                  </div>
+                  <div class="card-good-info__des">
+                    <span class="card-good-info__des--key">分佣</span>
+                    <div class="card-good-info__des--red">￥ 209.65</div>
+                  </div>
+                  <div class="card-good-info-sku">
+                    <div class="card-good-info-sku__profile">
+                      <span>库存 10</span>
+                      <span>销量 12</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="card-good">
-              <van-image :src="require('@/assets/logo.png')" />
-              <div class="card-good-info">
-                <div class="card-good-info__title">
-                  三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
-                </div>
-                <div class="card-good-info__des">
-                  <span class="card-good-info__des--key">售价</span>
-                  <div class="card-good-info__des--val">￥ 209.65</div>
-                </div>
-                <div class="card-good-info__des">
-                  <span class="card-good-info__des--key">分佣</span>
-                  <div class="card-good-info__des--red">￥ 209.65</div>
-                </div>
-                <div class="card-good-info-sku">
-                  <div class="card-good-info-sku__profile">
-                    <span>库存 10</span>
-                    <span>销量 12</span>
+            <div class="cell cell__last">
+              <div class="card-good">
+                <van-image :src="require('@/assets/logo.png')" />
+                <div class="card-good-info">
+                  <div class="card-good-info__title">
+                    三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
+                  </div>
+                  <div class="card-good-info__des">
+                    <span class="card-good-info__des--key">售价</span>
+                    <div class="card-good-info__des--val">￥ 209.65</div>
+                  </div>
+                  <div class="card-good-info__des">
+                    <span class="card-good-info__des--key">分佣</span>
+                    <div class="card-good-info__des--red">￥ 209.65</div>
+                  </div>
+                  <div class="card-good-info-sku">
+                    <div class="card-good-info-sku__profile">
+                      <span>库存 10</span>
+                      <span>销量 12</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -145,19 +151,37 @@ export default defineComponent({
   padding-right: 10px;
   margin-top: 16px;
   background-color: $contentBgColor;
+  .cell{
+    &__last {
+      .card-good{
+        border-bottom: none;
+      }
+    }
+  }
 }
 .card-good {
   display: flex;
   border-bottom: 1px solid rgba($color: #fff, $alpha: 0.4);
   padding-bottom: 10px;
   padding-top: 10px;
-  &:last-child {
-    border-bottom: 0px;
+  position: relative;
+  &--status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    font-size: 12px;
+    color: #fff;
+    line-height: 20px;
   }
   .van-image {
     height: 94px;
     border-radius: 6px;
     background-color: #d8d8d8;
+    position: relative;
+
     :deep(img) {
       width: 94px;
       height: 94px;
@@ -207,11 +231,11 @@ export default defineComponent({
     align-items: center;
     justify-content: space-around;
   }
-  &__action{
+  &__action {
     display: flex;
     flex-direction: column;
     align-items: center;
-    img{
+    img {
       width: 14px;
       height: 14px;
       margin-bottom: 10px;

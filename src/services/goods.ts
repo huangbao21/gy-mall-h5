@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { PostData } from '@/axios';
 import API from '@/axios/api';
 
