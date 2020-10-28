@@ -7,10 +7,7 @@
       @click-left="toBackApp"
     >
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/common/icon-left.png"
-        />
+        <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
     <div class="profit" @click="toView">
@@ -35,14 +32,14 @@
     >
       <div class="items">
         <template v-for="(item, index) in list" :key="item.id">
-          <div
-            class="items-row"
-            :class="index === 0 ? 'first' : ''"
-            v-if="index % 2 === 0"
-          >
-            <div class="item" @click="activeMission(item)">
+          <div class="items-row" v-if="index % 2 === 0">
+            <div
+              class="item"
+              @click="activeMission(item)"
+              :class="item.largeIcon == 1 ? 'higher' : ''"
+            >
               <img :src="item.iconUrl" />
-              <template v-if="index === 0">
+              <template v-if="item.type === 1 || item.type === 2">
                 <div class="item-action">
                   <div class="condition">
                     <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
@@ -69,9 +66,12 @@
               class="item"
               v-if="index + 1 < list.length"
               @click="activeMission(list[index + 1])"
+              :class="list[index + 1].largeIcon == 1 ? 'higher' : ''"
             >
               <img :src="list[index + 1].iconUrl" />
-              <template v-if="index === 0">
+              <template
+                v-if="list[index + 1].type === 1 || list[index + 1].type === 2"
+              >
                 <div class="item-action">
                   <div class="condition">
                     <img src="./../../assets/imgs/earnMoney/icon-gold.png" />
@@ -81,21 +81,19 @@
                     >
                   </div>
                   <template v-if="list[index + 1].type === 1">
-                    <template v-if="list[index + 1].type === 1">
-                      <span
-                        class="btn disabled"
-                        v-if="list[index + 1].quantity === 0"
-                        >今日达上限</span
-                      >
-                      <span class="btn" v-else-if="list[index + 1].flag"
-                        >抢任务</span
-                      >
-                      <span class="btn" v-else
-                        ><van-count-down
-                          :time="countDown(list[index + 1].nextTime)"
-                          @finish="finishCount(item)"
-                      /></span>
-                    </template>
+                    <span
+                      class="btn disabled"
+                      v-if="list[index + 1].quantity === 0"
+                      >今日达上限</span
+                    >
+                    <span class="btn" v-else-if="list[index + 1].flag"
+                      >抢任务</span
+                    >
+                    <span class="btn" v-else
+                      ><van-count-down
+                        :time="countDown(list[index + 1].nextTime)"
+                        @finish="finishCount(item)"
+                    /></span>
                   </template>
                   <template v-if="list[index + 1].type === 2">
                     <span class="btn">立即邀请</span>
@@ -173,6 +171,7 @@ export default defineComponent({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
             id: item.id,
+            fromSource: item.fromSource,
             verify: item.verify,
             verifyStr: item.verifyStr,
             androidPid: item.androidPid,
@@ -181,11 +180,12 @@ export default defineComponent({
           return;
         }
         // 内部不限制
-        if (item.type === 2) {
+        if (item.type === 2 || item.type === 3) {
           toCompleteMission({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
             id: item.id,
+            fromSource: item.fromSource,
             androidPid: item.androidPid,
             iosPid: item.iosPid,
             verify: item.verify,
@@ -296,42 +296,42 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
-    &.first {
-      .item {
+    .item {
+      &.higher {
         height: 129px;
         position: relative;
-        &-action {
-          position: absolute;
-          color: #fff;
-          display: flex;
-          left: 10px;
-          right: 10px;
-          bottom: 16px;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 12px;
-          .btn {
-            width: 68px;
-            height: 24px;
-            background: linear-gradient(143deg, #fec749 0%, #eea705 100%);
-            box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 1);
-            border-radius: 20px;
-            line-height: 24px;
-            &.disabled {
-              background: #c5c5c5;
-            }
-            .van-count-down {
-              color: inherit;
-              line-height: inherit;
-              font-size: inherit;
-            }
+      }
+      &-action {
+        position: absolute;
+        color: #fff;
+        display: flex;
+        left: 10px;
+        right: 10px;
+        bottom: 16px;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        .btn {
+          width: 68px;
+          height: 24px;
+          background: linear-gradient(143deg, #fec749 0%, #eea705 100%);
+          box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 1);
+          border-radius: 20px;
+          line-height: 24px;
+          &.disabled {
+            background: #c5c5c5;
           }
-          .condition {
-            display: flex;
-            img {
-              width: 15px;
-              height: 15px;
-            }
+          .van-count-down {
+            color: inherit;
+            line-height: inherit;
+            font-size: inherit;
+          }
+        }
+        .condition {
+          display: flex;
+          img {
+            width: 15px;
+            height: 15px;
           }
         }
       }
