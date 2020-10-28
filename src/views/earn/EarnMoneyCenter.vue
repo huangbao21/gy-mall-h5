@@ -180,7 +180,7 @@ export default defineComponent({
           return;
         }
         // 内部不限制
-        if (item.type === 2) {
+        if (item.type === 2 || item.type === 3) {
           toCompleteMission({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
