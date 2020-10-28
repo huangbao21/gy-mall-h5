@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyCenter nav-bar">
+  <div class="earn-money-center nav-bar">
     <van-nav-bar
       title="赚钱中心"
       left-arrow
@@ -9,7 +9,7 @@
       <template #left>
         <img
           class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
+          src="./../../assets/imgs/common/icon-left.png"
         />
       </template>
     </van-nav-bar>
@@ -121,7 +121,7 @@ import moment from "moment";
 import { Toast } from "vant";
 
 export default defineComponent({
-  name: "earnMoneyCenter",
+  name: "EarnMoneyCenter",
   components: {
     // HelloWorld
   },
@@ -160,6 +160,10 @@ export default defineComponent({
   methods: {
     toView() {
       this.$router.push("/earnMoneyDetail");
+    },
+    onLoad() {
+      this.current += 1;
+      this.getMissionData();
     },
     activeMission(item: any) {
       if (item.toApp) {
@@ -234,16 +238,12 @@ export default defineComponent({
       }
       this.list.push(...res.data.records);
     },
-    onLoad() {
-      this.current += 1;
-      this.getMissionData();
-    },
   },
 });
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.earnMoneyCenter {
+.earn-money-center {
   background: url(./../../assets/imgs/earnMoney/bg.png) no-repeat;
   background-size: contain;
   min-height: 100%;

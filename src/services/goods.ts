@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { PostData } from '@/axios';
 import API from '@/axios/api';
 
@@ -14,4 +15,7 @@ export function fetchCategoryList(): Promise<PostData> {
 }
 export function saveGoods(data: GoodsInfo): Promise<PostData> {
   return axios.post(API.GOODS_SAVE, data)
+}
+export function fetchGoodsList(data: { current: number; size: number; status?: number }): Promise<PostData> {
+  return axios.post(API.GOODS_LIST, data);
 }

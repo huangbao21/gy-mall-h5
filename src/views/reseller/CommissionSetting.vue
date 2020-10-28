@@ -1,43 +1,55 @@
 <template>
-  <div class="commission-setting nav-bar">
+  <div class="ration-setting nav-bar">
     <van-nav-bar
       title="新增权益"
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="onSave"
+      @click-right="handleCommissionSave"
     >
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
-    <div class="commission-content">
-      <div class="commission-content-cell">
-        <p class="input-label">分佣比例</p>
-        <van-field
-          v-model="commission"
-          rows="1"
-          type="number"
-          autosize
-          placeholder="请输入分佣比例"
-        />
-        <p class="input-tips">实际可获得：总佣金*分销商波比*分佣比例</p>
-      </div>
-      <div class="commission-content-cell">
+    <div class="ration-content">
+      <div class="ration-content-cell">
         <p class="input-label">销售额</p>
-        <van-field
-          v-model="commission"
-          rows="1"
-          type="number"
-          autosize
-          placeholder="请输入销售额"
-        />
-        <p class="input-tips">达到该销售额就可按照该分佣比例进行分佣</p>
+        <div class="input-wrapper">
+          <van-field
+            v-model="sellNumber"
+            rows="1"
+            type="number"
+            autosize
+            placeholder="请输入销售额"
+            @blur="handleSalesInputBlur"
+          />
+          <span class="input-sign">元</span>
+        </div>
+        <p class="input-tips">
+          可配置销售额度区间:{{ sellNumberMin }}-{{ sellNumberMax }}
+        </p>
+      </div>
+      <div class="ration-content-cell">
+        <p class="input-label">分佣比例</p>
+        <div class="input-wrapper">
+          <van-field
+            v-model="ration"
+            rows="1"
+            type="number"
+            autosize
+            placeholder="请输入分佣比例"
+            @blur="handleRationInputBlur"
+          />
+          <span class="input-sign">%</span>
+        </div>
+        <p class="input-tips">
+          可配置分佣比例区间:{{ rationMin }}-{{ rationMax }}
+        </p>
       </div>
       <div class="rights-tips">
         <p class="rights-tips-title">权益说明</p>
         <p class="rights-tips-content">
-          用户成功下单后，将从店主佣金中，按“波比”化出部分给让利会员
+          用户本月达到此销售额，则本月按照该分佣比
         </p>
       </div>
     </div>
@@ -45,19 +57,79 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Toast } from "vant";
+import {
+  saveCommissionSetting,
+  fetchCommissionLimit,
+} from "../../services/reseller";
 export default defineComponent({
   name: "CommissionSetting",
   data() {
     return {
-      commission: "",
+      ration: "",
+      sellNumber: "",
+      rationMin: "",
+      sellNumberMin: "",
+      rationMax: "",
+      sellNumberMax: "",
     };
   },
-  methods: {},
+  beforeRouteEnter(to, from, next) {
+    if (to.query.ration !== undefined) {
+      next((vm: any) => {
+        vm.ration = to.query.ration;
+        vm.sellNumber = to.query.sellNumber;
+      });
+    } else {
+      next();
+    }
+  },
+  methods: {
+    async handleCommissionSave() {
+      if (!this.sellNumber.length) {
+        Toast(`请设置销售额`);
+        return;
+      }
+      if (!this.ration.length) {
+        Toast(`请设置分佣比例`);
+        return;
+      }
+      await saveCommissionSetting({
+        sellNumber: Number(this.sellNumber),
+        ration: Number(this.ration),
+      });
+    },
+    onClickLeft() {
+      this.$dialog
+        .confirm({
+          message: "权益信息未保存，确认返回？",
+          className: "gy-dialog",
+        })
+        .then(() => {
+          this.$router.go(-1);
+        });
+    },
+    async handleRationInputBlur() {
+      const res = await fetchCommissionLimit({
+        ration: Number(this.ration),
+      });
+      this.sellNumberMin = res.data.sellNumber;
+      this.sellNumberMax = res.data.sellNumberMax;
+    },
+    async handleSalesInputBlur() {
+      const res = await fetchCommissionLimit({
+        sellNumber: Number(this.sellNumber),
+      });
+      this.rationMin = res.data.ration;
+      this.rationMax = res.data.rationMax;
+      console.log(res);
+    },
+  },
 });
 </script>
 <style lang="scss" scoped>
 @import "../../styles/base";
-.commission-setting {
+.ration-setting {
   height: 100%;
   .van-cell {
     @include gy-input;
@@ -65,7 +137,7 @@ export default defineComponent({
       border: none;
     }
   }
-  .commission-content {
+  .ration-content {
     padding: 0 20px;
     text-align: left;
     p {
@@ -75,13 +147,21 @@ export default defineComponent({
     .input-label {
       padding: 12px 0;
     }
+    .input-wrapper {
+      display: flex;
+      .input-sign {
+        padding: 0 10px;
+        line-height: 44px;
+        color: #fff;
+      }
+    }
     .input-tips {
       color: rgba(255, 255, 255, 0.4);
       padding-top: 12px;
     }
     .rights-tips {
       margin-top: 42px;
-      &-title{
+      &-title {
         padding: 11px 0;
       }
     }

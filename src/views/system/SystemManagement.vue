@@ -1,5 +1,5 @@
  <template>
-  <div class="systemManagement nav-bar">
+  <div class="system-management nav-bar">
     <van-nav-bar
       title="体系管理"
       left-arrow
@@ -7,84 +7,85 @@
       @click-left="onClickLeft"
     >
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
-        />
+        <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
-    <main>
-      <div class="content">
-        <div class="content_l">
-          <span>员工数（人）</span>
-          <span>99999</span>
+    <van-tabs v-model:active="activeIndex" class="gy-tabs">
+      <van-tab title="门槛设置">
+        <van-dropdown-menu class="dropdown-menu">
+          <van-dropdown-item
+            v-model="selectedValue"
+            :options="conditionOption"
+          />
+        </van-dropdown-menu>
+        <div class="condition-content">
+          <div class="input-wrapper">
+            <van-field
+              v-model="sellNumber"
+              rows="1"
+              type="number"
+              autosize
+              placeholder="请输入消费金额"
+              @blur="handleSalesInputBlur"
+            />
+            <span class="input-sign">元</span>
+          </div>
+          <div class="input-wrapper">
+            <van-field
+              v-model="sellNumber"
+              rows="1"
+              type="number"
+              autosize
+              placeholder="请输入消费次数"
+              @blur="handleSalesInputBlur"
+            />
+            <span class="input-sign">次</span>
+          </div>
+          <div class="goods-list">
+
+          </div>
         </div>
-        <div class="content_r"></div>
-      </div>
-      <div class="rate">
-        <h2>员工波比</h2>
-        <div class="bobby"></div>
-        <h2>分销商波比</h2>
-        <div class="distributors"></div>
-      </div>
-    </main>
+      </van-tab>
+      <van-tab title="波比设置">2222</van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
-export default {};
+import { defineComponent } from "vue";
+import { queryConditionList } from "@/services/system";
+export default defineComponent({
+  name: "SystemManagement",
+  data() {
+    return {
+      activeIndex: 0,
+      conditionOption: [],
+      selectedValue: 2,
+    };
+  },
+  created() {
+    this.queryConditionList();
+  },
+  methods: {
+    async queryConditionList() {
+      const res = await queryConditionList();
+      console.log(res);
+      for (let i = 0; i < res.data.length; i++) {
+        res.data[i].text = res.data[i].msg;
+        res.data[i].value = res.data[i].code;
+      }
+      this.conditionOption = res.data;
+    },
+  },
+});
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.systemManagement {
-  min-height: 100%;
-  background-color: $bgColor;
-  color: #fff;
-}
-main {
-  padding-left: 18px;
-  padding-right: 18px;
-}
-.content {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-.content_l {
-  width: 160px;
-  height: 80px;
-  border-radius: 8px;
-  padding-left: 16px;
-  text-align: left;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  background: linear-gradient(0deg, #2661dd 0%, #588ee9 100%);
-}
-.content_r {
-  width: 160px;
-  height: 80px;
-  border-radius: 8px;
-  background: linear-gradient(360deg, #c49f00 0%, #f3ce30 100%);
-}
-h2 {
-  width: 76px;
-  height: 18px;
-  line-height: 45px;
-  font-size: 14px;
-}
-.bobby,
-.distributors {
-  width: 339px;
-  height: 50px;
-  background: #1e183c;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-}
-.bobby {
-  margin-top: 30px;
-}
-.distributors {
-  margin-top: 25px;
+.system-management {
+  height: 100%;
+  /*  .dropdown-menu {
+    width: 108px;
+    height: 32px;
+  } */
 }
 </style>

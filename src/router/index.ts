@@ -42,10 +42,16 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '体系管理' }
   },
   {
-    path: '/enterprise',
-    name: 'Enterprise',
-    component: () => import(/* webpackChunkName: "earn" */ '../views/enterprise/Enterprise.vue'),
+    path: '/certifiCation',
+    name: 'CertifiCation',
+    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/CertifiCation.vue'),
     meta: { title: '企业认证' }
+  },
+  {
+    path: '/submitAudit',
+    name: 'SubmitAudit',
+    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/SubmitAudit.vue'),
+    meta: { title: '提交审核' }
   },
   {
     path: '/goodsAdd',
@@ -77,6 +83,19 @@ const routes: Array<RouteRecordRaw> = [
     name: 'ResellerManagement',
     component: () => import('../views/reseller/ResellerManagement.vue'),
     meta: { title: '分销商管理' }
+  },
+  {
+    path: '/resellerAudit',
+    name: 'ResellerAudit',
+    component: () => import('../views/reseller/ResellerAudit.vue'),
+    meta: { title: '分销商管理-申请列表' }
+  },
+  {
+    path: '/goodsManage',
+    name: 'GoodsManage',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsManage.vue'),
+    meta: { title: '商品管理' }
+
   }
 ]
 

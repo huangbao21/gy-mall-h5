@@ -1,5 +1,5 @@
 <template>
-  <div class="earnMoneyDetail nav-bar">
+  <div class="earn-money-detail nav-bar">
     <van-nav-bar
       title="已赚明细"
       left-arrow
@@ -9,7 +9,7 @@
       <template #left>
         <img
           class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
+          src="./../../assets/imgs/common/icon-left.png"
         />
       </template>
     </van-nav-bar>
@@ -67,7 +67,7 @@
 import { fetchBountyList, fetchBounty } from "@/services/earn";
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "earnMoneyDetail",
+  name: "EarnMoneyDetail",
   data() {
     return {
       current: 0,
@@ -121,7 +121,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.earnMoneyDetail {
+.earn-money-detail {
   min-height: 100%;
   background-color: $bgColor;
   color: #fff;
