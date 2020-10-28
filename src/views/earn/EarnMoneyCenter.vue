@@ -7,10 +7,7 @@
       @click-left="toBackApp"
     >
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/common/icon-left.png"
-        />
+        <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
     <div class="profit" @click="toView">
@@ -173,6 +170,7 @@ export default defineComponent({
             url: item.addressUrl,
             bountyQuantity: item.bountyQuantity,
             id: item.id,
+            fromSource: item.fromSource,
             verify: item.verify,
             verifyStr: item.verifyStr,
             androidPid: item.androidPid,
@@ -187,6 +185,7 @@ export default defineComponent({
             bountyQuantity: item.bountyQuantity,
             id: item.id,
             androidPid: item.androidPid,
+            fromSource: item.fromSource,
             iosPid: item.iosPid,
             verify: item.verify,
             verifyStr: item.verifyStr,
