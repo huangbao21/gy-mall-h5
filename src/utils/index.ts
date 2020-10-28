@@ -1,9 +1,21 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions  */
+/* eslint-disable @typescript-eslint/no-explicit-any  */
 export default class Utils {
   static isIOS() {
     const u = navigator.userAgent;
     const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
     return isiOS
+  }
+
+  static isWeiXin() {
+    const ua = window.navigator.userAgent.toLowerCase();
+    const match = ua.match(/MicroMessenger/i);
+    if (match === null) return false;
+
+    if (match.includes('micromessenger')) {
+      return true;
+    }
+    return false;
   }
 
   static forbidDefaultForIOS(): void {
