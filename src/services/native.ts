@@ -8,6 +8,7 @@ export function toCompleteMission(data: { url: string; bountyQuantity: number; i
   const params = qs.stringify({
     bountyQuantity: data.bountyQuantity,
     id: data.id,
+    fromSource: data.fromSource,
     verify: data.verify,
     verifyStr: data.verifyStr,
     androidPid: data.androidPid,
