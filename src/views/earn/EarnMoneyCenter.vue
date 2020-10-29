@@ -92,7 +92,7 @@
                     <span class="btn" v-else
                       ><van-count-down
                         :time="countDown(list[index + 1].nextTime)"
-                        @finish="finishCount(item)"
+                        @finish="finishCount(list[index + 1])"
                     /></span>
                   </template>
                   <template v-if="list[index + 1].type === 2">
