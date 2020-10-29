@@ -176,6 +176,7 @@ export default defineComponent({
             verifyStr: item.verifyStr,
             androidPid: item.androidPid,
             iosPid: item.iosPid,
+            userId: item.userId,
           });
           return;
         }
@@ -190,6 +191,7 @@ export default defineComponent({
             iosPid: item.iosPid,
             verify: item.verify,
             verifyStr: item.verifyStr,
+            userId: item.userId,
           });
         }
       } else {

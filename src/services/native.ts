@@ -4,7 +4,7 @@ import NativeAPI from '@/axios/api'
 export function toBackApp() {
   window.location.href = NativeAPI.TO_BACK_APP;
 }
-export function toCompleteMission(data: { url: string; bountyQuantity: number; id: number; verify: string; verifyStr: string; iosPid: string; androidPid: string; fromSource: string }) {
+export function toCompleteMission(data: { url: string; bountyQuantity: number; id: number; verify: string; verifyStr: string; iosPid: string; androidPid: string; fromSource: string; userId: number }) {
   const params = qs.stringify({
     bountyQuantity: data.bountyQuantity,
     id: data.id,
@@ -13,6 +13,7 @@ export function toCompleteMission(data: { url: string; bountyQuantity: number; i
     verifyStr: data.verifyStr,
     androidPid: data.androidPid,
     iosPid: data.iosPid,
+    userId: data.userId
   })
   window.location.href = `${data.url}?${params}`;
 }
