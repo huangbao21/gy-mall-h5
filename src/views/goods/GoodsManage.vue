@@ -72,7 +72,7 @@
 import { defineComponent } from "vue";
 import { fetchGoodsList } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
-import GoodItem from "./components/GoodItem.vue";
+import GoodItem from "@/components/GoodItem.vue";
 export default defineComponent({
   name: "GoodsManage",
   components: {
