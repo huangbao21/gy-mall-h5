@@ -64,6 +64,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import usePropsCom from "@/composables/usePropsCom";
 
 export default defineComponent({
   name: "GoodItem",
@@ -87,6 +88,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    const { checkRadioColor } = usePropsCom();
+    return {
+      checkRadioColor,
+    };
   },
   mounted() {
     this.checked = this.goodChecked;
