@@ -1,5 +1,5 @@
 <template>
-  <div class="good-item" :class="{ 'good-item--last': !underLine }">
+  <div class="good-item" :class="{ 'good-item--last': !underline }">
     <van-checkbox
       v-model="checked"
       :checked-color="checkRadioColor"
@@ -85,6 +85,10 @@ export default defineComponent({
       default: false,
     },
     goodChecked: {
+      type: Boolean,
+      default: false,
+    },
+    showActionPanel: {
       type: Boolean,
       default: false,
     },
