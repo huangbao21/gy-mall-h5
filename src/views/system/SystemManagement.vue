@@ -164,6 +164,16 @@ export default defineComponent({
     this.queryCondition();
   },
   methods: {
+    onClickLeft() {
+      this.$dialog
+        .confirm({
+          message: "添加的商品信息未保存，确认返回",
+          className: "gy-dialog",
+        })
+        .then(() => {
+          this.$router.go(-1);
+        });
+    },
     handleGoodsSelect() {
       this.$router.replace({
         path: "/goods",
