@@ -18,6 +18,8 @@ export default class API {
   // 商品管理
   static GOODS_LIST = `${APP_SERVICE}authc/product/find_page_for_supplier`
 
+  static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
+
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`
 

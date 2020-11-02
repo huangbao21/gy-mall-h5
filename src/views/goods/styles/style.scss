@@ -1,0 +1,30 @@
+@import "@/styles/const.scss";
+.van-dropdown-menu {
+  :deep(.van-dropdown-menu__bar) {
+    background-color: transparent;
+  }
+  :deep(.van-dropdown-menu__title) {
+    color: #fff;
+  }
+  :deep(.van-dropdown-menu__title--active) {
+    color: #00ffd2;
+  }
+  :deep(.van-popup) {
+    background-color: $bgColor;
+  }
+}
+.dropdown-panel {
+  text-align: left;
+  padding: 15px 22px;
+  color: #fff;
+  .cell {
+    margin-bottom: 30px;
+    font-size: 14px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .active {
+      color: #00ffd2;
+    }
+  }
+}

@@ -120,9 +120,6 @@ import { Toast } from "vant";
 
 export default defineComponent({
   name: "EarnMoneyCenter",
-  components: {
-    // HelloWorld
-  },
   setup() {
     const { toBackApp } = useBackAppApi();
     return {
