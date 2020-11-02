@@ -96,6 +96,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsManage.vue'),
     meta: { title: '商品管理' }
 
+  },
+  {
+    path: '/goods',
+    name: 'Goods',
+    component: () => import('../views/system/Goods.vue'),
+    meta: { title: '选择商品' }
   }
 ]
 
