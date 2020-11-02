@@ -96,6 +96,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsManage.vue'),
     meta: { title: '商品管理' }
 
+  },
+  {
+    path: '/enterpriseOrder',
+    name: 'EnterpriseOrder',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/EnterpriseOrder.vue'),
+    meta: { title: '企业主订单管理' }
+
   }
 ]
 
