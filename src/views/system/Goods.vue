@@ -111,10 +111,9 @@ export default defineComponent({
       records.forEach((element: any) => {
         console.log(element.id);
         if (element.id === Number(this.selectedId)) {
-          console.log(`come in`);
           element.checked = true;
         } else {
-          element.checked = true;
+          element.checked = false;
         }
       });
       this.list.push(...res.data.records);
