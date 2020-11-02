@@ -3,7 +3,7 @@
     <van-checkbox
       v-model="checked"
       :checked-color="checkRadioColor"
-      v-if="showCheckBox"
+      v-if="showCheckbox"
       @change="onChange"
     ></van-checkbox>
     <div class="card-good">
@@ -80,7 +80,7 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    showCheckBox: {
+    showCheckbox: {
       type: Boolean,
       default: false,
     },
@@ -101,8 +101,7 @@ export default defineComponent({
   },
   watch: {
     goodChecked(newV: boolean) {
-      this.checked = this.goodChecked;
-      console.log(newV, 2222);
+      this.checked = newV;
     },
   },
   methods: {
