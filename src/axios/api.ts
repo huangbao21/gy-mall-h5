@@ -33,5 +33,11 @@ export default class API {
   static COMMISSION_SETTING_LIST=`${APP_SERVICE}authc/agency_customer/find_agency_sell_set_list`
   static COMMISSION_LIMIT_AREA=`${APP_SERVICE}authc/agency_customer/find_agency_sell_set_limit`
   static QUERY_AGENCY_SALES=`${APP_SERVICE}authc/agency_customer/find_agency_sale`
+
+  // 体系管理
   static QUERY_CONDITION_TYPE_LIST=`${APP_SERVICE}authc/agency_customer/find_condition_type_list`
+  static SAVE_CONDITION=`${APP_SERVICE}authc/agency_customer/save_condition`
+  static SAVE_RATIO=`${APP_SERVICE}authc/agency_customer/save_ratio`
+  static QUERY_RATIO=`${APP_SERVICE}authc/agency_customer/find_ratio`
+  static QUERY_CONDITION=`${APP_SERVICE}authc/agency_customer/find_condition`
 }

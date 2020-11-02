@@ -8,3 +8,6 @@ export function uploadFile(file: FormData): Promise<PostData> {
     }
   });
 }
+export function fetchGoodsList(data: { current: number; size: number; status?: number }): Promise<PostData> {
+  return axios.post(API.GOODS_LIST, data);
+}

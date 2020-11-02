@@ -102,7 +102,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EnterpriseOrder',
     component: () => import(/* webpackChunkName: "order" */ '../views/order/EnterpriseOrder.vue'),
     meta: { title: '企业主订单管理' }
-
+  }, {
+    path: '/goods',
+    name: 'Goods',
+    component: () => import('../views/system/Goods.vue'),
+    meta: { title: '选择商品' }
   }
 ]
 

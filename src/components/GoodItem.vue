@@ -99,11 +99,12 @@ export default defineComponent({
       checkRadioColor,
     };
   },
-  mounted() {
+  created() {
     this.checked = this.goodChecked;
   },
   watch: {
     goodChecked(newV: boolean) {
+      console.log(`watch`)
       this.checked = newV;
     },
   },

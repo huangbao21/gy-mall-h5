@@ -19,6 +19,7 @@ import {
   Tabs,
   Search,
   Checkbox,
+  CheckboxGroup,
   DropdownMenu, DropdownItem
 } from "vant";
 
@@ -43,6 +44,7 @@ export default function (app: any) {
     .use(Tabs)
     .use(Search)
     .use(Checkbox)
+    .use(CheckboxGroup)
     .use(DropdownMenu)
     .use(DropdownItem);
 }
