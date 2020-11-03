@@ -235,9 +235,7 @@ export default defineComponent({
   },
   methods: {
     async fetchGoodDetail() {
-      console.log(this.goodId);
       const res = await fetchGoodDetail({ id: this.goodId });
-      console.log(res);
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
     },
