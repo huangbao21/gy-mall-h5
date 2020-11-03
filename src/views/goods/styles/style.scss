@@ -18,13 +18,44 @@
   padding: 15px 22px;
   color: #fff;
   .cell {
+    display: flex;
     margin-bottom: 30px;
     font-size: 14px;
+    color: rgba($color: #fff, $alpha: 0.4);
+    .active {
+      color: #00ffd2;
+    }
+    &__children {
+      margin-left: 22px;
+      display: flex;
+      flex-direction: column;
+    }
     &:last-child {
       margin-bottom: 0;
     }
+  }
+  .cell__parent {
+    width: 148px;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    .cell {
+      span {
+        width: 100%;
+      }
+    }
     .active {
-      color: #00ffd2;
+      background-color: $contentBgColor;
+      color: #fff;
+    }
+  }
+  &.category {
+    display: flex;
+    height: 176px;
+    padding-left: 0;
+    padding-right: 0;
+    .cell {
+      margin-bottom: 0px;
     }
   }
 }

@@ -75,16 +75,25 @@
         :title="categoryTitle"
         ref="categoryDropRef"
       >
-        <div class="dropdown-panel">
-          <div
-            class="cell"
-            v-for="cell in categoryOption"
-            :key="cell.value"
-            @click="changeDropdownValue(cell, 'category')"
-          >
-            <span :class="{ active: categoryValue == cell.value }">{{
-              cell.text
-            }}</span>
+        <div class="dropdown-panel category">
+          <div class="cell__parent">
+            <div
+              class="cell"
+              v-for="cell in categoryOption"
+              :key="cell.value"
+              @click="changeDropdownValue(cell, 'category')"
+            >
+              <span :class="{ active: categoryValue == cell.value }">{{
+                cell.text
+              }}</span>
+            </div>
+          </div>
+          <div class="cell__children">
+            <!-- <span v-for="child in cell.children" :key="child.id">{{
+              child.text
+            }}</span> -->
+            <span>衣服</span>
+            <span>衣服</span>
           </div>
         </div>
       </van-dropdown-item>
@@ -172,6 +181,7 @@ import {
   allGoodsOnDown,
   batchGoodsOnDown,
   delGood,
+  fetchCategoryList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import GoodItem from "@/components/GoodItem.vue";
@@ -194,6 +204,8 @@ export default defineComponent({
       current: 0,
       size: 10,
       list: [] as object[],
+      treeId: 1,
+      treeIndex: 0,
       loading: false,
       finished: false,
       allChecked: false,
@@ -243,12 +255,8 @@ export default defineComponent({
       ],
       categoryOption: [
         {
-          text: "选择品类",
+          text: "全部品类",
           value: -1,
-        },
-        {
-          text: "家电",
-          value: 1,
         },
       ],
     };
@@ -257,6 +265,7 @@ export default defineComponent({
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
+    this.getCategoryList();
   },
   methods: {
     toView() {
@@ -368,7 +377,7 @@ export default defineComponent({
       } else if (el === "category") {
         this.categoryValue = Number(cell.value);
         this.categoryTitle = cell.text;
-        (this.$refs as any).categoryDropRef.toggle();
+        // (this.$refs as any).categoryDropRef.toggle();
       }
       this.reloadList();
     },
@@ -377,6 +386,19 @@ export default defineComponent({
       this.batchAction = false;
       this.finished = false;
       this.list = [];
+    },
+    async getCategoryList() {
+      const res = await fetchCategoryList();
+      const temp = res.data.map((item: any) => {
+        item.value = item.id;
+        item.children &&
+          item.children.map((child: any) => {
+            child.value = child.id;
+          });
+        return item;
+      });
+      console.log(temp);
+      this.categoryOption.push(...temp);
     },
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
