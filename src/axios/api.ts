@@ -18,7 +18,11 @@ export default class API {
 
   // 商品管理
   static GOODS_LIST = `${APP_SERVICE}authc/product/find_page_for_supplier`
+  static GOODS_ON_DOWN = `${APP_SERVICE}authc/product/all_on_or_down`
+  static GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product/batch_on_or_down`
+  static GOOD_DEL = `${APP_SERVICE}authc/product/delete`
 
+  // 订单管理
   static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
   static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
 

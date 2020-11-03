@@ -20,23 +20,52 @@
       </van-image>
       <div class="card-good-info">
         <div class="card-good-actions" v-if="showActionPanel">
-          <div class="card-good__action card-good__action--editor">
-            <img src="@/assets/imgs/common/ic_editor.png" />
-            <span>编辑</span>
-          </div>
-          <div class="card-good__action card-good__action--putaway">
-            <img src="@/assets/imgs/common/ic_putaway.png" />
-            <span>上架</span>
-          </div>
-          <div class="card-good__action card-good__action--soldout">
-            <img src="@/assets/imgs/common/ic_putaway.png" />
-            <span>下架</span>
-          </div>
-          <div class="card-good__action card-good__action--delete">
-            <img src="@/assets/imgs/common/ic_delete.png" />
-            <span>删除</span>
-          </div>
-          <div class="card-good__action card-good__action--close">
+          <template
+            v-if="good.status == 0 || good.status == 3 || good.status == 4"
+          >
+            <div
+              class="card-good__action card-good__action--editor"
+              @click="actionEvent('edit')"
+            >
+              <img src="@/assets/imgs/common/ic_editor.png" />
+              <span>编辑</span>
+            </div>
+          </template>
+          <template
+            v-if="good.status == 0 || good.status == 3 || good.status == 4"
+          >
+            <div
+              class="card-good__action card-good__action--putaway"
+              @click="actionEvent('putaway')"
+            >
+              <img src="@/assets/imgs/common/ic_putaway.png" />
+              <span>上架</span>
+            </div>
+          </template>
+          <template v-if="good.status == 2">
+            <div
+              class="card-good__action card-good__action--soldout"
+              @click="actionEvent('soldout')"
+            >
+              <img src="@/assets/imgs/common/ic_putaway.png" />
+              <span>下架</span>
+            </div>
+          </template>
+          <template
+            v-if="good.status == 0 || good.status == 3 || good.status == 4"
+          >
+            <div
+              class="card-good__action card-good__action--delete"
+              @click="actionEvent('del')"
+            >
+              <img src="@/assets/imgs/common/ic_delete.png" />
+              <span>删除</span>
+            </div>
+          </template>
+          <div
+            class="card-good__action card-good__action--close"
+            @click="actionEvent('close')"
+          >
             <img src="@/assets/imgs/common/ic_close.png" />
             <span>关闭</span>
           </div>
@@ -56,6 +85,12 @@
           <div class="card-good-info-sku__profile">
             <span>库存 {{ good.stockNumber }}</span>
             <span>销量 {{ good.salesVolume }}</span>
+            <span class="card-good-info-sku__profile--action" v-if="showAction">
+              <img
+                src="@/assets/imgs/common/ic_more.png"
+                @click="showActionPanel = true"
+              />
+            </span>
           </div>
         </div>
       </div>
@@ -71,6 +106,7 @@ export default defineComponent({
   data() {
     return {
       checked: false,
+      showActionPanel: false,
     };
   },
   props: {
@@ -88,7 +124,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    showActionPanel: {
+    showAction: {
       type: Boolean,
       default: false,
     },
@@ -104,11 +140,15 @@ export default defineComponent({
   },
   watch: {
     goodChecked(newV: boolean) {
-      console.log(`watch`)
+      console.log(`watch`);
       this.checked = newV;
     },
   },
   methods: {
+    actionEvent(name: string) {
+      if (name === "close") this.showActionPanel = false;
+      this.$emit(`action-${name}`);
+    },
     onChange(checked: boolean) {
       this.$emit("update:good-checked", checked);
     },
@@ -183,9 +223,19 @@ export default defineComponent({
       display: flex;
       &__profile {
         display: flex;
-        width: 130px;
-        justify-content: space-between;
+        width: 100%;
+        justify-content: flex-start;
         color: rgba($color: #fff, $alpha: 0.6);
+        span:first-child {
+          width: 100px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        &--action {
+          flex: 1;
+          text-align: right;
+        }
       }
     }
   }

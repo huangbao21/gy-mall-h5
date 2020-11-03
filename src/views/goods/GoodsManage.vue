@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 <template>
   <div class="goods-manage nav-bar">
     <van-nav-bar
@@ -93,11 +94,16 @@
         <van-list v-model:loading="loading" :finished="finished" @load="onLoad">
           <good-item
             :good="good"
+            :ref="setGoodItemRef"
             v-for="(good, index) in list"
             :key="good.id"
             :underline="index !== list.length - 1"
             :show-checkbox="batchAction"
-            :show-action-panel="showActionPanel"
+            :show-action="showActionPanel"
+            @action-edit="goodActionEvent('edit', good, index)"
+            @action-putaway="goodActionEvent('putaway', good, index)"
+            @action-soldout="goodActionEvent('soldout', good, index)"
+            @action-del="goodActionEvent('del', good, index)"
             v-model:good-checked="good.checked"
           ></good-item>
         </van-list>
@@ -106,10 +112,20 @@
 
     <div class="footer-action">
       <template v-if="!batchAction">
-        <van-button round plain type="primary" class="batch putaway"
+        <van-button
+          round
+          plain
+          type="primary"
+          class="batch putaway"
+          @click="goodsOnorDown(1)"
           >全部上架</van-button
         >
-        <van-button round plain type="primary" class="batch soldout"
+        <van-button
+          round
+          plain
+          type="primary"
+          class="batch soldout"
+          @click="goodsOnorDown(0)"
           >全部下架</van-button
         >
         <van-button
@@ -122,13 +138,26 @@
         >
       </template>
       <template v-else>
-        <van-checkbox v-model="checked" :checked-color="checkRadioColor"
+        <van-checkbox
+          v-model="allChecked"
+          :checked-color="checkRadioColor"
+          @change="onAllCheckedChange"
           >全选</van-checkbox
         >
-        <van-button round plain type="primary" class="batch putaway"
+        <van-button
+          round
+          plain
+          type="primary"
+          class="batch putaway"
+          @click="goodsOnorDown(1, true)"
           >批量上架</van-button
         >
-        <van-button round plain type="primary" class="batch soldout"
+        <van-button
+          round
+          plain
+          type="primary"
+          class="batch soldout"
+          @click="goodsOnorDown(0, true)"
           >批量下架</van-button
         >
       </template>
@@ -138,7 +167,12 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 import { defineComponent } from "vue";
-import { fetchGoodsList } from "@/services/goods";
+import {
+  fetchGoodsList,
+  allGoodsOnDown,
+  batchGoodsOnDown,
+  delGood,
+} from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import GoodItem from "@/components/GoodItem.vue";
 export default defineComponent({
@@ -154,6 +188,7 @@ export default defineComponent({
   },
   data() {
     return {
+      goodItemRefs: [] as any,
       searchValue: "",
       active: 0,
       current: 0,
@@ -161,8 +196,8 @@ export default defineComponent({
       list: [] as object[],
       loading: false,
       finished: false,
-      checked: true,
-      showActionPanel: false,
+      allChecked: false,
+      showActionPanel: true,
       batchAction: false,
       sortValue: "-1",
       goodsValue: -1,
@@ -227,12 +262,93 @@ export default defineComponent({
     toView() {
       this.$router.go(-1);
     },
+    setGoodItemRef(el: any) {
+      this.goodItemRefs.push(el);
+    },
+    async goodActionEvent(name: string, item: any, index: number) {
+      // edit putaway soldout del
+      switch (name) {
+        case "edit":
+          // this.$router.push()
+          break;
+        case "putaway":
+          await batchGoodsOnDown({ isTrue: 1, idList: [item.id] });
+          item.status = 1;
+          this.goodItemRefs[index].actionEvent("close");
+          break;
+        case "soldout":
+          await batchGoodsOnDown({ isTrue: 0, idList: [item.id] });
+          item.status = 3;
+          this.goodItemRefs[index].actionEvent("close");
+          break;
+        case "del":
+          await this.$dialog.confirm({
+            message: "确定删除该商品？",
+            confirmButtonText: "删除",
+            className: "gy-dialog",
+          });
+          await delGood({ id: item.id });
+          this.goodItemRefs[index].actionEvent("close");
+          this.list.splice(index, 1);
+
+          break;
+      }
+      console.log(name);
+    },
+    async goodsOnorDown(isTrue: number, batch?: boolean) {
+      if (batch) {
+        const idList: any[] = [];
+        this.list.map((item: any) => {
+          if (item.checked) idList.push(item.id);
+        });
+        if (idList.length === 0) {
+          this.$toast("请选择商品");
+          return;
+        }
+        await this.$dialog.confirm({
+          message: `确定批量${isTrue ? "上架" : "下架"}已选择${
+            idList.length
+          }种商品`,
+          className: "gy-dialog",
+          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
+        });
+        await batchGoodsOnDown({ isTrue, idList });
+        this.reloadList();
+      } else {
+        await this.$dialog.confirm({
+          message: `确定全部${isTrue ? "上架" : "下架"}商品`,
+          className: "gy-dialog",
+          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
+        });
+        await allGoodsOnDown({ isTrue });
+        this.reloadList();
+      }
+    },
+    onAllCheckedChange(checked: boolean) {
+      if (checked) {
+        this.list.forEach((item: any) => {
+          item.checked = true;
+        });
+      } else {
+        this.list.forEach((item: any) => {
+          item.checked = false;
+        });
+      }
+    },
+
     onClickRight() {
       if (this.batchAction) {
         this.batchAction = false;
       } else {
         this.$router.push("/goodsAdd");
       }
+    },
+    onLoad() {
+      this.current += 1;
+      this.getGoodsList();
+    },
+    onSearch() {
+      this.reloadList();
     },
     async changeDropdownValue(
       cell: { text: string; value: string | number },
@@ -251,17 +367,13 @@ export default defineComponent({
         this.categoryTitle = cell.text;
         (this.$refs as any).categoryDropRef.toggle();
       }
-
+      this.reloadList();
+    },
+    reloadList() {
       this.current = 0;
+      this.batchAction = false;
       this.finished = false;
       this.list = [];
-    },
-    onSearch() {
-      console.log(123);
-    },
-    onLoad() {
-      this.current += 1;
-      this.getGoodsList();
     },
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
@@ -274,6 +386,7 @@ export default defineComponent({
         status,
         descOrders,
         categoryId,
+        name: this.searchValue,
       }).catch((err) => {
         this.loading = false;
         this.finished = true;
