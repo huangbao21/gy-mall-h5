@@ -79,21 +79,23 @@
           <div class="cell__parent">
             <div
               class="cell"
-              v-for="cell in categoryOption"
+              v-for="(cell, index) in categoryOption"
               :key="cell.value"
-              @click="changeDropdownValue(cell, 'category')"
+              @click="changeDropdownValue(cell, 'category', index)"
             >
               <span :class="{ active: categoryValue == cell.value }">{{
                 cell.text
               }}</span>
             </div>
           </div>
-          <div class="cell__children">
-            <!-- <span v-for="child in cell.children" :key="child.id">{{
-              child.text
-            }}</span> -->
-            <span>衣服</span>
-            <span>衣服</span>
+          <div class="cell__children" v-if="categoryValue != -1">
+            <span
+              v-for="child in categoryOption[treeActiveIndex].children"
+              :key="child.id"
+              @click="changeDropdownValue(child, 'categoryChild')"
+              :class="{ active: treeActiveId == child.value }"
+              >{{ child.text }}</span
+            >
           </div>
         </div>
       </van-dropdown-item>
@@ -113,7 +115,9 @@
             @action-putaway="goodActionEvent('putaway', good, index)"
             @action-soldout="goodActionEvent('soldout', good, index)"
             @action-del="goodActionEvent('del', good, index)"
+            @update:good-checked="onChangeGoodCheck($event)"
             v-model:good-checked="good.checked"
+            @click="viewGood(good)"
           ></good-item>
         </van-list>
       </div>
@@ -147,6 +151,7 @@
         >
       </template>
       <template v-else>
+        <span class="info">已选 {{ checkedNum }} 件商品</span>
         <van-checkbox
           v-model="allChecked"
           :checked-color="checkRadioColor"
@@ -204,8 +209,8 @@ export default defineComponent({
       current: 0,
       size: 10,
       list: [] as object[],
-      treeId: 1,
-      treeIndex: 0,
+      treeActiveId: 0,
+      treeActiveIndex: 0,
       loading: false,
       finished: false,
       allChecked: false,
@@ -214,6 +219,7 @@ export default defineComponent({
       sortValue: "-1",
       goodsValue: -1,
       categoryValue: -1,
+      checkedNum: 0,
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
@@ -271,6 +277,9 @@ export default defineComponent({
     toView() {
       this.$router.go(-1);
     },
+    viewGood(good: any) {
+      console.log(good);
+    },
     setGoodItemRef(el: any) {
       this.goodItemRefs.push(el);
     },
@@ -318,9 +327,9 @@ export default defineComponent({
           return;
         }
         await this.$dialog.confirm({
-          message: `确定批量${isTrue ? "上架" : "下架"}已选择${
+          message: `确定批量${isTrue ? "上架" : "下架"}已选择 ${
             idList.length
-          }种商品`,
+          } 种商品`,
           className: "gy-dialog",
           confirmButtonText: `${isTrue ? "上架" : "下架"}`,
         });
@@ -334,6 +343,13 @@ export default defineComponent({
         });
         await allGoodsOnDown({ isTrue });
         this.reloadList();
+      }
+    },
+    onChangeGoodCheck(checked: boolean) {
+      if (checked) {
+        this.checkedNum += 1;
+      } else {
+        this.checkedNum -= 1;
       }
     },
     onAllCheckedChange(checked: boolean) {
@@ -364,7 +380,8 @@ export default defineComponent({
     },
     async changeDropdownValue(
       cell: { text: string; value: string | number },
-      el?: string
+      el?: string,
+      treeIndex = 0
     ) {
       if (el === "sort") {
         this.sortValue = String(cell.value);
@@ -377,7 +394,15 @@ export default defineComponent({
       } else if (el === "category") {
         this.categoryValue = Number(cell.value);
         this.categoryTitle = cell.text;
-        // (this.$refs as any).categoryDropRef.toggle();
+        if (this.categoryValue !== -1) {
+          this.treeActiveIndex = treeIndex;
+          return;
+        }
+        (this.$refs as any).categoryDropRef.toggle();
+      } else if (el === "categoryChild") {
+        this.treeActiveId = Number(cell.value);
+        this.categoryTitle = cell.text;
+        (this.$refs as any).categoryDropRef.toggle();
       }
       this.reloadList();
     },
@@ -404,7 +429,7 @@ export default defineComponent({
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
       const categoryId =
-        this.categoryValue === -1 ? undefined : this.categoryValue;
+        this.categoryValue === -1 ? undefined : this.treeActiveId;
       const res = await fetchGoodsList({
         current: this.current,
         size: this.size,
@@ -464,6 +489,18 @@ export default defineComponent({
   padding-top: 7px;
   padding-bottom: 27px;
   justify-content: space-between;
+  position: relative;
+  .info {
+    position: absolute;
+    top: -30px;
+    color: #fff;
+    background-color: #1c1932;
+    left: 0;
+    right: 0;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+  }
   .van-button--primary {
     @include gy-btn-primary;
     width: 160px;

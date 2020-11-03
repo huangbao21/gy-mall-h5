@@ -25,11 +25,6 @@
     .active {
       color: #00ffd2;
     }
-    &__children {
-      margin-left: 22px;
-      display: flex;
-      flex-direction: column;
-    }
     &:last-child {
       margin-bottom: 0;
     }
@@ -56,6 +51,21 @@
     padding-right: 0;
     .cell {
       margin-bottom: 0px;
+      &__children {
+        margin-left: 22px;
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        span {
+          margin-bottom: 30px;
+          &.active {
+            color: #00ffd2;
+          }
+          &:last-child {
+            margin-bottom: 0px;
+          }
+        }
+      }
     }
   }
 }
