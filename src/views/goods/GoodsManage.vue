@@ -269,7 +269,10 @@ export default defineComponent({
       // edit putaway soldout del
       switch (name) {
         case "edit":
-          // this.$router.push()
+          this.$router.push({
+            path: "/goodsAdd",
+            query: { goodId: item.id, operateType: "edit" },
+          });
           break;
         case "putaway":
           await batchGoodsOnDown({ isTrue: 1, idList: [item.id] });

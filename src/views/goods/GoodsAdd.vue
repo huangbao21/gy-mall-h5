@@ -1,7 +1,7 @@
 <template>
   <div class="goods-add-page nav-bar">
     <van-nav-bar
-      title="新增商品"
+      :title="navTitle"
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
@@ -196,6 +196,7 @@ export default defineComponent({
       maxCount: 6,
       operateType: "add",
       goodId: 0,
+      navTitle: "新增商品",
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -229,6 +230,7 @@ export default defineComponent({
     console.log(`组件挂载`);
     if (this.operateType === "edit") {
       this.fetchGoodDetail();
+      this.navTitle = `编辑商品`;
     }
   },
   methods: {

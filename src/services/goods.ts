@@ -34,4 +34,3 @@ export function batchGoodsOnDown(data: { isTrue: number; idList: any[] }): Promi
 export function delGood(data: { id: number }): Promise<PostData> {
   return axios.post(API.GOOD_DEL, data);
 }
-
