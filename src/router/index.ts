@@ -60,6 +60,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '新增商品' }
   },
   {
+    path: '/goodsShow',
+    name: 'GoodsShow',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsShow.vue'),
+    meta: { title: '编辑商品' }
+  },
+  {
     path: '/goodsCategory',
     name: 'GoodsCategory',
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsCategory.vue'),

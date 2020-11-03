@@ -146,33 +146,54 @@ export default defineComponent({
       consumeNumber: "",
       consumeTime: "",
       selectedId: -1,
+      addGood: false,
+      ratioEditSave: false,
+      conditionEditSave: false,
     };
   },
   beforeRouteEnter(to, from, next) {
     if (to.query.name !== undefined) {
       next((vm) => {
+        console.log(`商品。。。`);
+        console.log(to.query.name);
         vm.goodsTitle = to.query.name;
         vm.value = 3;
+        vm.addGood = true;
+        vm.selectedId = to.query.id;
       });
     } else {
       next();
     }
   },
-  created() {
+  mounted() {
     this.queryConditionList();
     this.queryRatio();
-    this.queryCondition();
+    if (!this.addGood) {
+      this.queryCondition();
+    }
   },
   methods: {
     onClickLeft() {
-      this.$dialog
-        .confirm({
-          message: "添加的商品信息未保存，确认返回",
-          className: "gy-dialog",
-        })
-        .then(() => {
-          this.$router.go(-1);
-        });
+      let msg = "";
+      if (!this.ratioEditSave || !this.conditionEditSave) {
+        if (!this.ratioEditSave && !this.conditionEditSave) {
+          msg = `设置信息未保存，确认返回？`;
+        } else if (!this.ratioEditSave) {
+          msg = `波比设置未保存，确认返回？`;
+        } else {
+          msg = `门槛信息设置未保存，确认返回？`;
+        }
+        this.$dialog
+          .confirm({
+            message: msg,
+            className: "gy-dialog",
+          })
+          .then(() => {
+            this.$router.go(-1);
+          });
+      } else {
+        this.$router.go(-1);
+      }
     },
     handleGoodsSelect() {
       this.$router.replace({
@@ -202,24 +223,27 @@ export default defineComponent({
     },
     async queryRatio() {
       const res = await queryRatio();
+      this.staffRatio = res.data.staffRatio;
+      this.agencyRatio = res.data.agencyRatio;
       console.log(res);
     },
     async queryCondition() {
       const res = await queryCondition();
       this.value = res.data.type;
+      console.log(`查询条件`);
       if (res.data.type === 1) {
         this.consumeTime = res.data.conditionValue;
       } else if (res.data.type === 2) {
-        console.log(res.data.conditionValue);
         this.consumeNumber = res.data.conditionValue;
       } else {
         this.goodsTitle = res.data.title;
         this.selectedId = res.data.conditionValue;
       }
-      console.log(res);
     },
     async queryConditionList() {
+      console.log(`查询条件列表`);
       const res = await queryConditionList();
+      console.log(`查询条件列表2`);
       for (let i = 0; i < res.data.length; i++) {
         res.data[i].text = res.data[i].msg;
         res.data[i].value = res.data[i].code;
@@ -227,17 +251,20 @@ export default defineComponent({
       this.conditionOption.push(...res.data);
     },
     async handleValueChange(value) {
-      if (value === 3) {
-        const res = await fetchGoodsList({
-          current: this.current,
-          size: this.size,
-          status: 2,
-        });
-        console.log(res.data);
-      }
+      console.log(value);
     },
     async handleConditionSave() {
-      await saveCondition({ type: this.value, conditionValue: 12 });
+      let conditionValue = "";
+      if (this.value === 1) {
+        conditionValue = this.consumeTime;
+      } else if (this.value === 2) {
+        conditionValue = this.consumeNumber;
+      } else {
+        conditionValue = this.selectedId;
+      }
+      await saveCondition({ type: this.value, conditionValue });
+      this.conditionEditSave = true;
+      Toast(`门槛设置保存成功`);
     },
     async handleRatioSave() {
       if (this.staffRatio === "") {
@@ -252,12 +279,16 @@ export default defineComponent({
         staffRatio: this.staffRatio,
         agencyRatio: this.agencyRatio,
       });
+      this.ratioEditSave = true;
       Toast(`波比设置保存成功！`);
     },
     async handleSave() {
-      if (this.activeIndex === 1) {
+      console.log(this.activeIndex);
+      if (this.activeIndex === 0) {
+        console.log(111);
         this.handleConditionSave();
       } else {
+        console.log(222);
         this.handleRatioSave();
       }
     },
