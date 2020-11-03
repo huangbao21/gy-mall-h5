@@ -78,6 +78,9 @@ export default defineComponent({
       next();
     }
   },
+  mounted() {
+    console.log(this.goods);
+  },
   methods: {
     handleEditOk() {
       Toast("按钮");

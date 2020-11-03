@@ -72,6 +72,7 @@ export default defineComponent({
     handleGoodAdd() {
       const res = this.list.every(this.isNoChecked);
       if (res) {
+        console.log(this.list);
         Toast(`请选择一个商品`);
         return;
       }
@@ -85,8 +86,15 @@ export default defineComponent({
       });
     },
     handleGoodCheck(isChecked: boolean, good: any) {
-      this.list.forEach((ele: any) => (ele.checked = false));
+      console.log(isChecked);
+      console.log(good.id);
+      this.list.forEach((ele: any) => {
+        if (isChecked) {
+          ele.checked = false;
+        }
+      });
       good.checked = isChecked;
+      console.log(`什么鬼`);
       console.log(this.list);
     },
     async fetchGoodsList() {

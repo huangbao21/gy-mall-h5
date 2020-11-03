@@ -1,12 +1,6 @@
 <template>
   <div class="goods-add-page nav-bar">
-    <van-nav-bar
-      title="新增商品"
-      right-text="完成"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="onSave"
-    >
+    <van-nav-bar title="商品展示" left-arrow @click-left="onClickLeft">
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
@@ -15,56 +9,11 @@
     <div class="goods-add-content-wrapper">
       <div class="goods-cover-wrapper">
         <div class="goods-cover-preview">
-          <van-uploader
-            :after-read="afterRead"
-            v-if="goodsInfo.bannerList.length == 0"
-          >
-            <div class="goods-upload-photo-wrapper">
-              <van-icon name="photo" size="40" />
-              <p class="van-uploader-text">添加商品封面</p>
-            </div>
-          </van-uploader>
-          <van-image
-            v-if="goodsInfo.bannerList.length"
-            width="375"
-            height="375"
-            :src="
-              goodsInfo.bannerList[currentCoverIndex].fileUrl
-                ? goodsInfo.bannerList[currentCoverIndex].fileUrl
-                : ''
-            "
-          />
-        </div>
-        <div
-          class="goods-img-operate-area"
-          v-if="goodsInfo.bannerList.length > 0"
-        >
-          <van-uploader
-            v-if="goodsInfo.bannerList.length != maxCount"
-            :after-read="afterRead"
-          >
-            <van-button icon="plus"></van-button>
-          </van-uploader>
-          <div class="goods-img-list">
-            <div
-              class="goods-img-item"
-              v-for="(item, i) in goodsInfo.bannerList"
-              :key="item.id"
-            >
-              <van-image
-                class="goods-img-sm-preview"
-                width="48"
-                height="48"
-                :src="item.fileUrl"
-                @click="handleItemClick(i)"
-              >
-                <van-image
-                  class="goods-img-preview-delete"
-                  :src="require('./../../assets/imgs/common/icon-close.png')"
-                  @click="deleteImgFromList(i)"
-              /></van-image>
-            </div>
-          </div>
+          <van-swipe :autoplay="3000">
+            <van-swipe-item v-for="item in goodsInfo.bannerList" :key="item.id">
+              <img :src="item.fileUrl" />
+            </van-swipe-item>
+          </van-swipe>
         </div>
       </div>
       <van-field
@@ -76,10 +25,7 @@
         placeholder="请输入商品名称(最多40个字)"
         show-word-limit
       />
-      <div
-        class="goods-price-info"
-        v-if="goodsInfo.productSkuList[0].price > 0"
-      >
+      <div class="goods-price-info" v-if="goodsInfo.productSkuList[0].price">
         <van-cell>
           <van-col class="goods-price" span="7"
             >¥
@@ -103,13 +49,8 @@
         </van-cell>
       </div>
       <div class="goods-cells-edit">
-        <van-cell
-          title="商品类目"
-          is-link
-          @click="handleCategoryClick"
-          :value="goodsInfo.categoryText"
-        />
-        <van-cell title="价格/分佣/库存" is-link @click="handleSkuClick" />
+        <van-cell title="商品类目" is-link :value="goodsInfo.categoryText" />
+        <van-cell title="价格/分佣/库存" is-link />
         <van-cell class="goods-express" title="运费" value="免邮" />
       </div>
       <div class="goods-detail-img-wrapper">
@@ -121,33 +62,6 @@
             <van-icon name="plus" />
             <span>添加详情图</span>
           </van-uploader>
-        </div>
-        <div
-          class="goods-img-operate-area"
-          v-if="goodsInfo.productInfoList.length > 0"
-        >
-          <van-uploader :after-read="detailAfterRead">
-            <van-button icon="plus"></van-button>
-          </van-uploader>
-          <div class="goods-img-list">
-            <div
-              class="goods-img-item"
-              v-for="(item, i) in goodsInfo.productInfoList"
-              :key="item"
-            >
-              <van-image
-                class="goods-img-sm-preview"
-                width="48"
-                height="48"
-                :src="item.fileUrl"
-              >
-                <van-image
-                  class="goods-img-preview-delete"
-                  :src="require('./../../assets/imgs/common/icon-close.png')"
-                  @click="deleteDetailImgFromList(i)"
-              /></van-image>
-            </div>
-          </div>
         </div>
         <div class="goods-detail-img-list">
           <div
@@ -166,7 +80,7 @@
 import { defineComponent } from "vue";
 import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
-import { saveGoods, fetchGoodDetail, updateGoods } from "@/services/goods";
+import { saveGoods, fetchGoodDetail } from "@/services/goods";
 export default defineComponent({
   name: "GoodsAdd",
   data() {
@@ -194,7 +108,7 @@ export default defineComponent({
       },
       currentCoverIndex: 0,
       maxCount: 6,
-      operateType: "add",
+      operateType: "show",
       goodId: 0,
     };
   },
@@ -212,6 +126,7 @@ export default defineComponent({
       });
     } else if (to.query.operateType !== undefined) {
       next((vm: any) => {
+        console.log(11);
         vm.operateType = to.query.operateType;
         vm.goodId = to.query.goodId;
       });
@@ -226,8 +141,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    console.log(`组件挂载`);
-    if (this.operateType === "edit") {
+    if (this.operateType === "show") {
       this.fetchGoodDetail();
     }
   },
@@ -235,7 +149,6 @@ export default defineComponent({
     async fetchGoodDetail() {
       console.log(this.goodId);
       const res = await fetchGoodDetail({ id: this.goodId });
-      console.log(res);
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
     },
@@ -265,23 +178,6 @@ export default defineComponent({
     clearTempData() {
       localStorage.setItem("tempGoodsInfo", "");
     },
-    handleCategoryClick() {
-      this.saveTempData();
-      this.$router.replace({
-        path: "/goodsCategory",
-        query: {
-          activeIndex: this.goodsInfo.activeIndex,
-          activeId: this.goodsInfo.categoryId,
-        },
-      });
-    },
-    handleSkuClick() {
-      this.saveTempData();
-      this.$router.replace({
-        path: "/goodsSKU",
-        query: { ...this.goodsInfo.productSkuList[0] },
-      });
-    },
     async detailAfterRead(file: any) {
       const formData = new FormData();
       formData.append("file", file.file);
@@ -301,28 +197,13 @@ export default defineComponent({
       for (let i = 0; i < len; i++) {
         (this.goodsInfo.productInfoList[i] as any).sort = i;
       }
-      if (this.operateType === "add") {
-        await saveGoods({
-          ...this.goodsInfo,
-        });
-      } else if (this.operateType === "edit") {
-        await updateGoods({
-          ...this.goodsInfo,
-        });
-      }
-
+      await saveGoods({
+        ...this.goodsInfo,
+      });
       this.clearTempData();
-      this.$router.go(-1);
     },
     onClickLeft() {
-      this.$dialog
-        .confirm({
-          message: "商品信息未保存，确认返回",
-          className: "gy-dialog",
-        })
-        .then(() => {
-          this.$router.go(-1);
-        });
+      this.$router.go(-1);
     },
   },
 });
@@ -340,18 +221,9 @@ export default defineComponent({
 }
 .goods-cover-preview {
   background-color: $contentBgColor;
-  .van-uploader {
+  img {
     width: 375px;
     height: 375px;
-    :deep(.van-uploader__input-wrapper) {
-      width: 375px;
-      height: 375px;
-    }
-    .goods-upload-photo-wrapper {
-      position: relative;
-      top: 120px;
-      color: #fff;
-    }
   }
 }
 .goods-img-operate-area {

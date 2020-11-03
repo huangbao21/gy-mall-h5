@@ -14,11 +14,13 @@ export default class API {
   // 商品类目
   static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
   static GOODS_SAVE = `${APP_SERVICE}authc/product/save`;
+  static GOODS_UPDATE = `${APP_SERVICE}authc/product/update`;
 
   // 商品管理
   static GOODS_LIST = `${APP_SERVICE}authc/product/find_page_for_supplier`
 
   static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
+  static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`
@@ -29,17 +31,17 @@ export default class API {
   static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
 
   // 分销商管理
-  static AGENCY_APPLY_LIST=`${APP_SERVICE}authc/agency_customer/find_agency_apply_page`
-  static AUDIT_AGENCY_APPLY=`${APP_SERVICE}authc/agency_customer/audit_agency_apply`
-  static SAVE_COMMISSION_SETTING=`${APP_SERVICE}authc/agency_customer/save_agency_sell_set`
-  static COMMISSION_SETTING_LIST=`${APP_SERVICE}authc/agency_customer/find_agency_sell_set_list`
-  static COMMISSION_LIMIT_AREA=`${APP_SERVICE}authc/agency_customer/find_agency_sell_set_limit`
-  static QUERY_AGENCY_SALES=`${APP_SERVICE}authc/agency_customer/find_agency_sale`
+  static AGENCY_APPLY_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_apply_page`
+  static AUDIT_AGENCY_APPLY = `${APP_SERVICE}authc/agency_customer/audit_agency_apply`
+  static SAVE_COMMISSION_SETTING = `${APP_SERVICE}authc/agency_customer/save_agency_sell_set`
+  static COMMISSION_SETTING_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_sell_set_list`
+  static COMMISSION_LIMIT_AREA = `${APP_SERVICE}authc/agency_customer/find_agency_sell_set_limit`
+  static QUERY_AGENCY_SALES = `${APP_SERVICE}authc/agency_customer/find_agency_sale`
 
   // 体系管理
-  static QUERY_CONDITION_TYPE_LIST=`${APP_SERVICE}authc/agency_customer/find_condition_type_list`
-  static SAVE_CONDITION=`${APP_SERVICE}authc/agency_customer/save_condition`
-  static SAVE_RATIO=`${APP_SERVICE}authc/agency_customer/save_ratio`
-  static QUERY_RATIO=`${APP_SERVICE}authc/agency_customer/find_ratio`
-  static QUERY_CONDITION=`${APP_SERVICE}authc/agency_customer/find_condition`
+  static QUERY_CONDITION_TYPE_LIST = `${APP_SERVICE}authc/agency_customer/find_condition_type_list`
+  static SAVE_CONDITION = `${APP_SERVICE}authc/agency_customer/save_condition`
+  static SAVE_RATIO = `${APP_SERVICE}authc/agency_customer/save_ratio`
+  static QUERY_RATIO = `${APP_SERVICE}authc/agency_customer/find_ratio`
+  static QUERY_CONDITION = `${APP_SERVICE}authc/agency_customer/find_condition`
 }
