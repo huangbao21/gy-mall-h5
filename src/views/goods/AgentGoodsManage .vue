@@ -115,9 +115,9 @@
             @action-putaway="goodActionEvent('putaway', good, index)"
             @action-soldout="goodActionEvent('soldout', good, index)"
             @action-del="goodActionEvent('del', good, index)"
-            @click-good="viewGood"
             @update:good-checked="onChangeGoodCheck($event)"
             v-model:good-checked="good.checked"
+            @click="viewGood(good)"
           ></good-item>
         </van-list>
       </div>
@@ -279,10 +279,7 @@ export default defineComponent({
       this.$router.go(-1);
     },
     viewGood(good: any) {
-      this.$router.push({
-        path: "/goodsShow",
-        query: { goodId: good.id, operateType: "show" },
-      });
+      console.log(good);
     },
     setGoodItemRef(el: any) {
       this.goodItemRefs.push(el);

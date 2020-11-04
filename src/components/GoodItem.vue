@@ -6,7 +6,7 @@
       v-if="showCheckbox"
       @change="onChange"
     ></van-checkbox>
-    <div class="card-good">
+    <div class="card-good" @click="viewGood(good)">
       <van-image :src="good.mainImageUrl">
         <span class="card-good--status" v-if="good.status !== 2">{{
           good.status === 0
@@ -19,7 +19,11 @@
         }}</span>
       </van-image>
       <div class="card-good-info">
-        <div class="card-good-actions" v-if="showActionPanel">
+        <div
+          class="card-good-actions"
+          v-if="showActionPanel"
+          @click.stop
+        >
           <template
             v-if="good.status == 0 || good.status == 3 || good.status == 4"
           >
@@ -85,16 +89,16 @@
           <div class="card-good-info-sku__profile">
             <span>库存 {{ good.stockNumber }}</span>
             <span>销量 {{ good.salesVolume }}</span>
-            <span class="card-good-info-sku__profile--action" v-if="showAction">
-              <img
-                src="@/assets/imgs/common/ic_more.png"
-                @click="showActionPanel = true"
-              />
-            </span>
           </div>
         </div>
       </div>
     </div>
+    <span class="good-item__more" v-if="showAction">
+      <img
+        src="@/assets/imgs/common/ic_more.png"
+        @click.self="showActionPanel = true"
+      />
+    </span>
   </div>
 </template>
 <script lang="ts">
@@ -145,6 +149,12 @@ export default defineComponent({
     },
   },
   methods: {
+    test() {
+      console.log(22222);
+    },
+    viewGood(good: any) {
+      if (!this.showCheckbox) this.$emit("click-good", good);
+    },
     actionEvent(name: string) {
       if (name === "close") this.showActionPanel = false;
       this.$emit(`action-${name}`);
@@ -159,9 +169,15 @@ export default defineComponent({
 @import "@/styles/base.scss";
 .good-item {
   display: flex;
+  position: relative;
   .van-checkbox {
     margin-right: 20px;
     overflow: unset;
+  }
+  &__more {
+    position: absolute;
+    bottom: 15px;
+    right: 0;
   }
   &--last {
     .card-good {
@@ -232,19 +248,14 @@ export default defineComponent({
           text-overflow: ellipsis;
           white-space: nowrap;
         }
-        &--action {
-          flex: 1;
-          text-align: right;
-        }
       }
     }
   }
   &-actions {
     position: absolute;
     background-color: rgba($color: $contentBgColor, $alpha: 0.9);
-    position: absolute;
     background-color: rgba(30, 24, 60, 0.9);
-    z-index: 1;
+    z-index: 10;
     left: 0;
     right: 0;
     top: 0;
