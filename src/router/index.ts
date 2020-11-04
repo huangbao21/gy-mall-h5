@@ -5,8 +5,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/earnMoneyCenter'
-    // component: Home
+    component: () => import('../views/Home.vue'),
+    meta: { title: '工作台' }
   },
   {
     path: '/about',

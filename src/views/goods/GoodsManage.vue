@@ -279,7 +279,10 @@ export default defineComponent({
       this.$router.go(-1);
     },
     viewGood(good: any) {
-      console.log(good);
+      this.$router.push({
+        path: "/goodsShow",
+        query: { goodId: good.id, operateType: "show" },
+      });
     },
     setGoodItemRef(el: any) {
       this.goodItemRefs.push(el);
