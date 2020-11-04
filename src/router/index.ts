@@ -104,11 +104,25 @@ const routes: Array<RouteRecordRaw> = [
 
   },
   {
+    path: '/agentGoodsManage',
+    name: 'AgentGoodsManage',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/AgentGoodsManage.vue'),
+    meta: { title: '代理商商品管理' }
+
+  },
+  {
     path: '/enterpriseOrder',
     name: 'EnterpriseOrder',
     component: () => import(/* webpackChunkName: "order" */ '../views/order/EnterpriseOrder.vue'),
     meta: { title: '企业主订单管理' }
-  }, {
+  },
+  {
+    path: '/enterpriseOrderView',
+    name: 'EnterpriseOrderView',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/EnterpriseOrderView.vue'),
+    meta: { title: '企业主订单详情' }
+  },
+  {
     path: '/goods',
     name: 'Goods',
     component: () => import('../views/system/Goods.vue'),

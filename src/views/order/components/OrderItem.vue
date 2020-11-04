@@ -1,27 +1,50 @@
 <template>
-  <div class="order-item">
-    <div class="order-item__sn">
-      <span>订单编号 1271234700887609540 </span>
-      <span class="order-item__sn--state">待发货</span>
+  <div class="order-item" :class="{ view: isView }">
+    <div class="order-item__sn" v-if="!isView">
+      <span>订单编号 {{ order.detailSn }} </span>
+      <span class="order-item__sn--state">{{
+        order.orderStatus == 0
+          ? "待支付"
+          : order.orderStatus == 1
+          ? "待发货"
+          : order.orderStatus == 2
+          ? "待收货"
+          : order.orderStatus == 3
+          ? "已收货"
+          : order.orderStatus == 4
+          ? "已完成"
+          : "已取消"
+      }}</span>
     </div>
-    <div class="order-item__good">
-      <img src="@/assets/logo.png" />
+    <div class="order-item__good" @click="viewOrder(order)">
+      <img :src="order.productMainImageUrl" />
       <div class="order-item__good-info">
         <p class="order-item__good-info--name">
-          三星Galaxy Watch Active酷黑智能手表音乐播放心率 中号
+          {{ order.productName }}
         </p>
         <p class="order-item__good-info--prop">
-          <span>单价 ￥ 209.65</span>
-          <span style="margin-left:10px">数量 10</span>
+          <span>单价 ￥ {{ order.productPrice }}</span>
+          <span style="margin-left: 10px">数量 {{ order.quantity }}</span>
         </p>
-        <p class="order-item__good-info--total">总价 ￥209.65</p>
+        <p class="order-item__good-info--total">总价 ￥{{ order.amount }}</p>
       </div>
     </div>
-    <div class="order-item__status">
+    <div class="order-item__status" v-if="!isView">
       <span class="order-item__status--time"
-        >下单时间: 2020-10-20 09:11:34</span
+        >下单时间: {{ order.createTime }}</span
       >
-      <van-button round type="primary">发货</van-button>
+      <template v-if="order.orderStatus == 1">
+        <van-button round type="primary">发货</van-button>
+      </template>
+      <template
+        v-else-if="
+          order.orderStatus == 2 ||
+          order.orderStatus == 3 ||
+          order.orderStatus == 4
+        "
+      >
+        <van-button round>查看物流</van-button>
+      </template>
     </div>
   </div>
 </template>
@@ -30,6 +53,18 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "OrderItem",
+  props: {
+    order: Object,
+    isView: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    viewOrder(order: any) {
+      this.$emit("click-order", order);
+    },
+  },
 });
 </script>
 <style lang="scss" scoped>
@@ -89,6 +124,16 @@ export default defineComponent({
       width: 90px;
       height: 32px;
     }
+  }
+}
+.order-item.view {
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  .order-item__good {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
   }
 }
 </style>

@@ -499,7 +499,7 @@ export default defineComponent({
 }
 
 .footer-action {
-  background-color: #1e183c;
+  background-color: $contentBgColor;
   display: flex;
   padding-left: 20px;
   padding-right: 20px;

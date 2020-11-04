@@ -21,10 +21,18 @@ export default class API {
   static GOODS_ON_DOWN = `${APP_SERVICE}authc/product/all_on_or_down`
   static GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product/batch_on_or_down`
   static GOOD_DEL = `${APP_SERVICE}authc/product/delete`
+  static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
+
+  // 代理商商品管理
+  static AGENT_GOODS_LIST = `${APP_SERVICE}authc/product_agency/find_page`
+  static AGENT_GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product_agency/batch_on_or_down`
+  static AGENT_GOODS_ON_DOWN = `${APP_SERVICE}authc/product_agency/all_on_or_down`
+  static AGENT_GOOD_DEL = `${APP_SERVICE}authc/product_agency/delete`
+  static AGENT_STOCK_BATCH = `${APP_SERVICE}authc/product_agency/batch_stock_or_out`
 
   // 订单管理
   static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
-  static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
+  static ORDER_VIEW = `${APP_SERVICE}authc/order_supplier/view`
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`

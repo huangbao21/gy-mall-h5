@@ -25,22 +25,61 @@
         <div class="search-btn" @click="onSearch">搜索</div>
       </template>
     </van-search>
-    <van-tabs v-model:active="active" class="gy-tabs" @click="getVarietyOrder">
-      <van-tab title="全部">
+    <van-tabs
+      v-model:active="tabActive"
+      class="gy-tabs"
+      @click="getVarietyOrder"
+    >
+      <van-tab title="全部" name="all">
         <div class="order-list">
           <van-list v-model="loading" :finished="finished" @load="onLoad">
-            <order-item></order-item>
-            <order-item></order-item>
+            <order-item
+              v-for="order in list"
+              :key="order.id"
+              :order="order"
+              @click-order="viewOrder"
+            ></order-item>
           </van-list>
         </div>
       </van-tab>
-      <van-tab title="待发货">1</van-tab>
-      <van-tab title="待收货">1</van-tab>
-      <van-tab title="已完成">1</van-tab>
+      <van-tab title="待发货" name="toDeliver">
+        <div class="order-list">
+          <van-list v-model="loading" :finished="finished" @load="onLoad">
+            <order-item
+              v-for="order in list"
+              :key="order.id"
+              :order="order"
+            ></order-item>
+          </van-list>
+        </div>
+      </van-tab>
+      <van-tab title="待收货" name="toReceive">
+        <div class="order-list">
+          <van-list v-model="loading" :finished="finished" @load="onLoad">
+            <order-item
+              v-for="order in list"
+              :key="order.id"
+              :order="order"
+            ></order-item>
+          </van-list>
+        </div>
+      </van-tab>
+      <van-tab title="已完成" name="finished">
+        <div class="order-list">
+          <van-list v-model="loading" :finished="finished" @load="onLoad">
+            <order-item
+              v-for="order in list"
+              :key="order.id"
+              :order="order"
+            ></order-item>
+          </van-list>
+        </div>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable indent */
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
 import { fetchOrderSupplierList } from "@/services/order";
@@ -56,7 +95,7 @@ export default defineComponent({
       finished: false,
       current: 0,
       size: 10,
-      active: 0,
+      tabActive: "all",
       list: [] as object[],
     };
   },
@@ -64,24 +103,55 @@ export default defineComponent({
     toView() {
       this.$router.go(-1);
     },
+    viewOrder(order: any) {
+      this.$router.push({
+        path: "/enterpriseOrderView",
+        query: { orderId: order.id },
+      });
+    },
     onLoad() {
       this.current += 1;
       this.getOrderList();
     },
-    async getOrderList(orderStatus?: number) {
+    onSearch() {
+      this.reloadList();
+    },
+    getVarietyOrder() {
+      console.log(this.tabActive);
+      this.reloadList();
+    },
+    reloadList() {
+      this.current = 0;
+      this.finished = false;
+      this.list = [];
+    },
+    async getOrderList() {
+      const orderStatus =
+        this.tabActive === "all"
+          ? undefined
+          : this.tabActive === "toDeliver"
+          ? 1
+          : this.tabActive === "toReceive"
+          ? 2
+          : 4;
       const res = await fetchOrderSupplierList({
         current: this.current,
         size: this.size,
         orderStatus,
+        productName: this.searchValue,
       }).catch((err) => {
         this.loading = false;
         this.finished = true;
         return Promise.reject(err);
       });
       this.loading = false;
-      if (this.size > res.data.records.length) {
+      if (
+        this.size > res.data.records.length ||
+        this.current * this.size >= res.data.total
+      ) {
         this.finished = true;
       }
+      this.list.push(...res.data.records);
     },
   },
 });
