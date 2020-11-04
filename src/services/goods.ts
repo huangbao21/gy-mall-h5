@@ -16,7 +16,7 @@ export function fetchCategoryList(): Promise<PostData> {
 export function saveGoods(data: GoodsInfo): Promise<PostData> {
   return axios.post(API.GOODS_SAVE, data)
 }
-export function fetchGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryId?: number; name?: string }): Promise<PostData> {
+export function fetchGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string }): Promise<PostData> {
   return axios.post(API.GOODS_LIST, data);
 }
 export function fetchGoodDetail(data: { id: number }): Promise<PostData> {

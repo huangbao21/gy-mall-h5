@@ -210,6 +210,7 @@ export default defineComponent({
       size: 10,
       list: [] as object[],
       treeActiveId: 0,
+      treeActiveIds: [] as number[],
       treeActiveIndex: 0,
       loading: false,
       finished: false,
@@ -401,7 +402,17 @@ export default defineComponent({
         (this.$refs as any).categoryDropRef.toggle();
       } else if (el === "categoryChild") {
         this.treeActiveId = Number(cell.value);
-        this.categoryTitle = cell.text;
+        if (cell.value !== -1) {
+          this.treeActiveIds = [Number(cell.value)];
+          this.categoryTitle = cell.text;
+        } else {
+          this.treeActiveIds = [];
+          const pcategory: any = this.categoryOption[this.treeActiveIndex];
+          pcategory.children.map((item: any) => {
+            item.id && this.treeActiveIds.push(item.id);
+          });
+          this.categoryTitle = pcategory.text;
+        }
         (this.$refs as any).categoryDropRef.toggle();
       }
       this.reloadList();
@@ -416,10 +427,13 @@ export default defineComponent({
       const res = await fetchCategoryList();
       const temp = res.data.map((item: any) => {
         item.value = item.id;
-        item.children &&
+        if (item.children) {
           item.children.map((child: any) => {
             child.value = child.id;
           });
+          item.children.unshift({ text: "全部", value: -1 });
+        }
+
         return item;
       });
       console.log(temp);
@@ -428,14 +442,14 @@ export default defineComponent({
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
-      const categoryId =
-        this.categoryValue === -1 ? undefined : this.treeActiveId;
+      const categoryIds =
+        this.categoryValue === -1 ? undefined : this.treeActiveIds;
       const res = await fetchGoodsList({
         current: this.current,
         size: this.size,
         status,
         descOrders,
-        categoryId,
+        categoryIds,
         name: this.searchValue,
       }).catch((err) => {
         this.loading = false;
