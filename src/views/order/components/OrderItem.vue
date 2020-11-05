@@ -30,11 +30,13 @@
       </div>
     </div>
     <div class="order-item__status" v-if="!isView">
-      <span class="order-item__status--time"
-        >下单时间: {{ order.createTime }}</span
-      >
+      <span class="order-item__status--time">{{
+        type != "customer" ? `下单时间: ${order.createTime}` : ""
+      }}</span>
       <template v-if="order.orderStatus == 1">
-        <van-button round type="primary">发货</van-button>
+        <van-button round type="primary" v-if="type == 'enterprise'"
+          >发货</van-button
+        >
       </template>
       <template
         v-else-if="
@@ -44,6 +46,16 @@
         "
       >
         <van-button round @click="viewExpress(order)">查看物流</van-button>
+        <van-button
+          round
+          type="primary"
+          v-if="(order.orderStatus == 2 && type == 'customer')"
+          style="margin-left: 10px"
+          >确认收货</van-button
+        >
+      </template>
+      <template v-else-if="order.orderStatus == 0">
+        <van-button round v-if="type == 'customer'">取消订单</van-button>
       </template>
     </div>
   </div>
@@ -58,6 +70,10 @@ export default defineComponent({
     isView: {
       type: Boolean,
       default: false,
+    },
+    type: {
+      type: String,
+      default: "enterprise",
     },
   },
   data() {
@@ -122,11 +138,14 @@ export default defineComponent({
     align-items: center;
     &--time {
       color: rgba($color: #fff, $alpha: 0.4);
+      flex: 1;
+      text-align: left;
     }
     .van-button--primary {
       @include gy-btn-plain;
       width: 90px;
       height: 32px;
+      font-size: 14px;
     }
     .van-button--default {
       @include gy-btn-default;

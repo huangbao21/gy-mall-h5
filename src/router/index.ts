@@ -117,10 +117,34 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '企业主订单管理' }
   },
   {
+    path: '/agentOrder',
+    name: 'AgentOrder',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/AgentOrder.vue'),
+    meta: { title: '代理商订单管理' }
+  },
+  {
+    path: '/customerOrder',
+    name: 'CustomerOrder',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/CustomerOrder.vue'),
+    meta: { title: '客户订单管理' }
+  },
+  {
     path: '/enterpriseOrderView',
     name: 'EnterpriseOrderView',
     component: () => import(/* webpackChunkName: "order" */ '../views/order/EnterpriseOrderView.vue'),
     meta: { title: '企业主订单详情' }
+  },
+  {
+    path: '/agentOrderView',
+    name: 'AgentOrderView',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/AgentOrderView.vue'),
+    meta: { title: '代理商订单详情' }
+  },
+  {
+    path: '/customerOrderView',
+    name: 'CustomerOrderView',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/CustomerOrderView.vue'),
+    meta: { title: '客户订单详情' }
   },
   {
     path: '/goods',

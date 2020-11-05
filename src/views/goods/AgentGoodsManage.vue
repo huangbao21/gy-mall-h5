@@ -8,27 +8,10 @@
       @click-right="onClickRight"
     >
       <template #title>
-        <van-dropdown-menu>
-          <van-dropdown-item
-            :title="sortTitle"
-            v-model="sortValue"
-            ref="sortDropRef"
-            class="active"
-          >
-            <div class="dropdown-panel">
-              <div
-                class="cell"
-                v-for="cell in sortOption"
-                :key="cell.value"
-                @click="changeDropdownValue(cell, 'sort')"
-              >
-                <span :class="{ active: sortValue == cell.value }">{{
-                  cell.text
-                }}</span>
-              </div>
-            </div>
-          </van-dropdown-item>
-        </van-dropdown-menu>
+        <div class="title" @click="showSheet = true">
+          <span>我的商品</span>
+          <van-icon name="arrow-down" color="#fff" />
+        </div>
       </template>
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
@@ -198,6 +181,12 @@
         >
       </template>
     </div>
+    <van-action-sheet
+      v-model:show="showSheet"
+      :actions="supplierList"
+      cancel-text="取消"
+      class="gy-sheet"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -209,6 +198,7 @@ import {
   batchAgentGoodsOnDown,
   delAgentGood,
   fetchCategoryList,
+  fetchSupplierList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import GoodItem from "@/components/GoodItem.vue";
@@ -239,13 +229,15 @@ export default defineComponent({
       allChecked: false,
       showActionPanel: true,
       batchAction: false,
-      sortValue: "-1",
+      showSheet: false,
       goodsValue: -1,
       categoryValue: -1,
       checkedNum: 0,
+      sortValue: "-1",
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
+      supplierList: [{ name: "我的商品", agencyId: -1 }],
       sortOption: [
         {
           text: "智能排序",
@@ -295,6 +287,7 @@ export default defineComponent({
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
     this.getCategoryList();
+    this.getSupplierList();
   },
   methods: {
     toView() {
@@ -308,6 +301,13 @@ export default defineComponent({
     },
     setGoodItemRef(el: any) {
       this.goodItemRefs.push(el);
+    },
+    async getSupplierList() {
+      const res = await fetchSupplierList();
+      res.data.records.map((item: any) => {
+        item.name = item.shopName;
+      });
+      this.supplierList.push(...res.data.records);
     },
     async goodActionEvent(name: string, item: any, index: number) {
       // edit putaway soldout del

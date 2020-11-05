@@ -41,6 +41,9 @@
       padding:0;
       line-height: 36px;
     }
+    :deep(.van-search__action:active){
+      background-color: unset;
+    }
     :deep(.van-field__right-icon) {
       position: absolute;
       right: 10px;

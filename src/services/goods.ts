@@ -46,3 +46,6 @@ export function delGood(data: { id: number }): Promise<PostData> {
 export function delAgentGood(data: { id: number }): Promise<PostData> {
   return axios.post(API.AGENT_GOOD_DEL, data);
 }
+export function fetchSupplierList(data?: { current: 1; size: -1 }): Promise<PostData> {
+  return axios.post(API.SUPPLIER_LIST, data);
+}
