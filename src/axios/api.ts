@@ -16,6 +16,9 @@ export default class API {
   static GOODS_SAVE = `${APP_SERVICE}authc/product/save`;
   static GOODS_UPDATE = `${APP_SERVICE}authc/product/update`;
 
+  // 物流
+  static QUERY_LOGISTICS = `${APP_SERVICE}authc/logistics/find_logistics`
+
   // 商品管理
   static GOODS_LIST = `${APP_SERVICE}authc/product/find_page_for_supplier`
   static GOODS_ON_DOWN = `${APP_SERVICE}authc/product/all_on_or_down`

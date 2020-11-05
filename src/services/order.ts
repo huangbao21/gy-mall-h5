@@ -7,3 +7,6 @@ export function fetchOrderSupplierList(data: { current: number; size: number; or
 export function queryOrderDetail(data: { id: number }): Promise<PostData> {
   return axios.post(API.ORDER_VIEW, data);
 }
+export function queryLogistics(data: { id: number }): Promise<PostData> {
+  return axios.post(API.QUERY_LOGISTICS, data);
+}

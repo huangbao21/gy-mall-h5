@@ -43,7 +43,7 @@
           order.orderStatus == 4
         "
       >
-        <van-button round>查看物流</van-button>
+        <van-button round @click="viewExpress(order)">查看物流</van-button>
       </template>
     </div>
   </div>
@@ -60,9 +60,18 @@ export default defineComponent({
       default: false,
     },
   },
+  data() {
+    return {
+      expressPopup: false,
+      expressInfo: {} as object,
+    };
+  },
   methods: {
     viewOrder(order: any) {
       this.$emit("click-order", order);
+    },
+    viewExpress(order: any) {
+      this.$emit("view-express", order);
     },
   },
 });

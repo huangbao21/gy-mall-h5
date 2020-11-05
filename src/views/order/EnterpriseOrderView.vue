@@ -37,22 +37,23 @@
           <div class="order-info__profile-row">
             <span class="name">订单编号:</span>
             <span class="val">{{ orderInfo.detailSn }}</span>
-            <span class="btn">复制</span>
+            <span
+              class="btn"
+              @click="copy"
+              id="copy"
+              :data-clipboard-text="orderInfo.detailSn"
+              >复制</span
+            >
           </div>
           <div class="order-info__profile-row">
             <span class="name">下单时间:</span>
             <span class="val">{{ orderInfo.createTime }}</span>
           </div>
-          <div class="order-info__profile-row">
-            <span class="name">物流编号:</span>
-            <span class="val">{{ orderInfo.logisticsId }}</span>
-            <span class="support">中通快递</span>
-          </div>
         </div>
         <div class="order-info__money">
           <div class="order-info__money-row">
             <span>商品总额</span>
-            <span>￥ {{ orderInfo.payAmount }}</span>
+            <span>￥ {{ orderInfo.amount }}</span>
           </div>
           <div class="order-info__money-row">
             <span>运费</span>
@@ -60,28 +61,56 @@
           </div>
           <div class="order-info__money-row--total">
             <span>合计付款：</span>
-            <span class="sum">￥ {{ orderInfo.payAmount }}</span>
+            <span class="sum">￥ {{ orderInfo.amount }}</span>
           </div>
         </div>
       </div>
-      <div class="footer-action"></div>
+      <div
+        class="footer-action"
+        v-if="
+          orderInfo.orderStatus == 1 ||
+          orderInfo.orderStatus == 2 ||
+          orderInfo.orderStatus == 3
+        "
+      >
+        <van-button
+          round
+          plain
+          type="primary"
+          v-if="orderInfo.orderStatus == 1"
+          >去发货</van-button
+        >
+        <van-button round v-else @click="expressPopup = true"
+          >查看物流</van-button
+        >
+      </div>
     </main>
   </div>
+  <express-popup
+    :order-info="orderInfo"
+    :express-info="expressInfo"
+    v-model="expressPopup"
+  ></express-popup>
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-import { queryOrderDetail } from "@/services/order";
+import { queryLogistics, queryOrderDetail } from "@/services/order";
 import { defineComponent } from "vue";
+import ClipboardJs from "clipboard";
 import OrderItem from "./components/OrderItem.vue";
+import ExpressPopup from "./components/ExpressPopup.vue";
 export default defineComponent({
   name: "EnterpriseOrderView",
   components: {
     OrderItem,
+    ExpressPopup,
   },
   data() {
     return {
       orderId: -1,
       orderInfo: {} as object,
+      expressInfo: {} as object,
+      expressPopup: false,
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -92,10 +121,25 @@ export default defineComponent({
   },
   mounted() {
     this.getOrderDetail();
+    this.queryExpress();
   },
   methods: {
     toView() {
       this.$router.go(-1);
+    },
+    copy() {
+      console.log(123);
+      const clipboard = new ClipboardJs("#copy");
+      clipboard.on("success", (e) => {
+        this.$toast("复制成功");
+      });
+      clipboard.on("error", (e) => {
+        this.$toast("复制失败");
+      });
+    },
+    async queryExpress() {
+      const res = await queryLogistics({ id: this.orderId });
+      this.expressInfo = res.data;
     },
     async getOrderDetail() {
       const res = await queryOrderDetail({ id: this.orderId });
@@ -111,7 +155,13 @@ export default defineComponent({
   flex-direction: column;
   height: 100%;
 }
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .order-info {
+  flex: 1;
   &--status {
     height: 74px;
     color: #fff;
@@ -165,6 +215,13 @@ export default defineComponent({
       .name {
         margin-right: 10px;
       }
+      .btn {
+        padding: 2px 4px;
+        background-color: #fff;
+        border-radius: 2px;
+        color: #000;
+        margin-left: 7px;
+      }
     }
   }
   &__money {
@@ -192,5 +249,20 @@ export default defineComponent({
 }
 .footer-action {
   background-color: $contentBgColor;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 7px;
+  padding-bottom: 27px;
+  text-align: right;
+  .van-button--primary {
+    @include gy-btn-primary;
+  }
+  :deep(.van-checkbox__label) {
+    color: #fff;
+  }
+  .van-button--default {
+    @include gy-btn-default;
+    height: 36px;
+  }
 }
 </style>

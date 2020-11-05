@@ -38,6 +38,7 @@
               :key="order.id"
               :order="order"
               @click-order="viewOrder"
+              @view-express="viewExpress"
             ></order-item>
           </van-list>
         </div>
@@ -49,6 +50,8 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              @click-order="viewOrder"
+              @view-express="viewExpress"
             ></order-item>
           </van-list>
         </div>
@@ -60,6 +63,8 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              @click-order="viewOrder"
+              @view-express="viewExpress"
             ></order-item>
           </van-list>
         </div>
@@ -71,22 +76,32 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              @click-order="viewOrder"
+              @view-express="viewExpress"
             ></order-item>
           </van-list>
         </div>
       </van-tab>
     </van-tabs>
   </div>
+  <express-popup
+    :order-info="currentOrder"
+    :express-info="expressInfo"
+    v-model="expressPopup"
+  ></express-popup>
 </template>
 <script lang="ts">
 /* eslint-disable indent */
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
-import { fetchOrderSupplierList } from "@/services/order";
+import { fetchOrderSupplierList, queryLogistics } from "@/services/order";
+import ExpressPopup from "./components/ExpressPopup.vue";
+
 export default defineComponent({
   name: "EnterpriseOrder",
   components: {
     OrderItem,
+    ExpressPopup,
   },
   data() {
     return {
@@ -97,11 +112,20 @@ export default defineComponent({
       size: 10,
       tabActive: "all",
       list: [] as object[],
+      currentOrder: {} as object,
+      expressInfo: {} as object,
+      expressPopup: false,
     };
   },
   methods: {
     toView() {
       this.$router.go(-1);
+    },
+    async viewExpress(order: any) {
+      const res = await queryLogistics({ id: order.id });
+      this.currentOrder = order;
+      this.expressInfo = res.data;
+      this.expressPopup = true;
     },
     viewOrder(order: any) {
       this.$router.push({
