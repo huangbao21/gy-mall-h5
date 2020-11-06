@@ -20,10 +20,20 @@ import {
   Search,
   Checkbox,
   CheckboxGroup,
-  DropdownMenu, DropdownItem, Swipe, SwipeItem, AddressEdit, Switch, SwipeCell, AddressList, ActionSheet
+  DropdownMenu,
+  DropdownItem,
+  Swipe,
+  SwipeItem,
+  AddressEdit,
+  Switch,
+  SwipeCell,
+  AddressList,
+  ActionSheet,
+  Step,
+  Steps
 } from "vant";
 
-export default function (app: any) {
+export default function(app: any) {
   app
     .use(Button)
     .use(NavBar)
@@ -46,5 +56,14 @@ export default function (app: any) {
     .use(Checkbox)
     .use(CheckboxGroup)
     .use(DropdownMenu)
-    .use(DropdownItem).use(Swipe).use(SwipeItem).use(AddressEdit).use(Switch).use(SwipeCell).use(AddressList).use(ActionSheet);
+    .use(DropdownItem)
+    .use(Swipe)
+    .use(SwipeItem)
+    .use(AddressEdit)
+    .use(Switch)
+    .use(SwipeCell)
+    .use(AddressList)
+    .use(ActionSheet)
+    .use(Step)
+    .use(Steps);
 }

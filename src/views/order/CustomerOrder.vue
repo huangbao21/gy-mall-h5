@@ -1,5 +1,5 @@
 <template>
-  <div class="enterprise-order nav-bar">
+  <div class="customer-order nav-bar">
     <van-nav-bar title="订单管理" :border="false" @click-left="toView">
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
@@ -37,6 +37,7 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              type="customer"
               @click-order="viewOrder"
               @view-express="viewExpress"
             ></order-item>
@@ -50,6 +51,7 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              type="customer"
               @click-order="viewOrder"
               @view-express="viewExpress"
             ></order-item>
@@ -63,6 +65,7 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              type="customer"
               @click-order="viewOrder"
               @view-express="viewExpress"
             ></order-item>
@@ -76,6 +79,7 @@
               v-for="order in list"
               :key="order.id"
               :order="order"
+              type="customer"
               @click-order="viewOrder"
               @view-express="viewExpress"
             ></order-item>
@@ -94,11 +98,11 @@
 /* eslint-disable indent */
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
-import { fetchOrderSupplierList, queryLogistics } from "@/services/order";
+import { fetchOrderCustomerList, queryLogistics } from "@/services/order";
 import ExpressPopup from "./components/ExpressPopup.vue";
 
 export default defineComponent({
-  name: "EnterpriseOrder",
+  name: "CustomerOrder",
   components: {
     OrderItem,
     ExpressPopup,
@@ -129,7 +133,7 @@ export default defineComponent({
     },
     viewOrder(order: any) {
       this.$router.push({
-        path: "/enterpriseOrderView",
+        path: "/customerOrderView",
         query: { orderId: order.id },
       });
     },
@@ -158,7 +162,7 @@ export default defineComponent({
           : this.tabActive === "toReceive"
           ? 2
           : 4;
-      const res = await fetchOrderSupplierList({
+      const res = await fetchOrderCustomerList({
         current: this.current,
         size: this.size,
         orderStatus,
@@ -182,7 +186,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.enterprise-order {
+.customer-order {
   min-height: 100%;
   background-color: $bgColor;
 }

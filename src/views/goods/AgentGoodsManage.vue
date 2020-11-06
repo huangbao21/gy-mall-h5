@@ -4,10 +4,15 @@
     <van-nav-bar
       :border="false"
       @click-left="toView"
-      title="我的商品"
-      :right-text="batchAction ? '取消' : '添加商品'"
+      :right-text="batchAction ? '取消' : '挑选商品'"
       @click-right="onClickRight"
     >
+      <template #title>
+        <div class="title" @click="showSheet = true">
+          <span>我的商品</span>
+          <van-icon name="arrow-down" color="#fff" />
+        </div>
+      </template>
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
@@ -147,7 +152,7 @@
           type="primary"
           @click="batchAction = true"
           class="batch"
-          >批量管理</van-button
+          >批量处理</van-button
         >
       </template>
       <template v-else>
@@ -176,17 +181,24 @@
         >
       </template>
     </div>
+    <van-action-sheet
+      v-model:show="showSheet"
+      :actions="supplierList"
+      cancel-text="取消"
+      class="gy-sheet"
+    />
   </div>
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 import { defineComponent } from "vue";
 import {
-  fetchGoodsList,
-  allGoodsOnDown,
-  batchGoodsOnDown,
-  delGood,
+  fetchAgentGoodsList,
+  allAgentGoodsOnDown,
+  batchAgentGoodsOnDown,
+  delAgentGood,
   fetchCategoryList,
+  fetchSupplierList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import GoodItem from "@/components/GoodItem.vue";
@@ -217,13 +229,15 @@ export default defineComponent({
       allChecked: false,
       showActionPanel: true,
       batchAction: false,
-      sortValue: "-1",
+      showSheet: false,
       goodsValue: -1,
       categoryValue: -1,
       checkedNum: 0,
+      sortValue: "-1",
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
+      supplierList: [{ name: "我的商品", agencyId: -1 }],
       sortOption: [
         {
           text: "智能排序",
@@ -273,6 +287,7 @@ export default defineComponent({
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
     this.getCategoryList();
+    this.getSupplierList();
   },
   methods: {
     toView() {
@@ -287,6 +302,13 @@ export default defineComponent({
     setGoodItemRef(el: any) {
       this.goodItemRefs.push(el);
     },
+    async getSupplierList() {
+      const res = await fetchSupplierList();
+      res.data.records.map((item: any) => {
+        item.name = item.shopName;
+      });
+      this.supplierList.push(...res.data.records);
+    },
     async goodActionEvent(name: string, item: any, index: number) {
       // edit putaway soldout del
       switch (name) {
@@ -297,12 +319,12 @@ export default defineComponent({
           });
           break;
         case "putaway":
-          await batchGoodsOnDown({ isTrue: 1, idList: [item.id] });
+          await batchAgentGoodsOnDown({ isTrue: 1, idList: [item.id] });
           item.status = 1;
           this.goodItemRefs[index].actionEvent("close");
           break;
         case "soldout":
-          await batchGoodsOnDown({ isTrue: 0, idList: [item.id] });
+          await batchAgentGoodsOnDown({ isTrue: 0, idList: [item.id] });
           item.status = 3;
           this.goodItemRefs[index].actionEvent("close");
           break;
@@ -312,7 +334,7 @@ export default defineComponent({
             confirmButtonText: "删除",
             className: "gy-dialog",
           });
-          await delGood({ id: item.id });
+          await delAgentGood({ id: item.id });
           this.goodItemRefs[index].actionEvent("close");
           this.list.splice(index, 1);
 
@@ -337,7 +359,7 @@ export default defineComponent({
           className: "gy-dialog",
           confirmButtonText: `${isTrue ? "上架" : "下架"}`,
         });
-        await batchGoodsOnDown({ isTrue, idList });
+        await batchAgentGoodsOnDown({ isTrue, idList });
         this.reloadList();
       } else {
         await this.$dialog.confirm({
@@ -345,7 +367,7 @@ export default defineComponent({
           className: "gy-dialog",
           confirmButtonText: `${isTrue ? "上架" : "下架"}`,
         });
-        await allGoodsOnDown({ isTrue });
+        await allAgentGoodsOnDown({ isTrue });
         this.reloadList();
       }
     },
@@ -447,7 +469,7 @@ export default defineComponent({
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
-      const res = await fetchGoodsList({
+      const res = await fetchAgentGoodsList({
         current: this.current,
         size: this.size,
         status,
@@ -499,7 +521,7 @@ export default defineComponent({
 }
 
 .footer-action {
-  background-color: $contentBgColor;
+  background-color: #1e183c;
   display: flex;
   padding-left: 20px;
   padding-right: 20px;

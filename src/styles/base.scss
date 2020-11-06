@@ -18,6 +18,9 @@
     color: #00ffd2;
     font-size: 16px;
   }
+  :deep(.van-tab){
+    font-size: 16px;
+  }
 }
 .gy-search {
   .search-btn {
@@ -37,6 +40,9 @@
     :deep(.van-search__action){
       padding:0;
       line-height: 36px;
+    }
+    :deep(.van-search__action:active){
+      background-color: unset;
     }
     :deep(.van-field__right-icon) {
       position: absolute;
