@@ -14,20 +14,29 @@
     </van-nav-bar>
     <van-tabs v-model:active="activeIndex" class="gy-tabs">
       <van-tab title="门槛设置">
-        <van-dropdown-menu>
+       <!--  <van-dropdown-menu>
           <van-dropdown-item
             v-model="value"
-            :options="conditionOption"
+            :options="actions"
             @change="handleValueChange"
           />
-        </van-dropdown-menu>
+        </van-dropdown-menu> -->
+        <van-cell
+          is-link
+          :title="valueToName"
+          @click="show = true"
+          arrow-direction="down"
+          class="select-item"
+        />
+        <van-action-sheet
+          v-model:show="show"
+          :actions="actions"
+          @select="onSelect"
+        />
         <div class="condition-content">
           <div
             class="input-wrapper"
-            v-if="
-              this.conditionOption.length &&
-              value === this.conditionOption[1].value
-            "
+            v-if="this.actions.length && value === this.actions[1].value"
           >
             <van-field
               v-model="consumeNumber"
@@ -41,10 +50,7 @@
           </div>
           <div
             class="input-wrapper"
-            v-if="
-              this.conditionOption.length &&
-              value === this.conditionOption[0].value
-            "
+            v-if="this.actions.length && value === this.actions[0].value"
           >
             <van-field
               v-model="consumeTime"
@@ -57,10 +63,7 @@
             <span class="input-sign">次</span>
           </div>
           <van-field
-            v-if="
-              this.conditionOption.length &&
-              value === this.conditionOption[2].value
-            "
+            v-if="this.actions.length && value === this.actions[2].value"
             v-model="goodsTitle"
             right-icon="arrow"
             placeholder="显示图标"
@@ -132,8 +135,9 @@ export default defineComponent({
   data() {
     return {
       activeIndex: 0,
-      conditionOption: [],
+      actions: [],
       value: 1,
+      valueToName: "消费次数",
       current: 1,
       size: 10,
       staffRatio: "",
@@ -149,6 +153,7 @@ export default defineComponent({
       addGood: false,
       ratioEditSave: false,
       conditionEditSave: false,
+      show: false,
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -173,6 +178,13 @@ export default defineComponent({
     }
   },
   methods: {
+    onSelect(item) {
+      // 默认情况下点击选项时不会自动收起
+      // 可以通过 close-on-click-action 属性开启自动收起
+      this.show = false;
+      this.value = item.value;
+      this.valueToName = item.msg;
+    },
     onClickLeft() {
       let msg = "";
       if (!this.ratioEditSave || !this.conditionEditSave) {
@@ -229,13 +241,12 @@ export default defineComponent({
     },
     async queryCondition() {
       const res = await queryCondition();
-      this.value = res.data.type;
-      console.log(`查询条件`);
+      res.data.type && (this.value = res.data.type);
       if (res.data.type === 1) {
         this.consumeTime = res.data.conditionValue;
       } else if (res.data.type === 2) {
         this.consumeNumber = res.data.conditionValue;
-      } else {
+      } else if (res.data.type === 3) {
         this.goodsTitle = res.data.title;
         this.selectedId = res.data.conditionValue;
       }
@@ -247,8 +258,9 @@ export default defineComponent({
       for (let i = 0; i < res.data.length; i++) {
         res.data[i].text = res.data[i].msg;
         res.data[i].value = res.data[i].code;
+        res.data[i].name = res.data[i].msg;
       }
-      this.conditionOption.push(...res.data);
+      this.actions.push(...res.data);
     },
     async handleValueChange(value) {
       console.log(value);
@@ -301,6 +313,10 @@ export default defineComponent({
   height: 100%;
   :deep(.van-tabs__content) {
     padding: 18px 18px;
+  }
+  .select-item {
+    width: 120px;
+    margin-bottom: 18px;
   }
   .van-cell {
     background-color: #1e183c;

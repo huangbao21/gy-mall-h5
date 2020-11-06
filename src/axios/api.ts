@@ -48,4 +48,15 @@ export default class API {
   static SAVE_RATIO = `${APP_SERVICE}authc/agency_customer/save_ratio`
   static QUERY_RATIO = `${APP_SERVICE}authc/agency_customer/find_ratio`
   static QUERY_CONDITION = `${APP_SERVICE}authc/agency_customer/find_condition`
+
+  // 地址列表
+  static ADDRESS_LIST = `${APP_SERVICE}authc/address/find_page`;
+  static SAVE_ADDRESS = `${APP_SERVICE}authc/address/save`;
+  static AREA_LIST = `${APP_SERVICE}authc/district/find_all`;
+  static ADDRESS_INFO = `${APP_SERVICE}authc/address/view`;
+  static DELETE_ADDRESS = `${APP_SERVICE}authc/address/delete`;
+  static SET_ADDRESS_DEFAULT = `${APP_SERVICE}authc/address/set_default`;
+
+  // 工作台
+  static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;
 }

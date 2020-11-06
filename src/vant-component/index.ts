@@ -20,7 +20,7 @@ import {
   Search,
   Checkbox,
   CheckboxGroup,
-  DropdownMenu, DropdownItem, Swipe, SwipeItem
+  DropdownMenu, DropdownItem, Swipe, SwipeItem, AddressEdit, Switch, SwipeCell, AddressList, ActionSheet
 } from "vant";
 
 export default function (app: any) {
@@ -46,5 +46,5 @@ export default function (app: any) {
     .use(Checkbox)
     .use(CheckboxGroup)
     .use(DropdownMenu)
-    .use(DropdownItem).use(Swipe).use(SwipeItem);
+    .use(DropdownItem).use(Swipe).use(SwipeItem).use(AddressEdit).use(Switch).use(SwipeCell).use(AddressList).use(ActionSheet);
 }

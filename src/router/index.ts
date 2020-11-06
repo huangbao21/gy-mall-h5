@@ -113,6 +113,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Goods',
     component: () => import('../views/system/Goods.vue'),
     meta: { title: '选择商品' }
+  },
+  {
+    path: '/addressEdit',
+    name: 'AddressEdit',
+    component: () => import('../views/address/AddressEdit.vue'),
+    meta: { title: '添加地址' }
+  },
+  {
+    path: '/address',
+    name: 'Address',
+    component: () => import('../views/address/Address.vue'),
+    meta: { title: '收货地址管理' }
   }
 ]
 
