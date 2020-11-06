@@ -19,13 +19,12 @@
         }}</span>
       </van-image>
       <div class="card-good-info">
-        <div
-          class="card-good-actions"
-          v-if="showActionPanel"
-          @click.stop
-        >
+        <div class="card-good-actions" v-if="showActionPanel" @click.stop>
           <template
-            v-if="good.status == 0 || good.status == 3 || good.status == 4"
+            v-if="
+              (good.status == 0 || good.status == 3 || good.status == 4) &&
+              type == 'enterprise'
+            "
           >
             <div
               class="card-good__action card-good__action--editor"
@@ -131,6 +130,10 @@ export default defineComponent({
     showAction: {
       type: Boolean,
       default: false,
+    },
+    type: {
+      type: String,
+      default: "enterprise",
     },
   },
   setup() {

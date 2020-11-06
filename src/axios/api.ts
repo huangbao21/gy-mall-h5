@@ -31,12 +31,16 @@ export default class API {
   static AGENT_GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product_agency/batch_on_or_down`
   static AGENT_GOODS_ON_DOWN = `${APP_SERVICE}authc/product_agency/all_on_or_down`
   static AGENT_GOOD_DEL = `${APP_SERVICE}authc/product_agency/delete`
+  static AGENT_GOOD_DETAIL = `${APP_SERVICE}authc/product_agency/view`
+  static AGENT_GOOD_SELECT = `${APP_SERVICE}authc/product_agency/select_product`
+
   static AGENT_STOCK_BATCH = `${APP_SERVICE}authc/product_agency/batch_stock_or_out`
   static SUPPLIER_LIST = `${APP_SERVICE}authc/agency_firm/find_supplier_page`
 
   // 订单管理
   static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
   static ORDER_VIEW = `${APP_SERVICE}authc/order_supplier/view`
+  static order_deliver = `${APP_SERVICE}authc/order_supplier/deliver`
 
   // 代理商订单管理
   static ORDER_AGENT = `${APP_SERVICE}authc/order_agency/find_page`
@@ -45,6 +49,8 @@ export default class API {
   // 客户订单管理
   static ORDER_CUSTOMER = `${APP_SERVICE}authc/order_customer/find_page`
   static CUSTOMER_ORDER_VIEW = `${APP_SERVICE}authc/order_customer/view`
+  static CANCEL_ORDER = `${APP_SERVICE}authc/order_customer/cancel`
+  static RECEIPT_ORDER = `${APP_SERVICE}authc/order_customer/receipt`
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`

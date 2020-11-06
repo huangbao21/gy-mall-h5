@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 <template>
   <div class="goods-manage nav-bar">
     <van-nav-bar
@@ -180,6 +179,7 @@
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent } from "vue";
 import {
   fetchGoodsList,
@@ -297,11 +297,21 @@ export default defineComponent({
           });
           break;
         case "putaway":
+          await this.$dialog.confirm({
+            message: "确定上架该商品?",
+            confirmButtonText: "上架",
+            className: "gy-dialog",
+          });
           await batchGoodsOnDown({ isTrue: 1, idList: [item.id] });
           item.status = 1;
           this.goodItemRefs[index].actionEvent("close");
           break;
         case "soldout":
+          await this.$dialog.confirm({
+            message: "确定下架该商品?",
+            confirmButtonText: "下架",
+            className: "gy-dialog",
+          });
           await batchGoodsOnDown({ isTrue: 0, idList: [item.id] });
           item.status = 3;
           this.goodItemRefs[index].actionEvent("close");

@@ -39,6 +39,8 @@
               :order="order"
               type="customer"
               @click-order="viewOrder"
+              @cancel-order="cancelOrder"
+              @receipt-order="receiptOrder"
               @view-express="viewExpress"
             ></order-item>
           </van-list>
@@ -53,6 +55,8 @@
               :order="order"
               type="customer"
               @click-order="viewOrder"
+              @cancel-order="cancelOrder"
+              @receipt-order="receiptOrder"
               @view-express="viewExpress"
             ></order-item>
           </van-list>
@@ -67,6 +71,8 @@
               :order="order"
               type="customer"
               @click-order="viewOrder"
+              @cancel-order="cancelOrder"
+              @receipt-order="receiptOrder"
               @view-express="viewExpress"
             ></order-item>
           </van-list>
@@ -81,6 +87,8 @@
               :order="order"
               type="customer"
               @click-order="viewOrder"
+              @cancel-order="cancelOrder"
+              @receipt-order="receiptOrder"
               @view-express="viewExpress"
             ></order-item>
           </van-list>
@@ -98,7 +106,12 @@
 /* eslint-disable indent */
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
-import { fetchOrderCustomerList, queryLogistics } from "@/services/order";
+import {
+  fetchOrderCustomerList,
+  queryLogistics,
+  cacelOrder as cacelOrderService,
+  receiptOrder as receiptOrderService,
+} from "@/services/order";
 import ExpressPopup from "./components/ExpressPopup.vue";
 
 export default defineComponent({
@@ -136,6 +149,24 @@ export default defineComponent({
         path: "/customerOrderView",
         query: { orderId: order.id },
       });
+    },
+    async cancelOrder(order: any) {
+      await this.$dialog.confirm({
+        message: "确定取消订单？",
+        confirmButtonText: "确定",
+        className: "gy-dialog",
+      });
+      await cacelOrderService({ id: order.id });
+      order.orderStatus = 5;
+    },
+    async receiptOrder(order: any) {
+      await this.$dialog.confirm({
+        message: "是否确认收货？",
+        confirmButtonText: "确认",
+        className: "gy-dialog",
+      });
+      await receiptOrderService({ id: order.id });
+      order.orderStatus = 4;
     },
     onLoad() {
       this.current += 1;

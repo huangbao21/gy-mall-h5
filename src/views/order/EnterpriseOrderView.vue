@@ -78,6 +78,7 @@
           plain
           type="primary"
           v-if="orderInfo.orderStatus == 1"
+          @click="dealDeliver(orderInfo)"
           >去发货</van-button
         >
         <van-button round v-else @click="expressPopup = true"
@@ -108,20 +109,21 @@ export default defineComponent({
   data() {
     return {
       orderId: -1,
-      orderInfo: {} as object,
+      orderInfo: {} as any,
       expressInfo: {} as object,
       expressPopup: false,
     };
   },
   beforeRouteEnter(to, from, next) {
     next((vm: any) => {
-      console.log(to);
       vm.orderId = to.query.orderId;
     });
   },
   mounted() {
     this.getOrderDetail();
-    this.queryExpress();
+    if (this.orderInfo.orderStatus === 2 || this.orderInfo.orderStatus === 3) {
+      this.queryExpress();
+    }
   },
   methods: {
     toView() {
@@ -136,6 +138,9 @@ export default defineComponent({
       clipboard.on("error", (e) => {
         this.$toast("复制失败");
       });
+    },
+    dealDeliver(order: any) {
+      this.$router.push({ path: "/deliverPage", query: { orderId: order.id } });
     },
     async queryExpress() {
       const res = await queryLogistics({ id: this.orderId });
