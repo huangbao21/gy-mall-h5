@@ -94,8 +94,6 @@ export default defineComponent({
         }
       });
       good.checked = isChecked;
-      console.log(`什么鬼`);
-      console.log(this.list);
     },
     async fetchGoodsList() {
       this.loading = true;

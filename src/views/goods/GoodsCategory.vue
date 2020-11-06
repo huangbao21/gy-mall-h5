@@ -38,36 +38,36 @@ export default defineComponent({
           children: [
             {
               text: "进口食品",
-              id: 1,
+              id: 1
             },
             {
               text: "休闲零食",
-              id: 2,
+              id: 2
             },
             {
               text: "营养保健",
-              id: 3,
-            },
-          ],
+              id: 3
+            }
+          ]
         },
         {
           text: "美妆护肤",
           children: [
             {
               text: "美容护肤",
-              id: 4,
+              id: 4
             },
             {
               text: "彩妆/香水/美妆工具",
-              id: 5,
+              id: 5
             },
             {
               text: "美发/护发/假发",
-              id: 6,
-            },
-          ],
-        },
-      ],
+              id: 6
+            }
+          ]
+        }
+      ]
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -89,13 +89,15 @@ export default defineComponent({
         Toast(`请选择类目`);
         return;
       }
-      this.$router.push({
+      this.$router.replace({
         path: "/goodsAdd",
         query: {
           categoryId: this.activeId,
-          categoryText: `${this.goodsCategory[this.activeIndex].text}/${this.itemText}`,
-          activeIndex: this.activeIndex,
-        },
+          categoryText: `${this.goodsCategory[this.activeIndex].text}/${
+            this.itemText
+          }`,
+          activeIndex: this.activeIndex
+        }
       });
     },
     onClickLeft() {
@@ -107,8 +109,8 @@ export default defineComponent({
     },
     handleItemClick(data: { text: string; id: number }) {
       this.itemText = data.text;
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>

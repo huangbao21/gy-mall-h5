@@ -69,7 +69,7 @@
 import { defineComponent } from "vue";
 import {
   fetchCommissionSettingList,
-  queryAgencyAndSales,
+  queryAgencyAndSales
 } from "../../services/reseller";
 export default defineComponent({
   name: "ResellerManagement",
@@ -77,7 +77,7 @@ export default defineComponent({
     return {
       commissionSettingList: [] as object[],
       peopleNumber: 0,
-      saleNumber: 0,
+      saleNumber: 0
     };
   },
   created() {
@@ -85,6 +85,9 @@ export default defineComponent({
     this.queryAgencyAndSales();
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async fetchCommissionSettingList() {
       const res = await fetchCommissionSettingList();
       this.commissionSettingList = res.data;
@@ -104,8 +107,8 @@ export default defineComponent({
     },
     onClickRight() {
       this.$router.push({ path: "/resellerAudit" });
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>
