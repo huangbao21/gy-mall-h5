@@ -54,15 +54,6 @@
         <van-cell class="goods-express" title="运费" value="免邮" />
       </div>
       <div class="goods-detail-img-wrapper">
-        <div
-          class="goods-detail-img-plus"
-          v-if="goodsInfo.productInfoList.length == 0"
-        >
-          <van-uploader style="width: 375px" :after-read="detailAfterRead">
-            <van-icon name="plus" />
-            <span>添加详情图</span>
-          </van-uploader>
-        </div>
         <div class="goods-detail-img-list">
           <div
             class="goods-detail-img-item"

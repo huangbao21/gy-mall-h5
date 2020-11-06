@@ -35,7 +35,9 @@
     <div class="today-data">
       <div class="today-data__title">
         <div class="today-data__title-left">今日数据</div>
-        <div class="today-data__title-right">更新于：07-21 13:21</div>
+        <div class="today-data__title-right">
+          更新于：{{ salesInfo.updateTime }}
+        </div>
       </div>
       <div class="today-data__body">
         <div class="today-order">
@@ -63,7 +65,7 @@
         />
         <div class="operate-item__text">新增商品</div>
       </div>
-      <div class="operate-item">
+      <div class="operate-item" @click="goGoodsManage">
         <img class="operate-item__icon" src="../assets/imgs/home/ic_good.png" />
         <div class="operate-item__text">商品管理</div>
       </div>
@@ -88,7 +90,7 @@
         />
         <div class="operate-item__text">内部管理</div>
       </div>
-      <div class="operate-item">
+      <div class="operate-item" @click="goReseller">
         <img
           class="operate-item__icon"
           src="../assets/imgs/home/ic_reseller.png"
@@ -105,6 +107,7 @@
 import { defineComponent } from "vue";
 // import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
 import { fetchSalesData } from "../services/home";
+import Utils from "../utils/index";
 export default defineComponent({
   name: "Home",
   data() {
@@ -116,7 +119,8 @@ export default defineComponent({
         totalSalesNumber: 0,
         userId: 883420,
         waitSettleNumber: 0,
-      },
+        updateTime: ""
+      }
     };
   },
   components: {
@@ -126,9 +130,16 @@ export default defineComponent({
     this.fetchSalesData();
   },
   methods: {
+    formatTime(stamp: number) {
+      const date = new Date(stamp);
+      return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    },
     async fetchSalesData() {
       const res = await fetchSalesData();
       console.log(res);
+      const updateTime = this.formatTime(res.data.refreshTime);
+      console.log(updateTime);
+      this.salesInfo = { ...this.salesInfo, ...res.data, updateTime };
     },
     goGoodsAdd() {
       this.$router.push({ path: "/goodsAdd" });
@@ -136,10 +147,16 @@ export default defineComponent({
     goSystem() {
       this.$router.push({ path: "/systemManagement" });
     },
+    goReseller() {
+      this.$router.push({ path: "/resellerManagement" });
+    },
+    goGoodsManage() {
+      this.$router.push({ path: "/goodsManage" });
+    },
     handleItemClick($event: any) {
       console.log($event);
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>
@@ -166,6 +183,7 @@ export default defineComponent({
       display: flex;
       justify-content: space-between;
       color: #fff;
+      font-weight: bold;
       &-amount-num {
         font-size: 24px;
       }

@@ -32,6 +32,8 @@
           v-model:show="show"
           :actions="actions"
           @select="onSelect"
+          cancel-text="取消"
+          class="gy-sheet"
         />
         <div class="condition-content">
           <div
