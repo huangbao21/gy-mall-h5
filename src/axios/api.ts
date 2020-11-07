@@ -2,6 +2,7 @@ const NATIVE_BASE_URL = 'gycn://m.gy.cn/';
 const APP_SERVICE = process.env.VUE_APP_H5_API + 'h5-api/';
 export default class API {
   static TO_BACK_APP = `${NATIVE_BASE_URL}toBackApp`;
+  static CALL_PAY_ORDER = `${NATIVE_BASE_URL}callPayOrder`
 
   // 赚钱中心
   static MISSION_LIST = `${APP_SERVICE}authc/mission/find_page`
@@ -51,6 +52,7 @@ export default class API {
   static CUSTOMER_ORDER_VIEW = `${APP_SERVICE}authc/order_customer/view`
   static CANCEL_ORDER = `${APP_SERVICE}authc/order_customer/cancel`
   static RECEIPT_ORDER = `${APP_SERVICE}authc/order_customer/receipt`
+  static CREATE_ORDER = `${APP_SERVICE}authc/order_customer/save`
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`

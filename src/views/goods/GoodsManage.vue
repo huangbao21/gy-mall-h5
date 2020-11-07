@@ -180,7 +180,7 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import {
   fetchGoodsList,
   allGoodsOnDown,
@@ -189,6 +189,7 @@ import {
   fetchCategoryList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
+import useDropmenu from "@/composables/useDropmenu";
 import GoodItem from "@/components/GoodItem.vue";
 export default defineComponent({
   name: "GoodsManage",
@@ -197,8 +198,28 @@ export default defineComponent({
   },
   setup() {
     const { checkRadioColor } = usePropsCom();
+    const { sortOption, goodsOption, categoryOption } = useDropmenu();
+    const getCategoryList = async () => {
+      const res = await fetchCategoryList();
+      const temp = res.data.map((item: any) => {
+        item.value = item.id;
+        if (item.children) {
+          item.children.map((child: any) => {
+            child.value = child.id;
+          });
+          item.children.unshift({ text: "全部", value: -1 });
+        }
+
+        return item;
+      });
+      categoryOption.value.push(...temp);
+    };
+    onMounted(getCategoryList)
     return {
       checkRadioColor,
+      sortOption,
+      goodsOption,
+      categoryOption,
     };
   },
   data() {
@@ -224,55 +245,12 @@ export default defineComponent({
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
-      sortOption: [
-        {
-          text: "智能排序",
-          value: -1,
-        },
-        {
-          text: "销量最高",
-          value: "pp.sales_volume",
-        },
-        {
-          text: "库存最高",
-          value: "pps.quantity",
-        },
-        {
-          text: "价格由高至低",
-          value: "price",
-        },
-      ],
-      goodsOption: [
-        {
-          text: "全部",
-          value: -1,
-        },
-        {
-          text: "待审核",
-          value: 1,
-        },
-        {
-          text: "已上架",
-          value: 2,
-        },
-        {
-          text: "已下架",
-          value: 3,
-        },
-      ],
-      categoryOption: [
-        {
-          text: "全部品类",
-          value: -1,
-        },
-      ],
     };
   },
   mounted() {
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
-    this.getCategoryList();
   },
   methods: {
     toView() {
@@ -328,7 +306,6 @@ export default defineComponent({
 
           break;
       }
-      console.log(name);
     },
     async goodsOnorDown(isTrue: number, batch?: boolean) {
       if (batch) {
@@ -436,22 +413,6 @@ export default defineComponent({
       this.finished = false;
       this.list = [];
     },
-    async getCategoryList() {
-      const res = await fetchCategoryList();
-      const temp = res.data.map((item: any) => {
-        item.value = item.id;
-        if (item.children) {
-          item.children.map((child: any) => {
-            child.value = child.id;
-          });
-          item.children.unshift({ text: "全部", value: -1 });
-        }
-
-        return item;
-      });
-      console.log(temp);
-      this.categoryOption.push(...temp);
-    },
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
@@ -519,7 +480,7 @@ export default defineComponent({
   position: relative;
   .info {
     position: absolute;
-    top: -30px;
+    top: -28px;
     color: #fff;
     background-color: #1c1932;
     left: 0;

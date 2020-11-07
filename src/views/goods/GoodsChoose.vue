@@ -1,11 +1,6 @@
 <template>
-  <div class="agent-goods-manage nav-bar">
-    <van-nav-bar
-      :border="false"
-      @click-left="toView"
-      :right-text="batchAction ? '取消' : '挑选商品'"
-      @click-right="onClickRight"
-    >
+  <div class="goods-choose nav-bar">
+    <van-nav-bar :border="false" @click-left="toView">
       <template #title>
         <div class="title" @click="showSheet = true">
           <span>{{ supplierTitle }}</span>
@@ -110,16 +105,11 @@
           <good-item
             type="agent"
             :good="good"
-            :ref="setGoodItemRef"
             v-for="(good, index) in list"
             :key="good.id"
             :underline="index !== list.length - 1"
-            :show-checkbox="batchAction"
-            :show-action="showActionPanel"
-            @action-edit="goodActionEvent('edit', good, index)"
-            @action-putaway="goodActionEvent('putaway', good, index)"
-            @action-soldout="goodActionEvent('soldout', good, index)"
-            @action-del="goodActionEvent('del', good, index)"
+            show-checkbox
+            forceClickGood
             @click-good="viewGood"
             @update:good-checked="onChangeGoodCheck($event)"
             v-model:good-checked="good.checked"
@@ -127,59 +117,25 @@
         </van-list>
       </div>
     </div>
-
     <div class="footer-action">
-      <template v-if="!batchAction">
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch putaway"
-          @click="goodsOnorDown(1)"
-          >全部上架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch soldout"
-          @click="goodsOnorDown(0)"
-          >全部下架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          @click="batchAction = true"
-          class="batch"
-          >批量处理</van-button
-        >
-      </template>
-      <template v-else>
-        <span class="info">已选 {{ checkedNum }} 件商品</span>
-        <van-checkbox
-          v-model="allChecked"
-          :checked-color="checkRadioColor"
-          @change="onAllCheckedChange"
-          >全选</van-checkbox
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch putaway"
-          @click="goodsOnorDown(1, true)"
-          >批量上架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch soldout"
-          @click="goodsOnorDown(0, true)"
-          >批量下架</van-button
-        >
-      </template>
+      <span class="info">已选 {{ checkedNum }} 件商品</span>
+      <van-checkbox
+        v-model="allChecked"
+        :checked-color="checkRadioColor"
+        @change="onAllCheckedChange"
+        >全选</van-checkbox
+      >
+      <van-button
+        round
+        plain
+        type="primary"
+        class="batch putaway"
+        @click="handleGoodsStocks(1)"
+        >进货</van-button
+      >
+      <van-button round plain type="primary" class="batch soldout" @click="handleGoodsStocks(0)"
+        >退货</van-button
+      >
     </div>
     <van-action-sheet
       v-model:show="showSheet"
@@ -193,21 +149,18 @@
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent, onMounted } from "vue";
 import {
-  fetchAgentGoodsList,
-  allAgentGoodsOnDown,
-  batchAgentGoodsOnDown,
-  delAgentGood,
+  fetchGoodsSelect,
   fetchCategoryList,
   fetchSupplierList,
+  stockOrOutGoods,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import useDropmenu from "@/composables/useDropmenu";
 import GoodItem from "@/components/GoodItem.vue";
 export default defineComponent({
-  name: "AgentGoodsManage",
+  name: "GoodsChoose",
   components: {
     GoodItem,
   },
@@ -229,7 +182,7 @@ export default defineComponent({
       });
       categoryOption.value.push(...temp);
     };
-    onMounted(getCategoryList)
+    onMounted(getCategoryList);
     return {
       checkRadioColor,
       sortOption,
@@ -239,9 +192,7 @@ export default defineComponent({
   },
   data() {
     return {
-      goodItemRefs: [] as any,
       searchValue: "",
-      active: 0,
       current: 0,
       size: 10,
       list: [] as object[],
@@ -251,8 +202,6 @@ export default defineComponent({
       loading: false,
       finished: false,
       allChecked: false,
-      showActionPanel: true,
-      batchAction: false,
       showSheet: false,
       goodsValue: -1,
       categoryValue: -1,
@@ -261,9 +210,9 @@ export default defineComponent({
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
-      supplierList: [{ name: "我的商品", supplierId: -1 }],
+      supplierList: [{ name: "所有企业", supplierId: -1 }],
       supplierId: -1,
-      supplierTitle: "我的商品",
+      supplierTitle: "所有企业",
     };
   },
   mounted() {
@@ -282,8 +231,22 @@ export default defineComponent({
         query: { goodId: good.id, operateType: "show" },
       });
     },
-    setGoodItemRef(el: any) {
-      this.goodItemRefs.push(el);
+    async handleGoodsStocks(isTrue: number) {
+      const idList: any[] = [];
+      this.list.map((item: any) => {
+        if (item.checked) idList.push(item.id);
+      });
+      if (idList.length === 0) {
+        this.$toast("请选择商品");
+        return;
+      }
+      await this.$dialog.confirm({
+        message: `确定选择${isTrue ? "进货" : "退货"}所选商品`,
+        className: "gy-dialog",
+        confirmButtonText: `${isTrue ? "进货" : "退货"}`,
+      });
+      await stockOrOutGoods({ isTrue, idList });
+      this.reloadList();
     },
     async getSupplierList() {
       const res = await fetchSupplierList();
@@ -296,78 +259,6 @@ export default defineComponent({
       this.supplierId = item.supplierId;
       this.supplierTitle = item.name;
       this.reloadList();
-    },
-    async goodActionEvent(name: string, item: any, index: number) {
-      // edit putaway soldout del
-      switch (name) {
-        case "edit":
-          this.$router.push({
-            path: "/goodsAdd",
-            query: { goodId: item.id, operateType: "edit" },
-          });
-          break;
-        case "putaway":
-          await this.$dialog.confirm({
-            message: "确定上架该商品?",
-            confirmButtonText: "上架",
-            className: "gy-dialog",
-          });
-          await batchAgentGoodsOnDown({ isTrue: 1, idList: [item.id] });
-          item.status = 1;
-          this.goodItemRefs[index].actionEvent("close");
-          break;
-        case "soldout":
-          await this.$dialog.confirm({
-            message: "确定下架该商品?",
-            confirmButtonText: "下架",
-            className: "gy-dialog",
-          });
-          await batchAgentGoodsOnDown({ isTrue: 0, idList: [item.id] });
-          item.status = 3;
-          this.goodItemRefs[index].actionEvent("close");
-          break;
-        case "del":
-          await this.$dialog.confirm({
-            message: "确定删除该商品？",
-            confirmButtonText: "删除",
-            className: "gy-dialog",
-          });
-          await delAgentGood({ id: item.id });
-          this.goodItemRefs[index].actionEvent("close");
-          this.list.splice(index, 1);
-
-          break;
-      }
-      console.log(name);
-    },
-    async goodsOnorDown(isTrue: number, batch?: boolean) {
-      if (batch) {
-        const idList: any[] = [];
-        this.list.map((item: any) => {
-          if (item.checked) idList.push(item.id);
-        });
-        if (idList.length === 0) {
-          this.$toast("请选择商品");
-          return;
-        }
-        await this.$dialog.confirm({
-          message: `确定批量${isTrue ? "上架" : "下架"}已选择 ${
-            idList.length
-          } 种商品`,
-          className: "gy-dialog",
-          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
-        });
-        await batchAgentGoodsOnDown({ isTrue, idList });
-        this.reloadList();
-      } else {
-        await this.$dialog.confirm({
-          message: `确定全部${isTrue ? "上架" : "下架"}商品`,
-          className: "gy-dialog",
-          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
-        });
-        await allAgentGoodsOnDown({ isTrue });
-        this.reloadList();
-      }
     },
     onChangeGoodCheck(checked: boolean) {
       if (checked) {
@@ -385,14 +276,6 @@ export default defineComponent({
         this.list.forEach((item: any) => {
           item.checked = false;
         });
-      }
-    },
-
-    onClickRight() {
-      if (this.batchAction) {
-        this.batchAction = false;
-      } else {
-        this.$router.push("/goodsChoose");
       }
     },
     onLoad() {
@@ -442,8 +325,8 @@ export default defineComponent({
     },
     reloadList() {
       this.current = 0;
-      this.batchAction = false;
       this.finished = false;
+      this.allChecked = false;
       this.list = [];
     },
     async getGoodsList() {
@@ -452,7 +335,7 @@ export default defineComponent({
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
       const supplierId = this.supplierId === -1 ? undefined : this.supplierId;
-      const res = await fetchAgentGoodsList({
+      const res = await fetchGoodsSelect({
         current: this.current,
         size: this.size,
         status,
@@ -483,7 +366,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "./styles/style.scss";
 @import "@/styles/base.scss";
-.agent-goods-manage {
+.goods-choose {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -503,7 +386,6 @@ export default defineComponent({
   margin-top: 16px;
   background-color: $contentBgColor;
 }
-
 .footer-action {
   background-color: #1e183c;
   display: flex;

@@ -74,7 +74,7 @@ import {
   fetchAddressList,
   deleteAddress,
   setAddressDefault,
-} from "../../services/address";
+} from "@/services/address";
 export default defineComponent({
   name: "Home",
   data() {
