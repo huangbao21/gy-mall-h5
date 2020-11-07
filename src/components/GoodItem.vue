@@ -153,7 +153,6 @@ export default defineComponent({
   },
   watch: {
     goodChecked(newV: boolean) {
-      console.log(`watch`);
       this.checked = newV;
     },
   },

@@ -130,10 +130,10 @@
         plain
         type="primary"
         class="batch putaway"
-        @click="handleGoodsStocks"
+        @click="handleGoodsStocks(1)"
         >进货</van-button
       >
-      <van-button round plain type="primary" class="batch soldout"
+      <van-button round plain type="primary" class="batch soldout" @click="handleGoodsStocks(0)"
         >退货</van-button
       >
     </div>
@@ -245,7 +245,8 @@ export default defineComponent({
         className: "gy-dialog",
         confirmButtonText: `${isTrue ? "进货" : "退货"}`,
       });
-      // await stockOrOutGoods({ isTrue, idList });
+      await stockOrOutGoods({ isTrue, idList });
+      this.reloadList();
     },
     async getSupplierList() {
       const res = await fetchSupplierList();
@@ -325,6 +326,7 @@ export default defineComponent({
     reloadList() {
       this.current = 0;
       this.finished = false;
+      this.allChecked = false;
       this.list = [];
     },
     async getGoodsList() {
