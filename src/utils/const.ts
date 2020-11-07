@@ -5,3 +5,8 @@ export const AuditStatus = {
 export const AgencyCondition = {
 
 }
+export const AppliedStatus = {
+  resolve: 1,
+  deliver: 0,
+  reject: 2
+}
