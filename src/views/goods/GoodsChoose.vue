@@ -1,12 +1,12 @@
 <template>
-  <div class="goods-manage nav-bar">
-    <van-nav-bar
-      :border="false"
-      @click-left="toView"
-      title="我的商品"
-      :right-text="batchAction ? '取消' : '添加商品'"
-      @click-right="onClickRight"
-    >
+  <div class="goods-choose nav-bar">
+    <van-nav-bar :border="false" @click-left="toView">
+      <template #title>
+        <div class="title" @click="showSheet = true">
+          <span>{{ supplierTitle }}</span>
+          <van-icon name="arrow-down" color="#fff" />
+        </div>
+      </template>
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
@@ -99,100 +99,45 @@
         </div>
       </van-dropdown-item>
     </van-dropdown-menu>
-    <div class="cards-wrapper">
+    <div class="card-wrapper">
       <div class="cards">
         <van-list v-model:loading="loading" :finished="finished" @load="onLoad">
           <good-item
+            type="agent"
             :good="good"
-            :ref="setGoodItemRef"
             v-for="(good, index) in list"
             :key="good.id"
             :underline="index !== list.length - 1"
             :show-checkbox="batchAction"
-            :show-action="showActionPanel"
-            @action-edit="goodActionEvent('edit', good, index)"
-            @action-putaway="goodActionEvent('putaway', good, index)"
-            @action-soldout="goodActionEvent('soldout', good, index)"
-            @action-del="goodActionEvent('del', good, index)"
-            @click-good="viewGood"
             @update:good-checked="onChangeGoodCheck($event)"
             v-model:good-checked="good.checked"
           ></good-item>
         </van-list>
       </div>
     </div>
-
-    <div class="footer-action">
-      <template v-if="!batchAction">
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch putaway"
-          @click="goodsOnorDown(1)"
-          >全部上架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch soldout"
-          @click="goodsOnorDown(0)"
-          >全部下架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          @click="batchAction = true"
-          class="batch"
-          >批量管理</van-button
-        >
-      </template>
-      <template v-else>
-        <span class="info">已选 {{ checkedNum }} 件商品</span>
-        <van-checkbox
-          v-model="allChecked"
-          :checked-color="checkRadioColor"
-          @change="onAllCheckedChange"
-          >全选</van-checkbox
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch putaway"
-          @click="goodsOnorDown(1, true)"
-          >批量上架</van-button
-        >
-        <van-button
-          round
-          plain
-          type="primary"
-          class="batch soldout"
-          @click="goodsOnorDown(0, true)"
-          >批量下架</van-button
-        >
-      </template>
-    </div>
+    <van-action-sheet
+      v-model:show="showSheet"
+      :actions="supplierList"
+      cancel-text="取消"
+      class="gy-sheet"
+      @select="changeSupplier"
+      close-on-click-action
+    />
   </div>
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent, onMounted } from "vue";
 import {
-  fetchGoodsList,
-  allGoodsOnDown,
-  batchGoodsOnDown,
-  delGood,
+  fetchGoodsSelect,
   fetchCategoryList,
+  fetchSupplierList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import useDropmenu from "@/composables/useDropmenu";
 import GoodItem from "@/components/GoodItem.vue";
 export default defineComponent({
-  name: "GoodsManage",
+  name: "GoodsChoose",
   components: {
     GoodItem,
   },
@@ -214,7 +159,7 @@ export default defineComponent({
       });
       categoryOption.value.push(...temp);
     };
-    onMounted(getCategoryList)
+    onMounted(getCategoryList);
     return {
       checkRadioColor,
       sortOption,
@@ -224,9 +169,7 @@ export default defineComponent({
   },
   data() {
     return {
-      goodItemRefs: [] as any,
       searchValue: "",
-      active: 0,
       current: 0,
       size: 10,
       list: [] as object[],
@@ -236,21 +179,25 @@ export default defineComponent({
       loading: false,
       finished: false,
       allChecked: false,
-      showActionPanel: true,
       batchAction: false,
-      sortValue: "-1",
+      showSheet: false,
       goodsValue: -1,
       categoryValue: -1,
       checkedNum: 0,
+      sortValue: "-1",
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
+      supplierList: [{ name: "所有企业", supplierId: -1 }],
+      supplierId: -1,
+      supplierTitle: "所有企业",
     };
   },
   mounted() {
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
+    this.getSupplierList();
   },
   methods: {
     toView() {
@@ -258,83 +205,21 @@ export default defineComponent({
     },
     viewGood(good: any) {
       this.$router.push({
-        path: "/goodsShow",
+        path: "/agentGoodsShow",
         query: { goodId: good.id, operateType: "show" },
       });
     },
-    setGoodItemRef(el: any) {
-      this.goodItemRefs.push(el);
+    async getSupplierList() {
+      const res = await fetchSupplierList();
+      res.data.records.map((item: any) => {
+        item.name = item.shopName;
+      });
+      this.supplierList.push(...res.data.records);
     },
-    async goodActionEvent(name: string, item: any, index: number) {
-      // edit putaway soldout del
-      switch (name) {
-        case "edit":
-          this.$router.push({
-            path: "/goodsAdd",
-            query: { goodId: item.id, operateType: "edit" },
-          });
-          break;
-        case "putaway":
-          await this.$dialog.confirm({
-            message: "确定上架该商品?",
-            confirmButtonText: "上架",
-            className: "gy-dialog",
-          });
-          await batchGoodsOnDown({ isTrue: 1, idList: [item.id] });
-          item.status = 1;
-          this.goodItemRefs[index].actionEvent("close");
-          break;
-        case "soldout":
-          await this.$dialog.confirm({
-            message: "确定下架该商品?",
-            confirmButtonText: "下架",
-            className: "gy-dialog",
-          });
-          await batchGoodsOnDown({ isTrue: 0, idList: [item.id] });
-          item.status = 3;
-          this.goodItemRefs[index].actionEvent("close");
-          break;
-        case "del":
-          await this.$dialog.confirm({
-            message: "确定删除该商品？",
-            confirmButtonText: "删除",
-            className: "gy-dialog",
-          });
-          await delGood({ id: item.id });
-          this.goodItemRefs[index].actionEvent("close");
-          this.list.splice(index, 1);
-
-          break;
-      }
-    },
-    async goodsOnorDown(isTrue: number, batch?: boolean) {
-      if (batch) {
-        const idList: any[] = [];
-        this.list.map((item: any) => {
-          if (item.checked) idList.push(item.id);
-        });
-        if (idList.length === 0) {
-          this.$toast("请选择商品");
-          return;
-        }
-        await this.$dialog.confirm({
-          message: `确定批量${isTrue ? "上架" : "下架"}已选择 ${
-            idList.length
-          } 种商品`,
-          className: "gy-dialog",
-          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
-        });
-        await batchGoodsOnDown({ isTrue, idList });
-        this.reloadList();
-      } else {
-        await this.$dialog.confirm({
-          message: `确定全部${isTrue ? "上架" : "下架"}商品`,
-          className: "gy-dialog",
-          confirmButtonText: `${isTrue ? "上架" : "下架"}`,
-        });
-        await allGoodsOnDown({ isTrue });
-        this.reloadList();
-      }
+    changeSupplier(item: any) {
+      this.supplierId = item.supplierId;
+      this.supplierTitle = item.name;
+      this.reloadList();
     },
     onChangeGoodCheck(checked: boolean) {
       if (checked) {
@@ -352,14 +237,6 @@ export default defineComponent({
         this.list.forEach((item: any) => {
           item.checked = false;
         });
-      }
-    },
-
-    onClickRight() {
-      if (this.batchAction) {
-        this.batchAction = false;
-      } else {
-        this.$router.push("/goodsAdd");
       }
     },
     onLoad() {
@@ -418,13 +295,15 @@ export default defineComponent({
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
-      const res = await fetchGoodsList({
+      const supplierId = this.supplierId === -1 ? undefined : this.supplierId;
+      const res = await fetchGoodsSelect({
         current: this.current,
         size: this.size,
         status,
         descOrders,
         categoryIds,
         name: this.searchValue,
+        supplierId,
       }).catch((err) => {
         this.loading = false;
         this.finished = true;
@@ -448,7 +327,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "./styles/style.scss";
 @import "@/styles/base.scss";
-.goods-manage {
+.goods-choose {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -456,59 +335,5 @@ export default defineComponent({
 .gy-search {
   margin-left: 16px;
   margin-right: 16px;
-}
-.cards-wrapper {
-  padding-bottom: 50px;
-  flex: 1;
-  overflow-y: scroll;
-}
-.cards {
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 16px;
-  background-color: $contentBgColor;
-}
-
-.footer-action {
-  background-color: $contentBgColor;
-  display: flex;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 7px;
-  padding-bottom: 27px;
-  justify-content: space-between;
-  position: relative;
-  .info {
-    position: absolute;
-    top: -30px;
-    color: #fff;
-    background-color: #1c1932;
-    left: 0;
-    right: 0;
-    height: 30px;
-    font-size: 12px;
-    line-height: 30px;
-  }
-  .van-button--primary {
-    @include gy-btn-primary;
-    width: 160px;
-  }
-  :deep(.van-checkbox__label) {
-    color: #fff;
-  }
-  .van-button--plain {
-    @include gy-btn-plain;
-    &.batch {
-      width: 106px;
-      &.putaway {
-        border-color: #ffb300;
-        color: #ffb300;
-      }
-      &.soldout {
-        border-color: #ea4a72;
-        color: #ea4a72;
-      }
-    }
-  }
 }
 </style>

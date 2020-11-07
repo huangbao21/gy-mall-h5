@@ -194,7 +194,7 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import {
   fetchAgentGoodsList,
   allAgentGoodsOnDown,
@@ -214,6 +214,22 @@ export default defineComponent({
   setup() {
     const { checkRadioColor } = usePropsCom();
     const { sortOption, goodsOption, categoryOption } = useDropmenu();
+    const getCategoryList = async () => {
+      const res = await fetchCategoryList();
+      const temp = res.data.map((item: any) => {
+        item.value = item.id;
+        if (item.children) {
+          item.children.map((child: any) => {
+            child.value = child.id;
+          });
+          item.children.unshift({ text: "全部", value: -1 });
+        }
+
+        return item;
+      });
+      categoryOption.value.push(...temp);
+    };
+    onMounted(getCategoryList)
     return {
       checkRadioColor,
       sortOption,
@@ -254,7 +270,6 @@ export default defineComponent({
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
-    this.getCategoryList();
     this.getSupplierList();
   },
   methods: {
@@ -430,22 +445,6 @@ export default defineComponent({
       this.batchAction = false;
       this.finished = false;
       this.list = [];
-    },
-    async getCategoryList() {
-      const res = await fetchCategoryList();
-      const temp = res.data.map((item: any) => {
-        item.value = item.id;
-        if (item.children) {
-          item.children.map((child: any) => {
-            child.value = child.id;
-          });
-          item.children.unshift({ text: "全部", value: -1 });
-        }
-
-        return item;
-      });
-      this.categoryOption.push(...temp);
-      console.log(this.categoryOption, 333);
     },
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];

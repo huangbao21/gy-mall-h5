@@ -1,4 +1,4 @@
 import { toBackApp } from "@/services/native"
-export default function () {
+export default function useBackAppApi () {
   return { toBackApp };
 }

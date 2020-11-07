@@ -22,6 +22,9 @@ export function fetchGoodsList(data: { current: number; size: number; status?: n
 export function fetchAgentGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string; supplierId?: number }): Promise<PostData> {
   return axios.post(API.AGENT_GOODS_LIST, data);
 }
+export function fetchGoodsSelect(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string; supplierId?: number }): Promise<PostData> {
+  return axios.post(API.AGENT_GOOD_SELECT, data);
+}
 export function fetchGoodDetail(data: { id: number }): Promise<PostData> {
   return axios.post(API.GOOD_DETAIL, data);
 }
