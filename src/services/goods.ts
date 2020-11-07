@@ -52,3 +52,6 @@ export function delAgentGood(data: { id: number }): Promise<PostData> {
 export function fetchSupplierList(data = { current: 1, size: -1 }): Promise<PostData> {
   return axios.post(API.SUPPLIER_LIST, data);
 }
+export function stockOrOutGoods(data: { isTrue: number; idList: any[] }): Promise<PostData> {
+  return axios.post(API.AGENT_STOCK_BATCH, data);
+}

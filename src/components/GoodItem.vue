@@ -17,6 +17,7 @@
             ? "已下架"
             : "审核失败"
         }}</span>
+        <span class="card-good--status" v-if="good.isAgency==0">未进货</span>
       </van-image>
       <div class="card-good-info">
         <div class="card-good-actions" v-if="showActionPanel" @click.stop>
@@ -101,6 +102,7 @@
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-explicit-any  */
 import { defineComponent } from "vue";
 import usePropsCom from "@/composables/usePropsCom";
 
@@ -135,6 +137,10 @@ export default defineComponent({
       type: String,
       default: "enterprise",
     },
+    forceClickGood: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const { checkRadioColor } = usePropsCom();
@@ -152,11 +158,10 @@ export default defineComponent({
     },
   },
   methods: {
-    test() {
-      console.log(22222);
-    },
     viewGood(good: any) {
-      if (!this.showCheckbox) this.$emit("click-good", good);
+      if (this.forceClickGood || !this.showCheckbox) {
+        this.$emit("click-good", good);
+      }
     },
     actionEvent(name: string) {
       if (name === "close") this.showActionPanel = false;

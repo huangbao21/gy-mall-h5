@@ -480,7 +480,7 @@ export default defineComponent({
   position: relative;
   .info {
     position: absolute;
-    top: -30px;
+    top: -28px;
     color: #fff;
     background-color: #1c1932;
     left: 0;
