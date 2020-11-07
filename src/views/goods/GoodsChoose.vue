@@ -246,7 +246,6 @@ export default defineComponent({
         confirmButtonText: `${isTrue ? "进货" : "退货"}`,
       });
       // await stockOrOutGoods({ isTrue, idList });
-      
     },
     async getSupplierList() {
       const res = await fetchSupplierList();
