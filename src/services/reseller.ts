@@ -19,3 +19,6 @@ export function fetchCommissionLimit(data: { ration?: number; sellNumber?: numbe
 export function queryAgencyAndSales(): Promise<PostData> {
   return axios.post(API.QUERY_AGENCY_SALES, {})
 }
+export function fetchApplyNumber(): Promise<PostData> {
+  return axios.post(API.APPLY_NUMBER, {})
+}
