@@ -12,7 +12,9 @@
       <template #right>
         <div class="nav-bar-right">
           <span class="nav-bar-right-text">申请列表</span>
-          <span class="nav-bar-right-tips">20</span>
+          <span class="nav-bar-right-tips" v-if="applyNumber > 0">{{
+            applyNumber
+          }}</span>
         </div>
       </template>
     </van-nav-bar>
@@ -69,7 +71,8 @@
 import { defineComponent } from "vue";
 import {
   fetchCommissionSettingList,
-  queryAgencyAndSales
+  queryAgencyAndSales,
+  fetchApplyNumber
 } from "../../services/reseller";
 export default defineComponent({
   name: "ResellerManagement",
@@ -77,14 +80,21 @@ export default defineComponent({
     return {
       commissionSettingList: [] as object[],
       peopleNumber: 0,
-      saleNumber: 0
+      saleNumber: 0,
+      applyNumber: 0
     };
   },
   created() {
     this.fetchCommissionSettingList();
     this.queryAgencyAndSales();
+    this.fetchApplyNumber();
   },
   methods: {
+    async fetchApplyNumber() {
+      const res = await fetchApplyNumber();
+      console.log(res);
+      this.applyNumber = res.data;
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
