@@ -52,6 +52,7 @@ export default class API {
   static CUSTOMER_ORDER_VIEW = `${APP_SERVICE}authc/order_customer/view`
   static CANCEL_ORDER = `${APP_SERVICE}authc/order_customer/cancel`
   static RECEIPT_ORDER = `${APP_SERVICE}authc/order_customer/receipt`
+  static CREATE_ORDER = `${APP_SERVICE}authc/order_customer/save`
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`
