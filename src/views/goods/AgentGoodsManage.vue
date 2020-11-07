@@ -204,8 +204,8 @@ import {
   fetchSupplierList,
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
+import useDropmenu from "@/composables/useDropmenu";
 import GoodItem from "@/components/GoodItem.vue";
-import { Action } from "vuex";
 export default defineComponent({
   name: "AgentGoodsManage",
   components: {
@@ -213,8 +213,12 @@ export default defineComponent({
   },
   setup() {
     const { checkRadioColor } = usePropsCom();
+    const { sortOption, goodsOption, categoryOption } = useDropmenu();
     return {
       checkRadioColor,
+      sortOption,
+      goodsOption,
+      categoryOption,
     };
   },
   data() {
@@ -244,48 +248,6 @@ export default defineComponent({
       supplierList: [{ name: "我的商品", supplierId: -1 }],
       supplierId: -1,
       supplierTitle: "我的商品",
-      sortOption: [
-        {
-          text: "智能排序",
-          value: -1,
-        },
-        {
-          text: "销量最高",
-          value: "pp.sales_volume",
-        },
-        {
-          text: "库存最高",
-          value: "pps.quantity",
-        },
-        {
-          text: "价格由高至低",
-          value: "price",
-        },
-      ],
-      goodsOption: [
-        {
-          text: "全部",
-          value: -1,
-        },
-        {
-          text: "待审核",
-          value: 1,
-        },
-        {
-          text: "已上架",
-          value: 2,
-        },
-        {
-          text: "已下架",
-          value: 3,
-        },
-      ],
-      categoryOption: [
-        {
-          text: "全部品类",
-          value: -1,
-        },
-      ],
     };
   },
   mounted() {
@@ -301,7 +263,7 @@ export default defineComponent({
     },
     viewGood(good: any) {
       this.$router.push({
-        path: "/goodsShow",
+        path: "/agentGoodsShow",
         query: { goodId: good.id, operateType: "show" },
       });
     },
@@ -415,7 +377,7 @@ export default defineComponent({
       if (this.batchAction) {
         this.batchAction = false;
       } else {
-        this.$router.push("/goodsAdd");
+        this.$router.push("/goodsChoose");
       }
     },
     onLoad() {
@@ -482,8 +444,8 @@ export default defineComponent({
 
         return item;
       });
-      console.log(temp);
       this.categoryOption.push(...temp);
+      console.log(this.categoryOption, 333);
     },
     async getGoodsList() {
       const descOrders = this.sortValue === "-1" ? undefined : [this.sortValue];
