@@ -19,7 +19,7 @@ export function saveGoods(data: GoodsInfo): Promise<PostData> {
 export function fetchGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string }): Promise<PostData> {
   return axios.post(API.GOODS_LIST, data);
 }
-export function fetchAgentGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string }): Promise<PostData> {
+export function fetchAgentGoodsList(data: { current: number; size: number; status?: number; descOrders?: string[]; categoryIds?: number[]; name?: string; supplierId?: number }): Promise<PostData> {
   return axios.post(API.AGENT_GOODS_LIST, data);
 }
 export function fetchGoodDetail(data: { id: number }): Promise<PostData> {
@@ -46,6 +46,6 @@ export function delGood(data: { id: number }): Promise<PostData> {
 export function delAgentGood(data: { id: number }): Promise<PostData> {
   return axios.post(API.AGENT_GOOD_DEL, data);
 }
-export function fetchSupplierList(data?: { current: 1; size: -1 }): Promise<PostData> {
+export function fetchSupplierList(data = { current: 1, size: -1 }): Promise<PostData> {
   return axios.post(API.SUPPLIER_LIST, data);
 }

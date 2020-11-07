@@ -67,9 +67,24 @@
       </div>
       <div
         class="footer-action"
-        v-if="orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3"
+        v-if="
+          orderInfo.orderStatus == 2 ||
+          orderInfo.orderStatus == 3 ||
+          orderInfo.orderStatus == 0
+        "
       >
-        <van-button round @click="expressPopup = true">查看物流</van-button>
+        <van-button
+          round
+          @click="expressPopup = true"
+          v-if="orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3"
+          >查看物流</van-button
+        >
+        <template v-if="orderInfo.orderStatus == 0">
+          <van-button round>取消订单</van-button>
+          <van-button round plain type="primary" style="margin-left: 10px"
+            >去支付</van-button
+          >
+        </template>
       </div>
     </main>
   </div>
@@ -95,20 +110,21 @@ export default defineComponent({
   data() {
     return {
       orderId: -1,
-      orderInfo: {} as object,
+      orderInfo: {} as any,
       expressInfo: {} as object,
       expressPopup: false,
     };
   },
   beforeRouteEnter(to, from, next) {
     next((vm: any) => {
-      console.log(to);
       vm.orderId = to.query.orderId;
     });
   },
   mounted() {
     this.getOrderDetail();
-    this.queryExpress();
+    if (this.orderInfo.orderStatus === 2 || this.orderInfo.orderStatus === 3) {
+      this.queryExpress();
+    }
   },
   methods: {
     toView() {
@@ -243,6 +259,7 @@ main {
   text-align: right;
   .van-button--primary {
     @include gy-btn-primary;
+    font-size: 14px;
   }
   :deep(.van-checkbox__label) {
     color: #fff;

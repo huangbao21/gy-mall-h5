@@ -147,6 +147,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '客户订单详情' }
   },
   {
+    path: '/deliverPage',
+    name: 'DeliverPage',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/DeliverPage.vue'),
+    meta: { title: '发货' }
+  },
+  {
     path: '/goods',
     name: 'Goods',
     component: () => import('../views/system/Goods.vue'),

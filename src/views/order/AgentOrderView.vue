@@ -95,20 +95,21 @@ export default defineComponent({
   data() {
     return {
       orderId: -1,
-      orderInfo: {} as object,
+      orderInfo: {} as any,
       expressInfo: {} as object,
       expressPopup: false,
     };
   },
   beforeRouteEnter(to, from, next) {
     next((vm: any) => {
-      console.log(to);
       vm.orderId = to.query.orderId;
     });
   },
   mounted() {
     this.getOrderDetail();
-    this.queryExpress();
+    if (this.orderInfo.orderStatus === 2 || this.orderInfo.orderStatus === 3) {
+      this.queryExpress();
+    }
   },
   methods: {
     toView() {

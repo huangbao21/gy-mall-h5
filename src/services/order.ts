@@ -22,3 +22,12 @@ export function queryCustomerOrderDetail(data: { id: number }): Promise<PostData
 export function queryLogistics(data: { id: number }): Promise<PostData> {
   return axios.post(API.QUERY_LOGISTICS, data);
 }
+export function cacelOrder(data: { id: number }): Promise<PostData> {
+  return axios.post(API.CANCEL_ORDER, data)
+}
+export function receiptOrder(data: { id: number }): Promise<PostData> {
+  return axios.post(API.RECEIPT_ORDER, data);
+}
+export function deliverOrder(data: { id: number; sn: string }): Promise<PostData> {
+  return axios.post(API.order_deliver, data);
+}

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 <template>
-  <div class="goods-manage nav-bar">
+  <div class="agent-goods-manage nav-bar">
     <van-nav-bar
       :border="false"
       @click-left="toView"
@@ -9,7 +8,7 @@
     >
       <template #title>
         <div class="title" @click="showSheet = true">
-          <span>我的商品</span>
+          <span>{{ supplierTitle }}</span>
           <van-icon name="arrow-down" color="#fff" />
         </div>
       </template>
@@ -109,6 +108,7 @@
       <div class="cards">
         <van-list v-model:loading="loading" :finished="finished" @load="onLoad">
           <good-item
+            type="agent"
             :good="good"
             :ref="setGoodItemRef"
             v-for="(good, index) in list"
@@ -186,11 +186,14 @@
       :actions="supplierList"
       cancel-text="取消"
       class="gy-sheet"
+      @select="changeSupplier"
+      close-on-click-action
     />
   </div>
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent } from "vue";
 import {
   fetchAgentGoodsList,
@@ -202,8 +205,9 @@ import {
 } from "@/services/goods";
 import usePropsCom from "@/composables/usePropsCom";
 import GoodItem from "@/components/GoodItem.vue";
+import { Action } from "vuex";
 export default defineComponent({
-  name: "GoodsManage",
+  name: "AgentGoodsManage",
   components: {
     GoodItem,
   },
@@ -237,7 +241,9 @@ export default defineComponent({
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
-      supplierList: [{ name: "我的商品", agencyId: -1 }],
+      supplierList: [{ name: "我的商品", supplierId: -1 }],
+      supplierId: -1,
+      supplierTitle: "我的商品",
       sortOption: [
         {
           text: "智能排序",
@@ -309,6 +315,11 @@ export default defineComponent({
       });
       this.supplierList.push(...res.data.records);
     },
+    changeSupplier(item: any) {
+      this.supplierId = item.supplierId;
+      this.supplierTitle = item.name;
+      this.reloadList();
+    },
     async goodActionEvent(name: string, item: any, index: number) {
       // edit putaway soldout del
       switch (name) {
@@ -319,11 +330,21 @@ export default defineComponent({
           });
           break;
         case "putaway":
+          await this.$dialog.confirm({
+            message: "确定上架该商品?",
+            confirmButtonText: "上架",
+            className: "gy-dialog",
+          });
           await batchAgentGoodsOnDown({ isTrue: 1, idList: [item.id] });
           item.status = 1;
           this.goodItemRefs[index].actionEvent("close");
           break;
         case "soldout":
+          await this.$dialog.confirm({
+            message: "确定下架该商品?",
+            confirmButtonText: "下架",
+            className: "gy-dialog",
+          });
           await batchAgentGoodsOnDown({ isTrue: 0, idList: [item.id] });
           item.status = 3;
           this.goodItemRefs[index].actionEvent("close");
@@ -469,6 +490,7 @@ export default defineComponent({
       const status = this.goodsValue === -1 ? undefined : this.goodsValue;
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
+      const supplierId = this.supplierId === -1 ? undefined : this.supplierId;
       const res = await fetchAgentGoodsList({
         current: this.current,
         size: this.size,
@@ -476,6 +498,7 @@ export default defineComponent({
         descOrders,
         categoryIds,
         name: this.searchValue,
+        supplierId,
       }).catch((err) => {
         this.loading = false;
         this.finished = true;
@@ -499,7 +522,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "./styles/style.scss";
 @import "@/styles/base.scss";
-.goods-manage {
+.agent-goods-manage {
   display: flex;
   flex-direction: column;
   height: 100%;

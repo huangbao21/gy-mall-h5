@@ -162,7 +162,6 @@ export default defineComponent({
     if (to.query.name !== undefined) {
       next((vm) => {
         console.log(`商品。。。`);
-        console.log(to.query.name);
         vm.goodsTitle = to.query.name;
         vm.value = 3;
         vm.addGood = true;

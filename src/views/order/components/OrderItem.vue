@@ -34,7 +34,11 @@
         type != "customer" ? `下单时间: ${order.createTime}` : ""
       }}</span>
       <template v-if="order.orderStatus == 1">
-        <van-button round type="primary" v-if="type == 'enterprise'"
+        <van-button
+          round
+          type="primary"
+          v-if="type == 'enterprise'"
+          @click="dealDeliver(order)"
           >发货</van-button
         >
       </template>
@@ -49,18 +53,23 @@
         <van-button
           round
           type="primary"
-          v-if="(order.orderStatus == 2 && type == 'customer')"
+          v-if="order.orderStatus == 2 && type == 'customer'"
           style="margin-left: 10px"
+          @click="receiptOrder(order)"
           >确认收货</van-button
         >
       </template>
       <template v-else-if="order.orderStatus == 0">
-        <van-button round v-if="type == 'customer'">取消订单</van-button>
+        <van-button round v-if="type == 'customer'" @click="cancelOrder(order)"
+          >取消订单</van-button
+        >
       </template>
     </div>
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-explicit-any  */
+
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -83,8 +92,17 @@ export default defineComponent({
     };
   },
   methods: {
+    dealDeliver(order: any) {
+      this.$router.push({ path: "/deliverPage", query: { orderId: order.id } });
+    },
     viewOrder(order: any) {
       this.$emit("click-order", order);
+    },
+    cancelOrder(order: any) {
+      this.$emit("cancel-order", order);
+    },
+    receiptOrder(order: any) {
+      this.$emit("receipt-order", order);
     },
     viewExpress(order: any) {
       this.$emit("view-express", order);
