@@ -49,6 +49,7 @@
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
+// 错误的接口请求
 import { queryCustomerOrderDetail } from "@/services/order";
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
