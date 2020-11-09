@@ -102,8 +102,11 @@ export default defineComponent({
   },
   methods: {
     toView(url: string) {
-      if (url) {
-        this.$router.replace(url);
+      if (url === "address") {
+        this.$router.replace({
+          path: url,
+          query: { goodId: this.goodId, agencyId: this.agencyId },
+        });
       } else {
         this.$router.go(-1);
       }
