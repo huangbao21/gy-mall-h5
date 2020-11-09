@@ -35,7 +35,6 @@ export default class API {
   static AGENT_GOOD_DEL = `${APP_SERVICE}authc/product_agency/delete`
   static AGENT_GOOD_DETAIL = `${APP_SERVICE}authc/product_agency/view`
   static AGENT_GOOD_SELECT = `${APP_SERVICE}authc/product_agency/select_product`
-
   static AGENT_STOCK_BATCH = `${APP_SERVICE}authc/product_agency/batch_stock_or_out`
   static SUPPLIER_LIST = `${APP_SERVICE}authc/agency_firm/find_supplier_page`
 
@@ -92,6 +91,7 @@ export default class API {
   static ADDRESS_INFO = `${APP_SERVICE}authc/address/view`;
   static DELETE_ADDRESS = `${APP_SERVICE}authc/address/delete`;
   static SET_ADDRESS_DEFAULT = `${APP_SERVICE}authc/address/set_default`;
+  static DEFAULT_ADDRESS = `${APP_SERVICE}authc/address/find_default`
 
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;

@@ -7,18 +7,34 @@
     </van-nav-bar>
     <main>
       <div class="order-info">
-        <div class="order-info__adress-wrap">
+        <div class="order-info__adress-wrap" @click="toView('/address')">
           <div class="order-info__adress-user">
-            <span>{{ orderInfo.address }}</span>
-            <span class="phone">{{ orderInfo.realName }} {{ orderInfo.phone }}</span>
+            <small
+              >{{ addressInfo.provinceName }}{{ addressInfo.cityName
+              }}{{ addressInfo.districtName }}</small
+            >
+            <span>{{ addressInfo.street }}</span>
+            <span class="phone"
+              >{{ addressInfo.linkman }} {{ addressInfo.mobile }}</span
+            >
           </div>
           <van-icon name="arrow" />
         </div>
-        <order-item :order="orderInfo" isView></order-item>
+        <div class="good-wrap">
+          <van-image :src="goodInfo.mainImageUrl" />
+          <div class="good-info">
+            <p class="good-info--name">宠物小精灵</p>
+            <p class="good-info--prop">
+              <span>单价 ￥ {{ goodInfo.price }}</span>
+              <span style="margin-left: 10px">数量 231</span>
+            </p>
+            <p class="good-info--total">总价 ￥213</p>
+          </div>
+        </div>
         <div class="order-info__money">
           <div class="order-info__money-row">
             <span>商品总额</span>
-            <span>￥ {{ orderInfo.amount }}</span>
+            <span>￥ {{ goodInfo.amount }}</span>
           </div>
           <div class="order-info__money-row">
             <span>运费</span>
@@ -26,14 +42,14 @@
           </div>
           <div class="order-info__money-row--total">
             <span>合计付款：</span>
-            <span class="sum">￥ {{ orderInfo.amount }}</span>
+            <span class="sum">￥ {{ goodInfo.amount }}</span>
           </div>
         </div>
       </div>
       <div class="footer-action">
         <span>应付金额：</span>
         <span class="real-money"
-          >￥ <strong>{{ orderInfo.payAmount }}</strong></span
+          >￥ <strong>{{ goodInfo.payAmount }}</strong></span
         >
         <van-button round plain type="primary" style="margin-left: 10px"
           >提交订单</van-button
@@ -42,47 +58,73 @@
     </main>
   </div>
   <express-popup
-    :order-info="orderInfo"
+    :order-info="goodInfo"
     :express-info="expressInfo"
     v-model="expressPopup"
   ></express-popup>
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-// 错误的接口请求
-import { queryCustomerOrderDetail } from "@/services/order";
+import { fetchCustomerGoodDetail } from "@/services/goods";
+import {
+  queryDefaultAddress,
+  AddressInfoServe,
+  fetchAddressInfo,
+} from "@/services/address";
 import { defineComponent } from "vue";
-import OrderItem from "./components/OrderItem.vue";
 import ExpressPopup from "./components/ExpressPopup.vue";
 export default defineComponent({
   name: "PlaceOrder",
   components: {
-    OrderItem,
     ExpressPopup,
   },
   data() {
     return {
-      orderId: -1,
-      orderInfo: {} as any,
+      goodId: -1,
+      agencyId: -1,
+      goodInfo: {} as any,
       expressInfo: {} as object,
       expressPopup: false,
+      addressInfo: {} as AddressInfoServe,
+      chosenAddressId: "",
     };
   },
   beforeRouteEnter(to, from, next) {
     next((vm: any) => {
-      vm.orderId = to.query.orderId;
+      vm.goodId = to.query.goodId;
+      vm.agencyId = to.query.agencyId;
+      vm.chosenAddressId = to.query.chosenAddressId;
     });
   },
   mounted() {
     this.getOrderDetail();
+    this.getShowAddress();
   },
   methods: {
-    toView() {
-      this.$router.go(-1);
+    toView(url: string) {
+      if (url) {
+        this.$router.replace(url);
+      } else {
+        this.$router.go(-1);
+      }
+    },
+    async getShowAddress() {
+      let res;
+      if (this.chosenAddressId) {
+        res = await fetchAddressInfo({
+          id: Number(this.chosenAddressId),
+        });
+      } else {
+        res = await queryDefaultAddress();
+      }
+      this.addressInfo = res.data;
     },
     async getOrderDetail() {
-      const res = await queryCustomerOrderDetail({ id: this.orderId });
-      this.orderInfo = res.data;
+      const res = await fetchCustomerGoodDetail({
+        id: Number(this.goodId),
+        agencyId: Number(this.agencyId),
+      });
+      this.goodInfo = res.data;
     },
   },
 });
@@ -98,6 +140,33 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+.good-wrap {
+  display: flex;
+  text-align: left;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: $contentBgColor;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 13px;
+  color: #fff;
+  font-size: 12px;
+  .good-info {
+    &--prop {
+      color: rgba($color: #fff, $alpha: 0.4);
+      margin-top: 10px;
+      margin-bottom: 18px;
+    }
+  }
+  .van-image {
+    width: 94px;
+    height: 94px;
+    border-radius: 6px;
+    background: #d8d8d8;
+    margin-right: 10px;
+  }
 }
 .order-info {
   flex: 1;
@@ -119,10 +188,16 @@ main {
       flex-direction: column;
       align-items: flex-start;
       flex: 1;
+      small {
+        font-size: 12px;
+        margin-bottom: 10px;
+        color: #ccc;
+      }
       .phone {
         margin-top: 10px;
         text-align: right;
         font-size: 12px;
+        color: #ccc;
       }
     }
   }
