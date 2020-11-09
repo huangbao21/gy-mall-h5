@@ -73,6 +73,12 @@ export default class API {
   static QUERY_AGENCY_SALES = `${APP_SERVICE}authc/agency_customer/find_agency_sale`
   static APPLY_NUMBER = `${APP_SERVICE}authc/agency_customer/find_agency_apply_number`
 
+  // 企业主管理
+  static CAN_APPLY_COMPANY=`${APP_SERVICE}authc/agency_firm/find_agency_firm_page`
+  static APPLIED_LIST=`${APP_SERVICE}authc/agency_firm/find_agency_apply_page`
+  static COMPANY_GOODS_LIST_ONLINE=`${APP_SERVICE}authc/product_customer/find_page`
+  static APPLY_AGENCY=`${APP_SERVICE}authc/customer/apply_agency`
+
   // 体系管理
   static QUERY_CONDITION_TYPE_LIST = `${APP_SERVICE}authc/agency_customer/find_condition_type_list`
   static SAVE_CONDITION = `${APP_SERVICE}authc/agency_customer/save_condition`

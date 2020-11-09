@@ -188,6 +188,30 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Address',
     component: () => import('../views/address/Address.vue'),
     meta: { title: '收货地址管理' }
+  },
+  {
+    path: '/agentHome',
+    name: 'AgentHome',
+    component: () => import('../views/AgentHome.vue'),
+    meta: { title: '工作台' }
+  },
+  {
+    path: '/companyManage',
+    name: 'CompanyManage',
+    component: () => import('../views/company/CompanyManage.vue'),
+    meta: { title: '企业主管理' }
+  },
+  {
+    path: '/companyShop',
+    name: 'CompanyShop',
+    component: () => import('../views/company/CompanyShop.vue'),
+    meta: { title: '商品橱窗' }
+  },
+  {
+    path: '/applyTransition',
+    name: 'ApplyTransition',
+    component: () => import('../views/company/ApplyTransition.vue'),
+    meta: { title: '申请过渡页' }
   }
 ]
 
