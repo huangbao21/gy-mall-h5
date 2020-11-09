@@ -34,9 +34,11 @@ export default class API {
   static AGENT_GOOD_DEL = `${APP_SERVICE}authc/product_agency/delete`
   static AGENT_GOOD_DETAIL = `${APP_SERVICE}authc/product_agency/view`
   static AGENT_GOOD_SELECT = `${APP_SERVICE}authc/product_agency/select_product`
-
   static AGENT_STOCK_BATCH = `${APP_SERVICE}authc/product_agency/batch_stock_or_out`
   static SUPPLIER_LIST = `${APP_SERVICE}authc/agency_firm/find_supplier_page`
+
+  // 用户商品管理
+  static CUSTOMER_GOOD_DETAIL = `${APP_SERVICE}authc/product_customer/view`
 
   // 订单管理
   static ORDER_SUPPLIER = `${APP_SERVICE}authc/order_supplier/find_page`
