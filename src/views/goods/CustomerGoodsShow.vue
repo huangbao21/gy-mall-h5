@@ -70,9 +70,9 @@
 import { defineComponent } from "vue";
 import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
-import { saveGoods, fetchGoodDetail } from "@/services/goods";
+import { saveGoods, fetchCustomerGoodsDetail } from "@/services/goods";
 export default defineComponent({
-  name: "GoodsAdd",
+  name: "customerGoodsShow",
   data() {
     return {
       goodsInfo: {
@@ -120,14 +120,12 @@ export default defineComponent({
     }
   },
   mounted() {
-    if (this.operateType === "show") {
-      this.fetchGoodDetail();
-    }
+    this.fetchCustomerGoodsDetail();
   },
   methods: {
-    async fetchGoodDetail() {
+    async fetchCustomerGoodsDetail() {
       console.log(this.goodId);
-      const res = await fetchGoodDetail({ id: this.goodId });
+      const res = await fetchCustomerGoodsDetail({ id: this.goodId });
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
     },
@@ -183,6 +181,12 @@ export default defineComponent({
     },
     onClickLeft() {
       this.$router.go(-1);
+    },
+    buyGood() {
+      this.$router.push({
+        path: "/placeOrder",
+        query: { goodId: this.goodId }
+      });
     }
   }
 });

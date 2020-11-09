@@ -13,7 +13,11 @@
       </template>
     </van-nav-bar>
     <div class="address-list">
-      <van-swipe-cell v-for="item in list" :key="item.id">
+      <van-swipe-cell
+        v-for="item in list"
+        :key="item.id"
+        @click="handleAddressSelect(item.id)"
+      >
         <div class="van-address-item">
           <div class="van-cell van-cell--borderless">
             <div
@@ -73,7 +77,7 @@ import { Toast } from "vant";
 import {
   fetchAddressList,
   deleteAddress,
-  setAddressDefault,
+  setAddressDefault
 } from "@/services/address";
 export default defineComponent({
   name: "Home",
@@ -82,7 +86,7 @@ export default defineComponent({
       chosenAddressId: "1",
       list: [] as object[],
       current: 1,
-      size: 50,
+      size: 50
     };
   },
   components: {
@@ -92,6 +96,13 @@ export default defineComponent({
     this.fetchAddressList();
   },
   methods: {
+    handleAddressSelect(addressId: number) {
+      // 要判断来源是app还是订单
+      this.$router.replace({
+        path: "/placeOrder",
+        query: { ...this.$route.query, chosenAddressId: addressId }
+      });
+    },
     handleAddressAdd() {
       this.$router.push({ path: "/addressEdit" });
     },
@@ -99,7 +110,7 @@ export default defineComponent({
       console.log("编辑地址");
       this.$router.push({
         path: "/addressEdit",
-        query: { type: "edit", addressId },
+        query: { type: "edit", addressId }
       });
     },
     async setAddressDefault(id: number) {
@@ -114,12 +125,12 @@ export default defineComponent({
     async fetchAddressList() {
       const res = await fetchAddressList({
         current: this.current,
-        size: this.size,
+        size: this.size
       });
       console.log(res);
       this.list.push(...res.data.records);
-    },
-  },
+    }
+  }
 });
 </script>
 

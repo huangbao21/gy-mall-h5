@@ -69,7 +69,7 @@
         <img class="operate-item__icon" src="../assets/imgs/home/ic_good.png" />
         <div class="operate-item__text">商品管理</div>
       </div>
-      <div class="operate-item">
+      <div class="operate-item" @click="goOrderManage">
         <img
           class="operate-item__icon"
           src="../assets/imgs/home/ic_order.png"
@@ -152,6 +152,9 @@ export default defineComponent({
     },
     goGoodsManage() {
       this.$router.push({ path: "/goodsManage" });
+    },
+    goOrderManage() {
+      this.$router.push({ path: "AgentManage" });
     },
     handleItemClick($event: any) {
       console.log($event);

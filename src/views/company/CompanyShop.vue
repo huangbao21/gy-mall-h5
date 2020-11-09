@@ -1,10 +1,6 @@
 <template>
   <div class="goods-manage nav-bar">
-    <van-nav-bar
-      :border="false"
-      @click-left="toView"
-      title="我的商品"
-    >
+    <van-nav-bar :border="false" @click-left="toView" :title="shopName">
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
@@ -116,7 +112,7 @@
     </div>
 
     <div class="footer-action">
-      <van-button type="primary" @click="handleCommissionAdd"
+      <van-button type="primary" @click="handleApply"
         >申请成为代理商</van-button
       >
     </div>
@@ -133,7 +129,7 @@ import {
   delGood,
   fetchCategoryList
 } from "@/services/goods";
-import { fetchCompanyGoodsListOnline } from "@/services/company";
+import { fetchCompanyGoodsListOnline, applyAgency } from "@/services/company";
 import usePropsCom from "@/composables/usePropsCom";
 import useDropmenu from "@/composables/useDropmenu";
 import GoodItem from "@/components/GoodItem.vue";
@@ -141,6 +137,16 @@ export default defineComponent({
   name: "GoodsManage",
   components: {
     GoodItem
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.agencyId !== undefined) {
+      next((vm: any) => {
+        vm.agencyId = to.query.agencyId;
+        vm.shopName = to.query.shopName;
+      });
+    } else {
+      next();
+    }
   },
   setup() {
     const { checkRadioColor } = usePropsCom();
@@ -170,6 +176,8 @@ export default defineComponent({
   },
   data() {
     return {
+      shopName: "",
+      agencyId: 0,
       goodItemRefs: [] as any,
       searchValue: "",
       active: 0,
@@ -199,6 +207,10 @@ export default defineComponent({
     this.categoryTitle = this.categoryOption[0].text;
   },
   methods: {
+    async handleApply() {
+      await applyAgency({ id: this.agencyId });
+      this.$router.replace({ path: "/applyTransition" });
+    },
     toView() {
       this.$router.go(-1);
     },
@@ -364,7 +376,7 @@ export default defineComponent({
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
       const res = await fetchCompanyGoodsListOnline({
-        agencyId: 862780,
+        agencyId: this.agencyId,
         current: this.current,
         size: this.size,
         descOrders,
