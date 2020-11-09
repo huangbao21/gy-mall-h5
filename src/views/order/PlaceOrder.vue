@@ -102,7 +102,7 @@ export default defineComponent({
   },
   methods: {
     toView(url: string) {
-      if (url === "address") {
+      if (url === "/address") {
         this.$router.replace({
           path: url,
           query: { goodId: this.goodId, agencyId: this.agencyId },
