@@ -200,6 +200,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'CompanyManage',
     component: () => import('../views/company/CompanyManage.vue'),
     meta: { title: '企业主管理' }
+  },
+  {
+    path: '/companyShop',
+    name: 'CompanyShop',
+    component: () => import('../views/company/CompanyShop.vue'),
+    meta: { title: '商品橱窗' }
+  },
+  {
+    path: '/applyTransition',
+    name: 'ApplyTransition',
+    component: () => import('../views/company/ApplyTransition.vue'),
+    meta: { title: '申请过渡页' }
   }
 ]
 

@@ -1,6 +1,9 @@
 <template>
   <div class="company-item">
-    <div style="display:flex;padding-bottom:13px">
+    <div
+      style="display:flex;padding-bottom:13px"
+      @click="viewGoodsList(companyInfo)"
+    >
       <img :src="companyInfo.avatar" alt="" class="company-item__avatar" />
       <div class="company-item__info">
         <div class="company-item__info--name">
@@ -19,8 +22,10 @@
         </div>
       </div>
     </div>
-    <div class="company-item__action" v-if="tabActive === 'toApply'">
-      <van-button plain type="primary" @click="onApply(companyInfo)">申请</van-button>
+    <div class="company-item__action" v-if="activeName === 'toApply'">
+      <van-button plain type="primary" @click="onApply(companyInfo)"
+        >申请</van-button
+      >
     </div>
   </div>
 </template>
@@ -30,7 +35,7 @@ export default defineComponent({
   name: "CompanyItem",
   props: {
     companyInfo: Object,
-    tabActive: String
+    activeName: String
   },
   data() {
     return {};
@@ -39,6 +44,9 @@ export default defineComponent({
     // HelloWorld
   },
   methods: {
+    viewGoodsList(companyInfo: any) {
+      this.$emit("click-company", companyInfo);
+    },
     onApply(companyInfo: any) {
       this.$emit("apply", companyInfo);
     }

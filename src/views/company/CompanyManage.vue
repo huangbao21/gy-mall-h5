@@ -1,6 +1,6 @@
 <template>
   <div class="company-manage nav-bar">
-    <van-nav-bar title="订单管理" :border="false" @click-left="toView">
+    <van-nav-bar title="企业主管理" :border="false" @click-left="toView">
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
@@ -37,8 +37,9 @@
               v-for="item in list"
               :key="item.agencyId"
               :companyInfo="item"
-              :tabActive="tabActive"
-              @apply="handleApply"
+              :activeName="tabActive"
+              @apply="handleApply(item)"
+              @click-company="viewCompanyGoods"
             />
           </van-list>
         </div>
@@ -50,7 +51,7 @@
               v-for="item in list"
               :key="item.agencyId"
               :companyInfo="item"
-              :tabActive="tabActive"
+              :activeName="tabActive"
             />
           </van-list>
         </div>
@@ -62,7 +63,7 @@
               v-for="item in list"
               :key="item.agencyId"
               :companyInfo="item"
-              :tabActive="tabActive"
+              :activeName="tabActive"
             />
           </van-list>
         </div>
@@ -74,7 +75,7 @@
               v-for="item in list"
               :key="item.agencyId"
               :companyInfo="item"
-              :tabActive="tabActive"
+              :activeName="tabActive"
             />
           </van-list>
         </div>
@@ -86,7 +87,8 @@
 import { defineComponent } from "vue";
 import {
   fetchApplyCompanyList,
-  fetchAppliedRecords
+  fetchAppliedRecords,
+  applyAgency
 } from "@/services/company.ts";
 import { AppliedStatus } from "@/utils/const.ts";
 import CompanyItem from "./component/CompanyItem.vue";
@@ -107,10 +109,17 @@ export default defineComponent({
     };
   },
   methods: {
-    async handleApply() {
-      console.log(`处理申请`);
+    viewCompanyGoods() {
+      this.$router.push({ path: "/companyShop" });
+    },
+    async handleApply(companyItem: any) {
+      console.log(this.tabActive)
+      this.tabActive = "toReject";
+      console.log(this.tabActive)
+      // await applyAgency({ id: companyItem.agencyId });
     },
     getCompanyStatus() {
+      console.log(`tabActive`, this.tabActive);
       this.reloadList();
     },
     async getCompanyList() {
