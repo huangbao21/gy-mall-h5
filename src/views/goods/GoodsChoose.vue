@@ -109,8 +109,6 @@
             :key="good.id"
             :underline="index !== list.length - 1"
             show-checkbox
-            forceClickGood
-            @click-good="viewGood"
             @update:good-checked="onChangeGoodCheck($event)"
             v-model:good-checked="good.checked"
           ></good-item>
@@ -224,12 +222,6 @@ export default defineComponent({
   methods: {
     toView() {
       this.$router.go(-1);
-    },
-    viewGood(good: any) {
-      this.$router.push({
-        path: "/agentGoodsShow",
-        query: { goodId: good.id, operateType: "show" },
-      });
     },
     async handleGoodsStocks(isTrue: number) {
       const idList: any[] = [];

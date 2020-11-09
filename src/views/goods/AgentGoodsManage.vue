@@ -229,7 +229,7 @@ export default defineComponent({
       });
       categoryOption.value.push(...temp);
     };
-    onMounted(getCategoryList)
+    onMounted(getCategoryList);
     return {
       checkRadioColor,
       sortOption,
@@ -266,6 +266,13 @@ export default defineComponent({
       supplierTitle: "我的商品",
     };
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm: any) => {
+      if (to.query.supplierId) {
+        vm.supplierId = to.query.supplierId;
+      }
+    });
+  },
   mounted() {
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
@@ -289,6 +296,9 @@ export default defineComponent({
       const res = await fetchSupplierList();
       res.data.records.map((item: any) => {
         item.name = item.shopName;
+        if (item.supplierId === Number(this.supplierId)) {
+          this.supplierTitle = item.name;
+        }
       });
       this.supplierList.push(...res.data.records);
     },
