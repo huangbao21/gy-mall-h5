@@ -72,7 +72,7 @@ import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
 import { saveGoods, fetchGoodDetail } from "@/services/goods";
 export default defineComponent({
-  name: "GoodsAdd",
+  name: "agentGoodsShow",
   data() {
     return {
       goodsInfo: {
@@ -120,9 +120,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    if (this.operateType === "show") {
-      this.fetchGoodDetail();
-    }
+    this.fetchGoodDetail();
   },
   methods: {
     async fetchGoodDetail() {

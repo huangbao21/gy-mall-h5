@@ -26,6 +26,7 @@ export default class API {
   static GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product/batch_on_or_down`
   static GOOD_DEL = `${APP_SERVICE}authc/product/delete`
   static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
+  static CUSTOMER_GOOD_DETAIL=`${APP_SERVICE}authc/product_customer/view`
 
   // 代理商商品管理
   static AGENT_GOODS_LIST = `${APP_SERVICE}authc/product_agency/find_page`

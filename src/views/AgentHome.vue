@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="operate">
-      <div class="operate-item" @click="goGoodsAdd">
+      <div class="operate-item" @click="goCompanyManage">
         <img
           class="operate-item__icon"
           src="../assets/imgs/home/ic_business_owner.png"
@@ -69,7 +69,7 @@
         <img class="operate-item__icon" src="../assets/imgs/home/ic_good.png" />
         <div class="operate-item__text">商品管理</div>
       </div>
-      <div class="operate-item">
+      <div class="operate-item" @click="goOrderManage">
         <img
           class="operate-item__icon"
           src="../assets/imgs/home/ic_order.png"
@@ -119,17 +119,17 @@ export default defineComponent({
       console.log(updateTime);
       this.salesInfo = { ...this.salesInfo, ...res.data, updateTime };
     },
-    goGoodsAdd() {
-      this.$router.push({ path: "/goodsAdd" });
-    },
-    goSystem() {
-      this.$router.push({ path: "/systemManagement" });
+    goCompanyManage() {
+      this.$router.push({ path: "/companyManage" });
     },
     goReseller() {
       this.$router.push({ path: "/resellerManagement" });
     },
     goGoodsManage() {
       this.$router.push({ path: "/goodsManage" });
+    },
+    goOrderManage() {
+      this.$router.push({ path: "AgentManage" });
     },
     handleItemClick($event: any) {
       console.log($event);
