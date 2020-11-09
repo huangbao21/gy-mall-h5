@@ -93,6 +93,9 @@ export default class API {
   static SET_ADDRESS_DEFAULT = `${APP_SERVICE}authc/address/set_default`;
   static DEFAULT_ADDRESS = `${APP_SERVICE}authc/address/find_default`
 
+  // 支付
+  static ORDER_PAY = `${APP_SERVICE}order_pay/pay_param`
+
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;
 }

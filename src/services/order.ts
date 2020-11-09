@@ -31,6 +31,6 @@ export function receiptOrder(data: { id: number }): Promise<PostData> {
 export function deliverOrder(data: { id: number; sn: string }): Promise<PostData> {
   return axios.post(API.order_deliver, data);
 }
-export function createOrder(data: { addressId: number; quantity: number }): Promise<PostData> {
+export function createOrder(data: { addressId: number; quantity: number; skuId: number; agencyId: number }): Promise<PostData> {
   return axios.post(API.CREATE_ORDER, data);
 }

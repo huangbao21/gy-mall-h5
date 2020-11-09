@@ -53,7 +53,12 @@
         <span class="real-money"
           >￥ <strong>{{ goodInfo.price * quantity }}</strong></span
         >
-        <van-button round plain type="primary" style="margin-left: 10px"
+        <van-button
+          round
+          plain
+          type="primary"
+          style="margin-left: 10px"
+          @click="submitOrder"
           >提交订单</van-button
         >
       </div>
@@ -73,6 +78,7 @@ import {
   AddressInfoServe,
   fetchAddressInfo,
 } from "@/services/address";
+import { createOrder } from "@/services/order.ts";
 import { defineComponent } from "vue";
 import ExpressPopup from "./components/ExpressPopup.vue";
 export default defineComponent({
@@ -113,6 +119,15 @@ export default defineComponent({
       } else {
         this.$router.go(-1);
       }
+    },
+    async submitOrder() {
+      // await createOrder({
+      //   addressId: Number(this.chosenAddressId),
+      //   quantity: this.quantity,
+      //   skuId: this.goodInfo.productSkuList[0].id,
+      //   agencyId: this.agencyId,
+      // });
+      // this.$router.replace()
     },
     async getShowAddress() {
       let res;
