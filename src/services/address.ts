@@ -41,3 +41,6 @@ export function deleteAddress(data: { id: number }): Promise<PostData> {
 export function setAddressDefault(data: { id: number }): Promise<PostData> {
   return axios.post(API.SET_ADDRESS_DEFAULT, data)
 }
+export function queryDefaultAddress(): Promise<PostData> {
+  return axios.post(API.DEFAULT_ADDRESS, {});
+}
