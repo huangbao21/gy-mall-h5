@@ -64,6 +64,9 @@
         </div>
       </div>
     </div>
+    <div class="footer-action">
+      <van-button type="primary" @click="handleBuyNow">立即购买</van-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -99,7 +102,8 @@ export default defineComponent({
       currentCoverIndex: 0,
       maxCount: 6,
       operateType: "show",
-      goodId: 0
+      goodId: 0,
+      agencyId: 0
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -127,7 +131,7 @@ export default defineComponent({
       console.log(this.goodId);
       const res = await fetchCustomerGoodsDetail({
         id: this.goodId,
-        agencyId: 123
+        agencyId: this.agencyId
       });
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
@@ -190,6 +194,12 @@ export default defineComponent({
         path: "/placeOrder",
         query: { goodId: this.goodId }
       });
+    },
+    handleBuyNow() {
+      this.$router.push({
+        path: "/placeOrder",
+        query: { goodId: this.goodId, agencyId: this.agencyId }
+      });
     }
   }
 });
@@ -200,7 +210,7 @@ export default defineComponent({
   height: 100%;
 }
 .goods-add-content-wrapper {
-  height: calc(100% - 30px);
+  height: calc(100% - 30px - 48px);
   background-color: $bgColor;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -342,6 +352,20 @@ export default defineComponent({
     .van-image {
       vertical-align: top;
     }
+  }
+}
+.footer-action {
+  position: fixed;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  .van-button--primary {
+    @include gy-btn-primary;
+    width: 335px;
+    height: 44px;
+    border-radius: 20px;
+    color: rgba(13, 4, 32, 1);
+    font-weight: bold;
   }
 }
 </style>
