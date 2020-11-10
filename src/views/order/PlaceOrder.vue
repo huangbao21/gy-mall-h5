@@ -26,15 +26,17 @@
             <p class="good-info--name">宠物小精灵</p>
             <p class="good-info--prop">
               <span>单价 ￥ {{ goodInfo.price }}</span>
-              <span style="margin-left: 10px">数量 231</span>
+              <span style="margin-left: 10px">数量 {{ quantity }}</span>
             </p>
-            <p class="good-info--total">总价 ￥213</p>
+            <p class="good-info--total">
+              总价 ￥{{ goodInfo.price * quantity }}
+            </p>
           </div>
         </div>
         <div class="order-info__money">
           <div class="order-info__money-row">
             <span>商品总额</span>
-            <span>￥ {{ goodInfo.amount }}</span>
+            <span>￥ {{ goodInfo.price * quantity }}</span>
           </div>
           <div class="order-info__money-row">
             <span>运费</span>
@@ -42,16 +44,21 @@
           </div>
           <div class="order-info__money-row--total">
             <span>合计付款：</span>
-            <span class="sum">￥ {{ goodInfo.amount }}</span>
+            <span class="sum">￥ {{ goodInfo.price * quantity }}</span>
           </div>
         </div>
       </div>
       <div class="footer-action">
         <span>应付金额：</span>
         <span class="real-money"
-          >￥ <strong>{{ goodInfo.payAmount }}</strong></span
+          >￥ <strong>{{ goodInfo.price * quantity }}</strong></span
         >
-        <van-button round plain type="primary" style="margin-left: 10px"
+        <van-button
+          round
+          plain
+          type="primary"
+          style="margin-left: 10px"
+          @click="submitOrder"
           >提交订单</van-button
         >
       </div>
@@ -71,6 +78,7 @@ import {
   AddressInfoServe,
   fetchAddressInfo,
 } from "@/services/address";
+import { createOrder } from "@/services/order.ts";
 import { defineComponent } from "vue";
 import ExpressPopup from "./components/ExpressPopup.vue";
 export default defineComponent({
@@ -87,6 +95,7 @@ export default defineComponent({
       expressPopup: false,
       addressInfo: {} as AddressInfoServe,
       chosenAddressId: "",
+      quantity: 1,
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -110,6 +119,15 @@ export default defineComponent({
       } else {
         this.$router.go(-1);
       }
+    },
+    async submitOrder() {
+      // await createOrder({
+      //   addressId: Number(this.chosenAddressId),
+      //   quantity: this.quantity,
+      //   skuId: this.goodInfo.productSkuList[0].id,
+      //   agencyId: this.agencyId,
+      // });
+      // this.$router.replace()
     },
     async getShowAddress() {
       let res;
