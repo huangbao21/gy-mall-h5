@@ -309,7 +309,6 @@ export default defineComponent({
         return item.shopName;
       });
       this.pickerLoading = false;
-      console.log(shopNames, 22);
       this.supplierCol.push(...shopNames);
       this.supplierList = res.data.records;
     },
