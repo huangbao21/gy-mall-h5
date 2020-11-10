@@ -224,6 +224,24 @@ const routes: Array<RouteRecordRaw> = [
     name: 'ApplyTransition',
     component: () => import('../views/company/ApplyTransition.vue'),
     meta: { title: '申请过渡页' }
+  },
+  {
+    path: '/internalManage',
+    name: 'InternalManage',
+    component: () => import('../views/internal/InternalManage.vue'),
+    meta: { title: '内部管理' }
+  },
+  {
+    path: '/jobSetting',
+    name: 'JobSetting',
+    component: () => import('../views/internal/JobSetting.vue'),
+    meta: { title: '新增职位' }
+  },
+  {
+    path: '/staffSetting',
+    name: 'StaffSetting',
+    component: () => import('../views/internal/StaffSetting.vue'),
+    meta: { title: '新增员工' }
   }
 ]
 

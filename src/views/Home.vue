@@ -83,7 +83,7 @@
         />
         <div class="operate-item__text">体系管理</div>
       </div>
-      <div class="operate-item">
+      <div class="operate-item" @click="goInternal">
         <img
           class="operate-item__icon"
           src="../assets/imgs/home/ic_inner.png"
@@ -155,6 +155,9 @@ export default defineComponent({
     },
     goOrderManage() {
       this.$router.push({ path: "AgentManage" });
+    },
+    goInternal() {
+      this.$router.push({ path: "/internalManage" });
     },
     handleItemClick($event: any) {
       console.log($event);

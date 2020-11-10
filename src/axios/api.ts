@@ -26,7 +26,7 @@ export default class API {
   static GOODS_BATCH_ON_DOWN = `${APP_SERVICE}authc/product/batch_on_or_down`
   static GOOD_DEL = `${APP_SERVICE}authc/product/delete`
   static GOOD_DETAIL = `${APP_SERVICE}authc/product/view`
-  static CUSTOMER_GOOD_DETAIL=`${APP_SERVICE}authc/product_customer/view`
+  static CUSTOMER_GOOD_DETAIL = `${APP_SERVICE}authc/product_customer/view`
 
   // 代理商商品管理
   static AGENT_GOODS_LIST = `${APP_SERVICE}authc/product_agency/find_page`
@@ -72,10 +72,10 @@ export default class API {
   static APPLY_NUMBER = `${APP_SERVICE}authc/agency_customer/find_agency_apply_number`
 
   // 企业主管理
-  static CAN_APPLY_COMPANY=`${APP_SERVICE}authc/agency_firm/find_agency_firm_page`
-  static APPLIED_LIST=`${APP_SERVICE}authc/agency_firm/find_agency_apply_page`
-  static COMPANY_GOODS_LIST_ONLINE=`${APP_SERVICE}authc/product_customer/find_page`
-  static APPLY_AGENCY=`${APP_SERVICE}authc/customer/apply_agency`
+  static CAN_APPLY_COMPANY = `${APP_SERVICE}authc/agency_firm/find_agency_firm_page`
+  static APPLIED_LIST = `${APP_SERVICE}authc/agency_firm/find_agency_apply_page`
+  static COMPANY_GOODS_LIST_ONLINE = `${APP_SERVICE}authc/product_customer/find_page`
+  static APPLY_AGENCY = `${APP_SERVICE}authc/customer/apply_agency`
 
   // 体系管理
   static QUERY_CONDITION_TYPE_LIST = `${APP_SERVICE}authc/agency_customer/find_condition_type_list`
@@ -92,11 +92,20 @@ export default class API {
   static DELETE_ADDRESS = `${APP_SERVICE}authc/address/delete`;
   static SET_ADDRESS_DEFAULT = `${APP_SERVICE}authc/address/set_default`;
   static DEFAULT_ADDRESS = `${APP_SERVICE}authc/address/find_default`;
-  static EDIT_ADDRESS_INFO =`${APP_SERVICE}authc/address/update`;
+  static EDIT_ADDRESS_INFO = `${APP_SERVICE}authc/address/update`;
 
   // 支付
   static ORDER_PAY = `${APP_SERVICE}order_pay/pay_param`
 
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;
+  static TRANSFER_MONEY = `${APP_SERVICE}authc/agency_customer/transfer`
+
+  // 企业内部管理
+  static STAFF_LIST = `${APP_SERVICE}authc/agency_customer/find_staff_customer_page`;
+  static ADD_STAFF = `${APP_SERVICE}authc/agency_customer/save_staff_customer`
+  static UPDATE_STAFF=`${APP_SERVICE}authc/agency_customer/update_customer_rank`
+  static JOB_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_rank`
+  static UPDATE_JOB = `${APP_SERVICE}authc/agency_customer/update_customer_rank`
+  static ADD_JOB = `${APP_SERVICE}authc/agency_customer/save_agency_rank`
 }
