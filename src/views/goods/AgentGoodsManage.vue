@@ -7,7 +7,7 @@
       @click-right="onClickRight"
     >
       <template #title>
-        <div class="title" @click="showSheet = true">
+        <div class="title" @click="showSupplierPicker">
           <span>{{ supplierTitle }}</span>
           <van-icon name="arrow-down" color="#fff" />
         </div>
@@ -181,14 +181,15 @@
         >
       </template>
     </div>
-    <van-action-sheet
-      v-model:show="showSheet"
-      :actions="supplierList"
-      cancel-text="取消"
-      class="gy-sheet"
-      @select="changeSupplier"
-      close-on-click-action
-    />
+    <van-popup v-model:show="showPicker" position="bottom" round>
+      <van-picker
+        :columns="supplierCol"
+        :loading="pickerLoading"
+        @cancel="showPicker = false"
+        @confirm="changeSupplier"
+        class="gy-picker"
+      />
+    </van-popup>
   </div>
 </template>
 <script lang="ts">
@@ -239,6 +240,7 @@ export default defineComponent({
   },
   data() {
     return {
+      test: [1, 2, 3, 4, 5, 6],
       goodItemRefs: [] as any,
       searchValue: "",
       active: 0,
@@ -253,7 +255,8 @@ export default defineComponent({
       allChecked: false,
       showActionPanel: true,
       batchAction: false,
-      showSheet: false,
+      showPicker: false,
+      pickerLoading: false,
       goodsValue: -1,
       categoryValue: -1,
       checkedNum: 0,
@@ -261,7 +264,8 @@ export default defineComponent({
       sortTitle: "",
       goodsTitle: "",
       categoryTitle: "",
-      supplierList: [{ name: "我的商品", supplierId: -1 }],
+      supplierCol: ["我的商品"],
+      supplierList: [] as any,
       supplierId: -1,
       supplierTitle: "我的商品",
     };
@@ -277,11 +281,15 @@ export default defineComponent({
     this.sortTitle = this.sortOption[0].text;
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
+    this.pickerLoading = true;
     this.getSupplierList();
   },
   methods: {
     toView() {
       this.$router.go(-1);
+    },
+    showSupplierPicker() {
+      this.showPicker = true;
     },
     viewGood(good: any) {
       this.$router.push({
@@ -294,17 +302,21 @@ export default defineComponent({
     },
     async getSupplierList() {
       const res = await fetchSupplierList();
-      res.data.records.map((item: any) => {
-        item.name = item.shopName;
+      const shopNames = res.data.records.map((item: any) => {
         if (item.supplierId === Number(this.supplierId)) {
-          this.supplierTitle = item.name;
+          this.supplierTitle = item.shopName;
         }
+        return item.shopName;
       });
-      this.supplierList.push(...res.data.records);
+      this.pickerLoading = false;
+      console.log(shopNames, 22);
+      this.supplierCol.push(...shopNames);
+      this.supplierList = res.data.records;
     },
-    changeSupplier(item: any) {
-      this.supplierId = item.supplierId;
-      this.supplierTitle = item.name;
+    changeSupplier(value: string, index: number) {
+      this.supplierTitle = value;
+      this.supplierId = this.supplierList[index - 1]?.supplierId;
+      this.showPicker = false;
       this.reloadList();
     },
     async goodActionEvent(name: string, item: any, index: number) {

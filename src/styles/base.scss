@@ -14,11 +14,11 @@
     font-weight: bold;
     font-size: 18px;
   }
-  :deep(.van-nav-bar__text){
+  :deep(.van-nav-bar__text) {
     color: #00ffd2;
     font-size: 16px;
   }
-  :deep(.van-tab){
+  :deep(.van-tab) {
     font-size: 16px;
   }
 }
@@ -37,11 +37,11 @@
     :deep(.van-search__content) {
       background-color: $contentBgColor;
     }
-    :deep(.van-search__action){
-      padding:0;
+    :deep(.van-search__action) {
+      padding: 0;
       line-height: 36px;
     }
-    :deep(.van-search__action:active){
+    :deep(.van-search__action:active) {
       background-color: unset;
     }
     :deep(.van-field__right-icon) {
@@ -102,7 +102,7 @@
   background-color: $contentBgColor;
   color: #00ffd2;
 }
-@mixin gy-btn-default{
+@mixin gy-btn-default {
   color: rgba($color: #fff, $alpha: 0.8);
   border-color: rgba($color: #fff, $alpha: 0.8);
   background-color: $contentBgColor;

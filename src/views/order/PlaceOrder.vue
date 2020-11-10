@@ -26,7 +26,7 @@
             <p class="good-info--name">宠物小精灵</p>
             <p class="good-info--prop">
               <span>单价 ￥ {{ goodInfo.price }}</span>
-              <span style="margin-left: 10px">数量 {{ quantity }}</span>
+              <span class="stepper"> <van-stepper v-model="quantity" /></span>
             </p>
             <p class="good-info--total">
               总价 ￥{{ goodInfo.price * quantity }}
@@ -121,13 +121,16 @@ export default defineComponent({
       }
     },
     async submitOrder() {
-      // await createOrder({
-      //   addressId: Number(this.chosenAddressId),
-      //   quantity: this.quantity,
-      //   skuId: this.goodInfo.productSkuList[0].id,
-      //   agencyId: this.agencyId,
-      // });
-      // this.$router.replace()
+      const res = await createOrder({
+        addressId: Number(this.chosenAddressId),
+        quantity: this.quantity,
+        skuId: this.goodInfo.productSkuList[0].id,
+        agencyId: this.agencyId,
+      });
+      this.$router.replace({
+        path: "payOrder",
+        query: { orderId: res.data.orderId },
+      });
     },
     async getShowAddress() {
       let res;
@@ -175,10 +178,17 @@ main {
   color: #fff;
   font-size: 12px;
   .good-info {
+    flex: 1;
     &--prop {
       color: rgba($color: #fff, $alpha: 0.4);
       margin-top: 10px;
       margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      .stepper {
+        flex: 1;
+        text-align: right;
+      }
     }
   }
   .van-image {
@@ -203,6 +213,9 @@ main {
       justify-content: space-between;
       align-items: center;
       text-align: left;
+      background-image: url("../../assets/imgs/common/line-decorate.png");
+      background-repeat: no-repeat;
+      background-position: bottom;
     }
     &-user {
       display: flex;

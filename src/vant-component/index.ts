@@ -30,10 +30,13 @@ import {
   AddressList,
   ActionSheet,
   Step,
-  Steps
+  Steps,
+  Stepper,
+  Picker,
+  Popup
 } from "vant";
 
-export default function(app: any) {
+export default function (app: any) {
   app
     .use(Button)
     .use(NavBar)
@@ -65,5 +68,6 @@ export default function(app: any) {
     .use(AddressList)
     .use(ActionSheet)
     .use(Step)
-    .use(Steps);
+    .use(Steps)
+    .use(Stepper).use(Picker).use(Popup);
 }
