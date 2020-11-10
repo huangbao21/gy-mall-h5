@@ -13,12 +13,8 @@
       </template>
     </van-nav-bar>
     <div class="address-list">
-      <van-swipe-cell
-        v-for="item in list"
-        :key="item.id"
-        @click="handleAddressSelect(item.id)"
-      >
-        <div class="van-address-item">
+      <van-swipe-cell v-for="item in list" :key="item.id">
+        <div class="van-address-item" @click="handleAddressSelect(item.id)">
           <div class="van-cell van-cell--borderless">
             <div
               class="van-cell__value van-cell__value--alone van-address-item__value"
@@ -47,7 +43,7 @@
             </div>
             <i
               class="van-badge__wrapper van-icon van-icon-edit van-address-item__edit"
-              @click="handleEdit(item.id)"
+              @click.stop="handleEdit(item.id)"
               ><!----><!----><!----></i
             ><!---->
           </div>
@@ -92,12 +88,18 @@ export default defineComponent({
   components: {
     // HelloWorld
   },
+  beforeRouteEnter(to, from, next) {
+    console.log(to);
+    next();
+  },
   mounted() {
     this.fetchAddressList();
   },
   methods: {
     handleAddressSelect(addressId: number) {
       // 要判断来源是app还是订单
+      console.log(addressId);
+      console.log(this.$route);
       this.$router.replace({
         path: "/placeOrder",
         query: { ...this.$route.query, chosenAddressId: addressId }
@@ -107,7 +109,6 @@ export default defineComponent({
       this.$router.push({ path: "/addressEdit" });
     },
     handleEdit(addressId: string) {
-      console.log("编辑地址");
       this.$router.push({
         path: "/addressEdit",
         query: { type: "edit", addressId }

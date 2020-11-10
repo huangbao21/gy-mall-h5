@@ -103,11 +103,11 @@ export default defineComponent({
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.operateType !== undefined) {
+    if (to.query.goodId !== undefined) {
       next((vm: any) => {
-        console.log(11);
         vm.operateType = to.query.operateType;
         vm.goodId = to.query.goodId;
+        vm.agencyId = to.query.agencyId;
       });
     } else {
       next();
@@ -125,7 +125,10 @@ export default defineComponent({
   methods: {
     async fetchCustomerGoodsDetail() {
       console.log(this.goodId);
-      const res = await fetchCustomerGoodsDetail({ id: this.goodId });
+      const res = await fetchCustomerGoodsDetail({
+        id: this.goodId,
+        agencyId: 123
+      });
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
     },

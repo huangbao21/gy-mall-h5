@@ -63,7 +63,19 @@ const routes: Array<RouteRecordRaw> = [
     path: '/goodsShow',
     name: 'GoodsShow',
     component: () => import(/* webpackChunkName: "goods" */ '../views/goods/GoodsShow.vue'),
-    meta: { title: '编辑商品' }
+    meta: { title: '商品详情页' }
+  },
+  {
+    path: '/customergoodsShow',
+    name: 'CustomergoodsShow',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/CustomerGoodsShow.vue'),
+    meta: { title: '商品详情页' }
+  },
+  {
+    path: '/agentGoodsShow',
+    name: 'AgentGoodsShow',
+    component: () => import(/* webpackChunkName: "goods" */ '../views/goods/AgentGoodsShow.vue'),
+    meta: { title: '商品详情页' }
   },
   {
     path: '/goodsCategory',

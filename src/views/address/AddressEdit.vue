@@ -22,6 +22,7 @@
       @delete="onDelete"
       @change-detail="onChangeDetail"
       detail-rows="2"
+      @change-area="onChangeArea"
     >
       <template #default>
         <van-cell
@@ -48,6 +49,7 @@ import {
   AddressInfo,
   fetchAddressInfo,
   deleteAddress,
+  editAddressInfo
 } from "../../services/address";
 interface AreaRules {
   [key: number]: string;
@@ -69,11 +71,15 @@ export default defineComponent({
         isDeafult: 0,
         name: "",
         addressDetail: "",
+        cityCode: "",
+        provinceCode: ""
       },
       checked: false,
       isContentChange: false,
       type: "add",
       addressId: -1,
+      provinceCode: "",
+      cityCode: ""
     };
   },
   components: {
@@ -97,7 +103,7 @@ export default defineComponent({
       this.$dialog
         .confirm({
           message: "地址信息未保存，确认返回？",
-          className: "gy-dialog",
+          className: "gy-dialog"
         })
         .then(() => {
           this.$router.go(-1);
@@ -124,6 +130,8 @@ export default defineComponent({
         isDeafult: res.data.byDefault,
         name: res.data.linkman,
         addressDetail: res.data.street,
+        cityCode: res.data.cityCode,
+        provinceCode: res.data.provinceCode
       };
     },
     dealAreaListData(list: any) {
@@ -133,7 +141,7 @@ export default defineComponent({
         // eslint-disable-next-line @typescript-eslint/camelcase
         city_list: {} as AreaRules,
         // eslint-disable-next-line @typescript-eslint/camelcase
-        county_list: {} as AreaRules,
+        county_list: {} as AreaRules
       };
       list.forEach((provinceList: any) => {
         res.province_list[provinceList.adcode] = provinceList.name;
@@ -148,27 +156,53 @@ export default defineComponent({
     },
     async fetchAreaList() {
       const res = await fetchAreaList();
-      console.log(res.data.districts);
       this.areaList = this.dealAreaListData(res.data.districts);
     },
     async onSave(addressInfo: AddressInfo) {
-      await saveAddress({
-        byDefault: this.checked ? 1 : 0,
-        cityName: addressInfo.city,
-        districtCode: addressInfo.areaCode,
-        districtName: addressInfo.county,
-        linkman: addressInfo.name,
-        mobile: addressInfo.tel,
-        provinceName: addressInfo.province,
-        street: addressInfo.addressDetail,
-        provinceCode: addressInfo.areaCode.substring(0, 2) + "0000",
-        cityCode: addressInfo.areaCode.substring(0, 4) + "00",
-      });
+      if (this.type === "add") {
+        await saveAddress({
+          byDefault: this.checked ? 1 : 0,
+          cityName: addressInfo.city,
+          districtCode: addressInfo.areaCode,
+          districtName: addressInfo.county,
+          linkman: addressInfo.name,
+          mobile: addressInfo.tel,
+          provinceName: addressInfo.province,
+          street: addressInfo.addressDetail,
+          provinceCode: this.provinceCode,
+          cityCode: this.cityCode
+        });
+      } else {
+        await editAddressInfo({
+          byDefault: this.checked ? 1 : 0,
+          cityName: addressInfo.city,
+          districtCode: addressInfo.areaCode,
+          districtName: addressInfo.county,
+          linkman: addressInfo.name,
+          mobile: addressInfo.tel,
+          provinceName: addressInfo.province,
+          street: addressInfo.addressDetail,
+          provinceCode: this.addressInfo.provinceCode,
+          cityCode: this.addressInfo.cityCode
+        });
+      }
+
       Toast("保存成功");
       this.$router.go(-1);
     },
     onDelete() {
       Toast("delete");
+    },
+    onChangeArea(values: any) {
+      console.log(values);
+      console.log(this.addressInfo);
+      if (this.type === "edit") {
+        this.addressInfo.provinceCode = values[0].code;
+        this.addressInfo.cityCode = values[1].code;
+      } else {
+        this.provinceCode = values[0].code;
+        this.cityCode = values[1].code;
+      }
     },
     onChangeDetail(val: boolean) {
       this.isContentChange = true;
@@ -177,8 +211,8 @@ export default defineComponent({
       } else {
         this.searchResult = [];
       }
-    },
-  },
+    }
+  }
 });
 </script>
 

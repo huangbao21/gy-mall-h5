@@ -44,3 +44,6 @@ export function setAddressDefault(data: { id: number }): Promise<PostData> {
 export function queryDefaultAddress(): Promise<PostData> {
   return axios.post(API.DEFAULT_ADDRESS, {});
 }
+export function editAddressInfo(data: AddressInfoServe): Promise<PostData> {
+  return axios.post(API.EDIT_ADDRESS_INFO, data)
+}

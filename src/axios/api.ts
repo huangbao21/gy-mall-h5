@@ -91,7 +91,8 @@ export default class API {
   static ADDRESS_INFO = `${APP_SERVICE}authc/address/view`;
   static DELETE_ADDRESS = `${APP_SERVICE}authc/address/delete`;
   static SET_ADDRESS_DEFAULT = `${APP_SERVICE}authc/address/set_default`;
-  static DEFAULT_ADDRESS = `${APP_SERVICE}authc/address/find_default`
+  static DEFAULT_ADDRESS = `${APP_SERVICE}authc/address/find_default`;
+  static EDIT_ADDRESS_INFO =`${APP_SERVICE}authc/address/update`;
 
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;

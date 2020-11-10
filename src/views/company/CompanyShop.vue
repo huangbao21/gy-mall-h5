@@ -217,7 +217,7 @@ export default defineComponent({
     viewGood(good: any) {
       this.$router.push({
         path: "/goodsShow",
-        query: { goodId: good.id, operateType: "show" }
+        query: { goodId: good.id, operateType: "show", agencyId: this.agencyId }
       });
     },
     setGoodItemRef(el: any) {
