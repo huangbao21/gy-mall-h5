@@ -83,7 +83,6 @@ export default defineComponent({
   },
   methods: {
     handleEditOk() {
-      Toast("按钮");
       if (!this.goods.retailPrice.length) {
         Toast("市场价格不能为空");
         return;

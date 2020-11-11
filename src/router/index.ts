@@ -242,6 +242,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'StaffSetting',
     component: () => import('../views/internal/StaffSetting.vue'),
     meta: { title: '新增员工' }
+  },
+  {
+    path: '/staff',
+    name: 'Staff',
+    component: () => import('../views/internal/Staff.vue'),
+    meta: { title: '员工列表' }
   }
 ]
 
