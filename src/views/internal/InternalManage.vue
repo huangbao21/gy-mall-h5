@@ -12,10 +12,15 @@
     </van-nav-bar>
     <div class="internal-management-content">
       <div class="job-list">
-        <div class="job-cell" v-for="item in jobList" :key="item.id">
+        <div
+          class="job-cell"
+          v-for="item in jobList"
+          :key="item.id"
+          @click="goStaff(item)"
+        >
           <div class="job-cell-header">
             <span class="job-cell-header-title">{{ item.name }}</span>
-            <van-button type="primary" plain round @click="handleJobEdit(item)"
+            <van-button type="primary" plain round @click.stop="handleJobEdit(item)"
               >编辑</van-button
             >
           </div>
@@ -64,11 +69,12 @@ export default defineComponent({
       console.log(res);
       this.jobList = res.data;
     },
-    /*  async queryAgencyAndSales() {
-      const res = await queryAgencyAndSales();
-      this.saleNumber = res.data.saleNumber;
-      this.peopleNumber = res.data.peopleNumber;
-    }, */
+    goStaff(job: any) {
+      this.$router.push({
+        path: "/staff",
+        query: { customerRank: job.customerRank }
+      });
+    },
     handleJobEdit(item: any) {
       console.log(`编辑职位`);
       this.$router.push({ path: "/jobSetting", query: { ...item } });

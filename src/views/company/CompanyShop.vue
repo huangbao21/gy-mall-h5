@@ -123,7 +123,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent, onMounted } from "vue";
 import {
-  fetchGoodsList,
   allGoodsOnDown,
   batchGoodsOnDown,
   delGood,

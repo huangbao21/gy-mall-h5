@@ -1,7 +1,7 @@
 <template>
   <div class="staff-setting nav-bar">
     <van-nav-bar
-      title="新增员工"
+      :title="type==='add'?'新增员工':'编辑员工'"
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
@@ -12,7 +12,7 @@
       </template>
     </van-nav-bar>
     <div class="staff-content">
-      <div class="staff-content-cell">
+      <div class="staff-content-cell" v-if="type === 'add'">
         <p class="input-label">手机号</p>
         <div class="input-wrapper">
           <van-field
@@ -26,59 +26,91 @@
         </div>
       </div>
       <div class="staff-content-cell">
-        <p class="input-label">分佣比例</p>
+        <p class="input-label">职位</p>
         <div class="input-wrapper">
           <van-field
-            v-model="goodsTitle"
+            v-model="jobTitle"
             right-icon="arrow"
-            placeholder="显示图标"
-            @click="handleJobRankSelect"
+            placeholder="请选择职位"
+            @click="showPicker = true"
           />
-          <span class="input-sign">%</span>
         </div>
-        <p class="input-tips">
-          可配置分佣比例区间:{{ rationMin }}-{{ rationMax }}
+      </div>
+      <div class="rights-tips">
+        <p class="rights-tips-title">人员说明</p>
+        <p class="rights-tips-content">
+          代理商需与该人员签订正式劳动合同，平台不承担任何法律风险
         </p>
       </div>
+      <van-popup v-model:show="showPicker" position="bottom" round>
+        <van-picker
+          :columns="jobColumns"
+          @cancel="showPicker = false"
+          @confirm="changeJobTitle"
+          class="gy-picker"
+        />
+      </van-popup>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Toast } from "vant";
-import { addStaff, updateStaff } from "../../services/internal";
+import { addStaff, updateStaff, fetchJobList } from "../../services/internal";
 export default defineComponent({
   name: "CommissionSetting",
   data() {
     return {
       ration: "",
       mobile: "",
-      rank: "",
-      type: "add"
+      rank: -1,
+      type: "add",
+      jobTitle: "",
+      showPicker: false,
+      jobColumns: [] as object[],
+      userId: -1
     };
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.ration !== undefined) {
-      next((vm: any) => {
-        vm.ration = to.query.ration;
-        vm.sellNumber = to.query.sellNumber;
-      });
-    } else {
-      next();
+  mounted() {
+    if (this.$route.query.userId !== undefined) {
+      this.userId = Number(this.$route.query.userId);
+      this.type = "edit";
     }
+    this.fetchJobList();
   },
   methods: {
+    async fetchJobList() {
+      const res = await fetchJobList();
+      const jobsTitle = res.data.map((item: any) => {
+        return { text: item.name, rank: item.customerRank };
+      });
+      this.jobColumns.push(...jobsTitle);
+    },
+    changeJobTitle(value: { text: string; rank: number }) {
+      this.jobTitle = value.text;
+      this.rank = value.rank;
+      this.showPicker = false;
+    },
     async handleCommissionSave() {
-      if (this.type === "add") {
-        await addStaff({ mobile: "18667625328", rank: "1" });
-      } else if (this.type === "edit") {
-        await updateStaff({ id: 1, param: "1" });
+      if (!this.mobile.length) {
+        Toast(`请设置手机号`);
+        return;
       }
+      if (!this.jobTitle.length) {
+        Toast(`请设置职位`);
+        return;
+      }
+      if (this.type === "add") {
+        await addStaff({ mobile: this.mobile, rank: this.rank });
+      } else if (this.type === "edit") {
+        await updateStaff({ id: this.userId, param: this.rank + "" });
+      }
+      this.$router.go(-1);
     },
     onClickLeft() {
       this.$dialog
         .confirm({
-          message: "权益信息未保存，确认返回？",
+          message: "员工信息未保存，确认返回？",
           className: "gy-dialog"
         })
         .then(() => {
