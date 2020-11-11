@@ -57,10 +57,14 @@ export default class API {
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`
 
-  // 企业认证
+  // 营业执照识别
   static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
   // 保存资质信息
   static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
+  // 提交审核  查询资质信息
+  static SUBMIT_AUDIT = `${APP_SERVICE}/authc/qualification/find_by_userId`
+  // 修改资质信息
+  static MODIFY_QUALIFICATION = `${APP_SERVICE}/authc/qualification/update`
 
   // 分销商管理
   static AGENCY_APPLY_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_apply_page`
@@ -95,7 +99,7 @@ export default class API {
   static EDIT_ADDRESS_INFO = `${APP_SERVICE}authc/address/update`;
 
   // 支付
-  static ORDER_PAY = `${APP_SERVICE}order_pay/pay_param`
+  static ORDER_PAY_PARAM = `${APP_SERVICE}order_pay/pay_param`
 
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;

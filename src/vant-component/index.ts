@@ -5,6 +5,7 @@ import {
   Icon,
   List,
   Cell,
+  CellGroup,
   CountDown,
   Field,
   RadioGroup,
@@ -17,6 +18,7 @@ import {
   Toast,
   Tab,
   Tabs,
+  Progress,
   Search,
   Checkbox,
   CheckboxGroup,
@@ -36,13 +38,14 @@ import {
   Popup
 } from "vant";
 
-export default function (app: any) {
+export default function(app: any) {
   app
     .use(Button)
     .use(NavBar)
     .use(Icon)
     .use(List)
     .use(Cell)
+    .use(CellGroup)
     .use(CountDown)
     .use(Field)
     .use(RadioGroup)
@@ -55,6 +58,7 @@ export default function (app: any) {
     .use(Toast)
     .use(Tab)
     .use(Tabs)
+    .use(Progress)
     .use(Search)
     .use(Checkbox)
     .use(CheckboxGroup)
@@ -69,5 +73,7 @@ export default function (app: any) {
     .use(ActionSheet)
     .use(Step)
     .use(Steps)
-    .use(Stepper).use(Picker).use(Popup);
+    .use(Stepper)
+    .use(Picker)
+    .use(Popup);
 }

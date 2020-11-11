@@ -80,8 +80,15 @@
           >查看物流</van-button
         >
         <template v-if="orderInfo.orderStatus == 0">
-          <van-button round>取消订单</van-button>
-          <van-button round plain type="primary" style="margin-left: 10px"
+          <van-button round @click="cancelOrder(orderInfo)">
+            取消订单</van-button
+          >
+          <van-button
+            round
+            plain
+            type="primary"
+            style="margin-left: 10px"
+            @click="toView('/payOrder')"
             >去支付</van-button
           >
         </template>
@@ -96,7 +103,11 @@
 </template>
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-import { queryLogistics, queryCustomerOrderDetail } from "@/services/order";
+import {
+  queryLogistics,
+  queryCustomerOrderDetail,
+  cancelOrder as cancelOrderService,
+} from "@/services/order";
 import { defineComponent } from "vue";
 import ClipboardJs from "clipboard";
 import OrderItem from "./components/OrderItem.vue";
@@ -127,18 +138,32 @@ export default defineComponent({
     }
   },
   methods: {
-    toView() {
-      this.$router.go(-1);
+    toView(url: string) {
+      if (url && typeof url === "string") {
+        this.$router.push({ path: url, query: { orderId: this.orderInfo.id } });
+      } else {
+        this.$router.go(-1);
+      }
     },
     copy() {
-      console.log(123);
       const clipboard = new ClipboardJs("#copy");
       clipboard.on("success", (e) => {
+        console.log(e);
         this.$toast("复制成功");
       });
       clipboard.on("error", (e) => {
+        console.log(e);
         this.$toast("复制失败");
       });
+    },
+    async cancelOrder(order: any) {
+      await this.$dialog.confirm({
+        message: "确定取消订单？",
+        confirmButtonText: "确定",
+        className: "gy-dialog",
+      });
+      await cancelOrderService({ id: order.id });
+      order.orderStatus = 5;
     },
     async queryExpress() {
       const res = await queryLogistics({ id: this.orderId });

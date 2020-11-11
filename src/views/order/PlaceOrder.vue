@@ -140,6 +140,7 @@ export default defineComponent({
         });
       } else {
         res = await queryDefaultAddress();
+        this.chosenAddressId = res.data.id;
       }
       this.addressInfo = res.data;
     },

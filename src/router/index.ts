@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/systemManagement',
     name: 'SystemManagement',
-    component: () => import(/* webpackChunkName: "earn" */ '../views/system/SystemManagement.vue'),
+    component: () => import(/* webpackChunkName: "system" */ '../views/system/SystemManagement.vue'),
     meta: { title: '体系管理' }
   },
   {
@@ -176,6 +176,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'CustomerOrderView',
     component: () => import(/* webpackChunkName: "order" */ '../views/order/CustomerOrderView.vue'),
     meta: { title: '客户订单详情' }
+  },
+  {
+    path: '/payResult',
+    name: 'PayResult',
+    component: () => import(/* webpackChunkName: "order" */ '../views/order/PayResult.vue'),
+    meta: { title: '支付结果' }
   },
   {
     path: '/deliverPage',
