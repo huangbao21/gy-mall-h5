@@ -47,7 +47,7 @@
           rows="1"
           autosize
           type="text"
-          disabled="flag"
+          :disabled="flag"
           placeholder="企业/个体户"
         />
       </div>
@@ -63,7 +63,7 @@
           rows="1"
           autosize
           type="text"
-          disabled="flag"
+          :disabled="flag"
           placeholder="请输入企业名称"
         />
       </div>
@@ -94,7 +94,7 @@
           rows="1"
           autosize
           type="text"
-          disabled="flag"
+          :disabled="flag"
           placeholder="请输入您的社会信用代码"
         />
       </div>
@@ -110,7 +110,7 @@
           rows="1"
           autosize
           type="text"
-          disabled="flag"
+          :disabled="flag"
           placeholder="请输入您的有效期"
         />
       </div>

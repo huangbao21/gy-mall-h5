@@ -5,6 +5,7 @@ import {
   Icon,
   List,
   Cell,
+  CellGroup,
   CountDown,
   Field,
   RadioGroup,
@@ -44,6 +45,7 @@ export default function (app: any) {
     .use(Icon)
     .use(List)
     .use(Cell)
+    .use(CellGroup)
     .use(CountDown)
     .use(Field)
     .use(RadioGroup)
