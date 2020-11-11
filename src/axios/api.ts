@@ -95,7 +95,7 @@ export default class API {
   static EDIT_ADDRESS_INFO = `${APP_SERVICE}authc/address/update`;
 
   // 支付
-  static ORDER_PAY = `${APP_SERVICE}order_pay/pay_param`
+  static ORDER_PAY_PARAM = `${APP_SERVICE}order_pay/pay_param`
 
   // 工作台
   static SALES_DATA = `${APP_SERVICE}authc/agency_customer/today_data`;

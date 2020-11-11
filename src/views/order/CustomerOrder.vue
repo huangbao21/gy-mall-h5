@@ -104,12 +104,13 @@
 </template>
 <script lang="ts">
 /* eslint-disable indent */
+/* eslint-disable @typescript-eslint/no-explicit-any  */
 import { defineComponent } from "vue";
 import OrderItem from "./components/OrderItem.vue";
 import {
   fetchOrderCustomerList,
   queryLogistics,
-  cacelOrder as cacelOrderService,
+  cancelOrder as cancelOrderService,
   receiptOrder as receiptOrderService,
 } from "@/services/order";
 import ExpressPopup from "./components/ExpressPopup.vue";
@@ -156,7 +157,7 @@ export default defineComponent({
         confirmButtonText: "确定",
         className: "gy-dialog",
       });
-      await cacelOrderService({ id: order.id });
+      await cancelOrderService({ id: order.id });
       order.orderStatus = 5;
     },
     async receiptOrder(order: any) {
