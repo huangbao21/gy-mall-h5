@@ -409,6 +409,7 @@ export default defineComponent({
     },
     reloadList() {
       this.current = 0;
+      this.checkedNum = 0;
       this.batchAction = false;
       this.finished = false;
       this.list = [];

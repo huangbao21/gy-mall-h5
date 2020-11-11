@@ -152,7 +152,7 @@
           type="primary"
           @click="batchAction = true"
           class="batch"
-          >批量处理</van-button
+          >批量管理</van-button
         >
       </template>
       <template v-else>
@@ -463,6 +463,7 @@ export default defineComponent({
     },
     reloadList() {
       this.current = 0;
+      this.checkedNum = 0;
       this.batchAction = false;
       this.finished = false;
       this.list = [];
