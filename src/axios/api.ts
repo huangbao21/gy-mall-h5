@@ -15,13 +15,6 @@ export default class API {
   // 商品类目
   static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
   static GOODS_SAVE = `${APP_SERVICE}authc/product/save`;
-<<<<<<< HEAD
-
-  // 上传文件
-  static UPLOAD_FILE = `${APP_SERVICE}upload`
-  static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
-  static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
-=======
   static GOODS_UPDATE = `${APP_SERVICE}authc/product/update`;
 
   // 物流
@@ -63,18 +56,15 @@ export default class API {
 
   // 上传文件
   static UPLOAD_FILE = `${APP_SERVICE}upload`
->>>>>>> 953a904ec4352606e37cc475be02e8a25ce9792e
 
   // 营业执照识别
   static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
   // 保存资质信息
   static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
-<<<<<<< HEAD
   // 提交审核  查询资质信息
   static SUBMIT_AUDIT = `${APP_SERVICE}/authc/qualification/find_by_userId`
   // 修改资质信息
   static MODIFY_QUALIFICATION = `${APP_SERVICE}/authc/qualification/update`
-=======
 
   // 分销商管理
   static AGENCY_APPLY_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_apply_page`
@@ -122,5 +112,4 @@ export default class API {
   static JOB_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_rank`
   static UPDATE_JOB = `${APP_SERVICE}authc/agency_customer/update_customer_rank`
   static ADD_JOB = `${APP_SERVICE}authc/agency_customer/save_agency_rank`
->>>>>>> 953a904ec4352606e37cc475be02e8a25ce9792e
 }
