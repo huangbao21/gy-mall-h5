@@ -342,11 +342,11 @@ export default defineComponent({
         (this.$refs as any).goodsDropRef.toggle();
       } else if (el === "category") {
         this.categoryValue = Number(cell.value);
-        this.categoryTitle = cell.text;
         if (this.categoryValue !== -1) {
           this.treeActiveIndex = treeIndex;
           return;
         }
+        this.categoryTitle = cell.text;
         (this.$refs as any).categoryDropRef.toggle();
       } else if (el === "categoryChild") {
         this.treeActiveId = Number(cell.value);
