@@ -6,22 +6,31 @@
       </template>
     </van-nav-bar>
     <div class="main">
-      <img src="@/assets/imgs/common/ic_not.png" />
-      <span class="main--text">{{state=='fail'?'支付失败':state=='success'? '支付成功':'支付取消' }}</span>
+      <img :src="state == 'success' ? successImg : failImg" />
+      <span class="main--text">{{
+        state == "fail"
+          ? "支付失败"
+          : state == "success"
+          ? "支付成功"
+          : "支付取消"
+      }}</span>
       <van-button round type="primary" @click="toView">返回</van-button>
     </div>
   </div>
 </template>
 <script lang="ts">
-
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 
 import { defineComponent } from "vue";
+import successImg from "@/assets/imgs/common/ic_successful.png";
+import failImg from "@/assets/imgs/common/ic_failure.png";
 export default defineComponent({
   name: "PayResult",
   data() {
     return {
-      state: "fail",
+      state: "fail", // success fail cancel
+      successImg: successImg,
+      failImg: failImg,
     };
   },
   beforeRouteEnter(to, from, next) {
