@@ -38,7 +38,7 @@ import {
   Popup
 } from "vant";
 
-export default function (app: any) {
+export default function(app: any) {
   app
     .use(Button)
     .use(NavBar)
@@ -55,11 +55,10 @@ export default function (app: any) {
     .use(TreeSelect)
     .use(Col)
     .use(Dialog)
-    .use(Toast).use(Tab).use(Tabs)
-    .use(Progress)
     .use(Toast)
     .use(Tab)
     .use(Tabs)
+    .use(Progress)
     .use(Search)
     .use(Checkbox)
     .use(CheckboxGroup)
@@ -74,5 +73,7 @@ export default function (app: any) {
     .use(ActionSheet)
     .use(Step)
     .use(Steps)
-    .use(Stepper).use(Picker).use(Popup);
+    .use(Stepper)
+    .use(Picker)
+    .use(Popup);
 }
