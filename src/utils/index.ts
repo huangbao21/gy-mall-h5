@@ -1,9 +1,21 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions  */
+/* eslint-disable @typescript-eslint/no-explicit-any  */
 export default class Utils {
   static isIOS() {
     const u = navigator.userAgent;
     const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
     return isiOS
+  }
+
+  static isWeiXin() {
+    const ua = window.navigator.userAgent.toLowerCase();
+    const match = ua.match(/MicroMessenger/i);
+    if (match === null) return false;
+
+    if (match.includes('micromessenger')) {
+      return true;
+    }
+    return false;
   }
 
   static forbidDefaultForIOS(): void {
@@ -56,5 +68,28 @@ export default class Utils {
 
   static clearLoginCookie() {
     localStorage.token = '';
+  }
+
+  static formatTime(format: string, number: number) {
+    if (format === undefined) { format = 'H:M:S'; }
+    let seconds = number;
+    seconds = Math.floor(seconds);
+    const hour = Math.floor(seconds / 3600);
+    const hourStr = hour < 10 ? ("0" + hour) : hour + '';
+    const balance = seconds % 3600;
+    const minute = Math.floor(balance / 60);
+    const minuteStr = minute < 10 ? ("0" + minute) : minute + '';
+    const second = balance % 60;
+    const secondStr = second < 10 ? ("0" + second) : second + '';
+    if (format.indexOf('H') !== -1) {
+      format = format.replace(/H/, hourStr);
+    }
+    if (format.indexOf('M') !== -1) {
+      format = format.replace(/M/, minuteStr);
+    }
+    if (format.indexOf('S') !== -1) {
+      format = format.replace(/S/, secondStr);
+    }
+    return format;
   }
 }

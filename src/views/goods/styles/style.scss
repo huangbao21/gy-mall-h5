@@ -1,0 +1,71 @@
+@import "@/styles/const.scss";
+.van-dropdown-menu {
+  :deep(.van-dropdown-menu__bar) {
+    background-color: transparent;
+  }
+  :deep(.van-dropdown-menu__title) {
+    color: #fff;
+  }
+  :deep(.van-dropdown-menu__title--active) {
+    color: #00ffd2;
+  }
+  :deep(.van-popup) {
+    background-color: $bgColor;
+  }
+}
+.dropdown-panel {
+  text-align: left;
+  padding: 15px 22px;
+  color: #fff;
+  .cell {
+    display: flex;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: rgba($color: #fff, $alpha: 0.4);
+    .active {
+      color: #00ffd2;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .cell__parent {
+    width: 148px;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    .cell {
+      span {
+        width: 100%;
+      }
+    }
+    .active {
+      background-color: $contentBgColor;
+      color: #fff;
+    }
+  }
+  &.category {
+    display: flex;
+    height: 176px;
+    padding-left: 0;
+    padding-right: 0;
+    .cell {
+      margin-bottom: 0px;
+      &__children {
+        margin-left: 22px;
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        span {
+          margin-bottom: 30px;
+          &.active {
+            color: #00ffd2;
+          }
+          &:last-child {
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
+  }
+}

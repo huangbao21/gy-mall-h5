@@ -9,7 +9,7 @@
       <template #left>
         <img
           class="leftIcon"
-          src="./../../assets/imgs/earnMoney/icon-left.png"
+          src="./../../assets/imgs/common/icon-left.png"
         />
       </template>
     </van-nav-bar>

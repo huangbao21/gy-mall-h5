@@ -10,6 +10,7 @@ html {
 }
 body {
   background: #0f0525;
+  position: relative;
 }
 
 .gy-dialog.van-dialog {
@@ -49,5 +50,51 @@ body {
   }
   .van-tabs__line {
     background-color: #00ffd2;
+  }
+}
+.gy-picker {
+  &.van-picker{
+    background-color: $contentBgColor;
+  }
+  .van-picker{
+    &__cancel{
+      color: #fff;
+    }
+    &__confirm{
+      color: #fff;
+    }
+    &-column__item{
+      color:rgba($color: #fff, $alpha: 0.4);
+      &--selected{
+        color:#fff;
+      }
+    }
+    &__mask{
+      background-image: unset;
+    }
+  }
+}
+.gy-sheet {
+  &.van-action-sheet {
+    background: rgba($color: #f0f0f0, $alpha: 0.4);
+  }
+  .van-action-sheet {
+    &__gap {
+      background-color: #000;
+    }
+    &__item {
+      background-color: $contentBgColor;
+      color: #fff;
+      &:active{
+        background-color: $contentBgColor;
+      }
+    }
+    &__cancel{
+      background-color: $contentBgColor;
+      color: #fff;
+      &:active{
+        background-color: $contentBgColor;
+      }
+    }
   }
 }

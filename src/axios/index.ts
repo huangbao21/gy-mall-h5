@@ -28,7 +28,8 @@ service.interceptors.request.use(
       // config.headers.common.Authorization = localStorage.token;
       config.headers.common.token = localStorage.token;
     } else {
-      config.headers.common.token = 'v2lJ8s0XJOjsjpslvwCkXtGk8Sjg9aea'
+      config.headers.common.token = 'j009vB9Buya6JjvZgjRAX14UVaPAGVTZ'
+      // Toast('请先登录哦~')
     }
     return config
   },

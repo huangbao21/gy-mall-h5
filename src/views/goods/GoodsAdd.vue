@@ -1,7 +1,7 @@
 <template>
   <div class="goods-add-page nav-bar">
     <van-nav-bar
-      title="新增商品"
+      :title="navTitle"
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
@@ -78,7 +78,7 @@
       />
       <div
         class="goods-price-info"
-        v-if="goodsInfo.productSkuList[0].price.length"
+        v-if="goodsInfo.productSkuList[0].price > 0"
       >
         <van-cell>
           <van-col class="goods-price" span="7"
@@ -87,7 +87,7 @@
               goodsInfo.productSkuList[0].price
             }}</span></van-col
           >
-          <van-col class="goods-profit" span="17"
+          <van-col class="goods-profit" span="7"
             ><span class="goods-profit-triangle"></span>分佣¥{{
               goodsInfo.productSkuList[0].profit
             }}</van-col
@@ -166,7 +166,7 @@
 import { defineComponent } from "vue";
 import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
-import { saveGoods } from "@/services/goods";
+import { saveGoods, fetchGoodDetail, updateGoods } from "@/services/goods";
 export default defineComponent({
   name: "GoodsAdd",
   data() {
@@ -194,6 +194,9 @@ export default defineComponent({
       },
       currentCoverIndex: 0,
       maxCount: 6,
+      operateType: "add",
+      goodId: 0,
+      navTitle: "新增商品",
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -208,6 +211,11 @@ export default defineComponent({
       next((vm: any) => {
         vm.goodsInfo = { ...vm.goodsInfo, ...to.query };
       });
+    } else if (to.query.operateType !== undefined) {
+      next((vm: any) => {
+        vm.operateType = to.query.operateType;
+        vm.goodId = to.query.goodId;
+      });
     } else {
       next();
     }
@@ -220,8 +228,17 @@ export default defineComponent({
   },
   mounted() {
     console.log(`组件挂载`);
+    if (this.operateType === "edit") {
+      this.fetchGoodDetail();
+      this.navTitle = `编辑商品`;
+    }
   },
   methods: {
+    async fetchGoodDetail() {
+      const res = await fetchGoodDetail({ id: this.goodId });
+      res.data.categoryText = res.data.categoryName;
+      this.goodsInfo = { ...this.goodsInfo, ...res.data };
+    },
     handleItemClick(index: number) {
       this.currentCoverIndex = index;
     },
@@ -284,10 +301,18 @@ export default defineComponent({
       for (let i = 0; i < len; i++) {
         (this.goodsInfo.productInfoList[i] as any).sort = i;
       }
-      await saveGoods({
-        ...this.goodsInfo,
-      });
+      if (this.operateType === "add") {
+        await saveGoods({
+          ...this.goodsInfo,
+        });
+      } else if (this.operateType === "edit") {
+        await updateGoods({
+          ...this.goodsInfo,
+        });
+      }
+
       this.clearTempData();
+      this.$router.go(-1);
     },
     onClickLeft() {
       this.$dialog
@@ -387,6 +412,9 @@ export default defineComponent({
 }
 .goods-price-info {
   background-color: $contentBgColor;
+  :deep(.van-cell__value) {
+    display: flex;
+  }
   .goods-price {
     color: #ea4a72;
     &-digit {
