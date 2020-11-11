@@ -17,9 +17,7 @@ import {
   Toast,
   Tab,
   Tabs,
-<<<<<<< HEAD
-  Progress
-=======
+  Progress,
   Search,
   Checkbox,
   CheckboxGroup,
@@ -37,7 +35,6 @@ import {
   Stepper,
   Picker,
   Popup
->>>>>>> 953a904ec4352606e37cc475be02e8a25ce9792e
 } from "vant";
 
 export default function (app: any) {
@@ -56,10 +53,8 @@ export default function (app: any) {
     .use(TreeSelect)
     .use(Col)
     .use(Dialog)
-<<<<<<< HEAD
     .use(Toast).use(Tab).use(Tabs)
     .use(Progress)
-=======
     .use(Toast)
     .use(Tab)
     .use(Tabs)
@@ -78,5 +73,4 @@ export default function (app: any) {
     .use(Step)
     .use(Steps)
     .use(Stepper).use(Picker).use(Popup);
->>>>>>> 953a904ec4352606e37cc475be02e8a25ce9792e
 }
