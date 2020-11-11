@@ -17,12 +17,10 @@
       <div class="content">
         <span>营业执照</span>
         <!-- <p>查看事例</p> -->
-        <a href="#">查看事例</a>
+        <a @click="toCase">查看事例</a>
       </div>
       <div class="summary">
-        <span
-          >上传最新版三证合一的营业执照正面图，系统识别相关信息自动填充</span
-        >
+        <span>上传最新版三证合一的营业执照正面图，系统识别相关信息自动填充</span>
       </div>
 
       <!-- 上传 s  -->
@@ -31,15 +29,15 @@
           <van-uploader
             v-model="fileList"
             :max-count="1"
-            preview-size="90px"
             :after-read="afterRead"
           />
         </van-cell-group>
-        <span>点击上传</span>
+        <span v-if="showText">点击上传</span>
       </div>
       <!-- 上传 e  -->
 
       <!-- 主体类型 s -->
+      <!-- <div class="content" v-if="enterprise.type"> -->
       <div class="content">
         <span>主体类型</span>
       </div>
@@ -49,6 +47,7 @@
           rows="1"
           autosize
           type="text"
+          disabled="flag"
           placeholder="企业/个体户"
         />
       </div>
@@ -64,10 +63,26 @@
           rows="1"
           autosize
           type="text"
+          disabled="flag"
           placeholder="请输入企业名称"
         />
       </div>
       <!-- 企业名称 e  -->
+
+      <!-- 店铺名称 s  -->
+      <div class="content">
+        <span>店铺名称</span>
+      </div>
+      <div class="content-input">
+        <van-field
+          v-model="imgData.shopName"
+          rows="1"
+          autosize
+          type="text"
+          placeholder="请输入店铺名称"
+        />
+      </div>
+      <!-- 店铺名称 e  -->
 
       <!-- 统一社会信用代码 s  -->
       <div class="content">
@@ -79,6 +94,7 @@
           rows="1"
           autosize
           type="text"
+          disabled="flag"
           placeholder="请输入您的社会信用代码"
         />
       </div>
@@ -94,6 +110,7 @@
           rows="1"
           autosize
           type="text"
+          disabled="flag"
           placeholder="请输入您的有效期"
         />
       </div>
@@ -111,7 +128,7 @@
         </span>
       </div>
       <div style="margin-top: 16px" @click="toSubmit">
-        <div :class="radio=='1'?'button activeBtn':'button'">
+        <div :class="radio == '1' ? 'button activeBtn' : 'button'">
           <span>提交</span>
         </div>
       </div>
@@ -121,7 +138,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 // import { Uploader } from 'vant';
-import { findQuqlification, saveQuqlification } from "@/services/enterprise";
+import {
+  findQuqlification,
+  saveQuqlification,
+  modifyQuqlification,
+} from "@/services/enterprise";
 import { uploadFile } from "@/services/common";
 import { Toast } from "vant";
 export default defineComponent({
@@ -133,9 +154,11 @@ export default defineComponent({
       unified: "",
       period: "",
       radio: false,
+      flag: true,
       fileList: [],
-      // 图片识别的信息
       imgData: {},
+      showText: true,
+      imgSrc: require("@/assets/imgs/common/timg.jpeg"),
     };
   },
   methods: {
@@ -144,13 +167,26 @@ export default defineComponent({
       if (!this.radio) {
         return Toast("请勾选并同意服务协议");
       }
-      // 访问保存的借口
+      // 访问保存的接口
       const res = await saveQuqlification(this.imgData);
-      if (res.status === "000000") {
-        this.$router.push("../enterprise/SubmitAudit");
+      // console.log(this.imgData);
+      console.log(res);
+      this.$router.replace({ path: "/SubmitAudit" });
+      this.flag = true;
+    },
+    // 修改资质信息
+    async toResubmit() {
+      if (!this.radio) {
+        return Toast("请勾选并同意服务协议");
       }
+      // 修改资质信息的接口
+      const res = await modifyQuqlification(this.imgData);
+      console.log(res);
+      this.$router.replace({ path: "/SubmitAudit" });
+      this.flag = true;
     },
     afterRead(file: any) {
+      this.showText = false;
       console.log(file);
       const formData = new FormData();
       formData.append("file", file.file);
@@ -168,6 +204,21 @@ export default defineComponent({
         this.enterprise = info.data.type;
       }
     },
+    toCase() {
+      this.$dialog
+        .confirm({
+          allowHtml: true,
+          confirmButtonText: "去上传",
+          messageAlign: "left",
+          showCancelButton: false,
+          title: "营业执照拍照事例",
+          message: `<div style="margin: auto;"><img src= ${this.imgSrc} style="width: 105px; height: 140px; margin: 10px 55px;" alt='' /><p style="color: #fff;">1.请保证营业执照的照片清晰无遮挡;\n2.请保证拍摄的营业执照照片内的文字内容清晰可辨;\n营业执照支持企业、个体户性质的营业执照。</p ></div>`,
+          className: "gy-dialog",
+        })
+        .then(() => {
+          this.$router.go(1);
+        });
+    },
   },
 });
 </script>
@@ -181,7 +232,7 @@ export default defineComponent({
 main {
   padding-left: 18px;
   padding-right: 18px;
-  height: 800px;
+  height: 900px;
 }
 .content {
   margin-top: 20px;
@@ -197,10 +248,15 @@ a {
   color: #e55051;
 }
 .summary {
+  width: 360px;
+  height: 15px;
   margin-top: 10px;
 }
 .summary span {
+  margin-left: -70px;
   font-size: 10px;
+  -webkit-transform:scale(0.8);
+  display: block;
   color: #ccc;
 }
 .upload {
@@ -218,6 +274,12 @@ a {
     font-size: 12px;
   }
 }
+.van-uploader  {
+  :deep .van-uploader__preview-image {
+    width: 105px;
+    height: 140px;
+  }
+}
 .van-uploader {
   :deep .van-uploader__upload {
     margin: 0 0px 8px 0;
@@ -227,6 +289,11 @@ a {
 .content-input {
   margin-top: 12px;
 }
+/* .gy-dialog.van-dialog {
+  width: 270px !important;
+  height: 412px !important;
+  margin-top: 35px !important;
+} */
 .van-cell {
   line-height: 30px;
   padding: 10px 15px;
@@ -266,6 +333,11 @@ a {
   }
 }
 .activeBtn {
-  background-color: #00FFD2;
+  background-color: #00ffd2;
+}
+.business img {
+  width: 105px;
+  height: 140px;
+  background-color: #fff;
 }
 </style>

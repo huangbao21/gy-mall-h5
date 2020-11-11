@@ -16,7 +16,8 @@ import {
   Dialog,
   Toast,
   Tab,
-  Tabs
+  Tabs,
+  Progress
 } from "vant";
 
 export default function (app: any) {
@@ -36,4 +37,5 @@ export default function (app: any) {
     .use(Col)
     .use(Dialog)
     .use(Toast).use(Tab).use(Tabs)
+    .use(Progress)
 }

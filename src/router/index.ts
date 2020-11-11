@@ -38,21 +38,21 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/systemManagement',
     name: 'SystemManagement',
-    component: () => import(/* webpackChunkName: "earn" */ '../views/system/SystemManagement.vue'),
+    component: () => import(/* webpackChunkName: "system" */ '../views/system/SystemManagement.vue'),
     meta: { title: '体系管理' }
   },
-  // {
-  //   path: '/certifiCation',
-  //   name: 'CertifiCation',
-  //   component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/CertifiCation.vue'),
-  //   meta: { title: '企业认证' }
-  // },
-  // {
-  //   path: '/submitAudit',
-  //   name: 'SubmitAudit',
-  //   component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/SubmitAudit.vue'),
-  //   meta: { title: '提交审核' }
-  // },
+  {
+    path: '/certifiCation',
+    name: 'CertifiCation',
+    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/CertifiCation.vue'),
+    meta: { title: '企业认证' }
+  },
+  {
+    path: '/submitAudit',
+    name: 'SubmitAudit',
+    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/SubmitAudit.vue'),
+    meta: { title: '提交审核' }
+  },
   {
     path: '/goodsAdd',
     name: 'GoodsAdd',

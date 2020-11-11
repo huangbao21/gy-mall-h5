@@ -11,15 +11,19 @@ export default class API {
 
   // 商品类目
   static CATEGORY_LIST = `${APP_SERVICE}authc/category/find_all`;
-  static GOODS_SAVE=`${APP_SERVICE}authc/product/save`;
+  static GOODS_SAVE = `${APP_SERVICE}authc/product/save`;
 
   // 上传文件
-  static UPLOAD_FILE=`${APP_SERVICE}upload`
+  static UPLOAD_FILE = `${APP_SERVICE}upload`
   static BOUNTY_RANK = `${APP_SERVICE}authc/mission/find_bounty_and_rank`
   static UPDATE_TRANSFER = `${APP_SERVICE}authc/mission/update_transfer`
 
-  // 企业认证
+  // 营业执照识别
   static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
   // 保存资质信息
   static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
+  // 提交审核  查询资质信息
+  static SUBMIT_AUDIT = `${APP_SERVICE}/authc/qualification/find_by_userId`
+  // 修改资质信息
+  static MODIFY_QUALIFICATION = `${APP_SERVICE}/authc/qualification/update`
 }
