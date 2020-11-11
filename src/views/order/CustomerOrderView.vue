@@ -148,9 +148,11 @@ export default defineComponent({
     copy() {
       const clipboard = new ClipboardJs("#copy");
       clipboard.on("success", (e) => {
+        console.log(e);
         this.$toast("复制成功");
       });
       clipboard.on("error", (e) => {
+        console.log(e);
         this.$toast("复制失败");
       });
     },
