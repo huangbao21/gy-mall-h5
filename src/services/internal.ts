@@ -13,7 +13,7 @@ export function updateStaff(data: { id: number; param: string }): Promise<PostDa
 export function fetchJobList(): Promise<PostData> {
   return axios.post(API.JOB_LIST, {})
 }
-export function updateJob(data: { id: number; ration: number; name: string }): Promise<PostData> {
+export function updateJob(data: { id: number; ration: number; name: string; customerRank: number }): Promise<PostData> {
   return axios.post(API.UPDATE_JOB, data)
 }
 export function addJob(data: { name: string; ration: number }): Promise<PostData> {

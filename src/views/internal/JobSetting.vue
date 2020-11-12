@@ -85,7 +85,8 @@ export default defineComponent({
         await updateJob({
           id: Number(this.jobInfo.id),
           name: this.jobInfo.name,
-          ration: Number(this.jobInfo.ration)
+          ration: Number(this.jobInfo.ration),
+          customerRank: Number(this.jobInfo.customerRank)
         });
       }
       this.$router.go(-1);
