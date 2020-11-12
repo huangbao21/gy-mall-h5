@@ -110,6 +110,6 @@ export default class API {
   static ADD_STAFF = `${APP_SERVICE}authc/agency_customer/save_staff_customer`
   static UPDATE_STAFF=`${APP_SERVICE}authc/agency_customer/update_customer_rank`
   static JOB_LIST = `${APP_SERVICE}authc/agency_customer/find_agency_rank`
-  static UPDATE_JOB = `${APP_SERVICE}authc/agency_customer/update_customer_rank`
+  static UPDATE_JOB = `${APP_SERVICE}authc/agency_customer/update_agency_rank`
   static ADD_JOB = `${APP_SERVICE}authc/agency_customer/save_agency_rank`
 }

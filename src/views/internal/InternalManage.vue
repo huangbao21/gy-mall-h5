@@ -12,10 +12,19 @@
     </van-nav-bar>
     <div class="internal-management-content">
       <div class="job-list">
-        <div class="job-cell" v-for="item in jobList" :key="item.id">
+        <div
+          class="job-cell"
+          v-for="item in jobList"
+          :key="item.id"
+          @click="goStaff(item)"
+        >
           <div class="job-cell-header">
             <span class="job-cell-header-title">{{ item.name }}</span>
-            <van-button type="primary" plain round @click="handleJobEdit(item)"
+            <van-button
+              type="primary"
+              plain
+              round
+              @click.stop="handleJobEdit(item)"
               >编辑</van-button
             >
           </div>
@@ -64,11 +73,12 @@ export default defineComponent({
       console.log(res);
       this.jobList = res.data;
     },
-    /*  async queryAgencyAndSales() {
-      const res = await queryAgencyAndSales();
-      this.saleNumber = res.data.saleNumber;
-      this.peopleNumber = res.data.peopleNumber;
-    }, */
+    goStaff(job: any) {
+      this.$router.push({
+        path: "/staff",
+        query: { customerRank: job.customerRank }
+      });
+    },
     handleJobEdit(item: any) {
       console.log(`编辑职位`);
       this.$router.push({ path: "/jobSetting", query: { ...item } });
@@ -87,6 +97,7 @@ export default defineComponent({
 @import "../../styles/base";
 .internal-management {
   height: 100%;
+  overflow: hidden;
   .nav-bar-right {
     &-text {
       color: rgba(0, 255, 210, 1);
@@ -105,11 +116,11 @@ export default defineComponent({
   }
   .internal-management-content {
     padding: 0 18px;
-    height: calc(100% - 44px);
+    height: 100%;
     .job-list {
       display: flex;
       flex-direction: column;
-      height: calc(100% - 164px);
+      height: calc(100% - 92px);
       overflow-y: scroll;
       .job-cell {
         width: 339px;

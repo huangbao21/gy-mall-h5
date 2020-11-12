@@ -92,4 +92,24 @@ export default class Utils {
     }
     return format;
   }
+
+  static addNumberUnit(num: number) {
+    switch (true) {
+      case num >= 10000 && num < 100000000:
+      {
+        const integ = num / 10000;
+        return Math.floor(integ * 100) / 100 + '万';
+        break;
+      }
+      case num >= 100000000:
+      {
+        const integ1 = num / 100000000;
+        return Math.floor(integ1 * 100) / 100 + '亿';
+        break;
+      }
+      default:
+        return num + '';
+        break;
+    }
+  }
 }

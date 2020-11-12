@@ -5,7 +5,7 @@
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="handleCommissionSave"
+      @click-right.stop="handleCommissionSave"
     >
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
@@ -25,7 +25,7 @@
           />
           <span class="input-sign">元</span>
         </div>
-        <p class="input-tips">
+        <p class="input-tips" v-if="sellNumberMin || sellNumberMax">
           可配置销售额度区间:{{ sellNumberMin }}-{{ sellNumberMax }}
         </p>
       </div>
@@ -60,7 +60,7 @@ import { defineComponent } from "vue";
 import { Toast } from "vant";
 import {
   saveCommissionSetting,
-  fetchCommissionLimit,
+  fetchCommissionLimit
 } from "../../services/reseller";
 export default defineComponent({
   name: "CommissionSetting",
@@ -68,10 +68,10 @@ export default defineComponent({
     return {
       ration: "",
       sellNumber: "",
-      rationMin: "",
+      rationMin: "0",
       sellNumberMin: "",
-      rationMax: "",
-      sellNumberMax: "",
+      rationMax: "100",
+      sellNumberMax: ""
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -96,35 +96,56 @@ export default defineComponent({
       }
       await saveCommissionSetting({
         sellNumber: Number(this.sellNumber),
-        ration: Number(this.ration),
+        ration: Number(this.ration)
       });
+      this.$router.go(-1);
     },
     onClickLeft() {
       this.$dialog
         .confirm({
           message: "权益信息未保存，确认返回？",
-          className: "gy-dialog",
+          className: "gy-dialog"
         })
         .then(() => {
           this.$router.go(-1);
         });
     },
     async handleRationInputBlur() {
+      if (!this.ration) {
+        return;
+      } else if (this.sellNumber && this.ration) {
+        return;
+      }
+      console.log(`ration 失去焦点`)
       const res = await fetchCommissionLimit({
-        ration: Number(this.ration),
+        ration: Number(this.ration)
       });
       this.sellNumberMin = res.data.sellNumber;
       this.sellNumberMax = res.data.sellNumberMax;
     },
     async handleSalesInputBlur() {
+      if (!this.sellNumber) {
+        return;
+      } else if (this.sellNumber && this.ration) {
+        return;
+      }
+      console.log(`sale 失去焦点`)
       const res = await fetchCommissionLimit({
-        sellNumber: Number(this.sellNumber),
+        sellNumber: Number(this.sellNumber)
       });
-      this.rationMin = res.data.ration;
-      this.rationMax = res.data.rationMax;
+      if (res.data.ration) {
+        this.rationMin = res.data.ration;
+      } else {
+        this.rationMin = "0";
+      }
+      if (res.data.rationMax) {
+        this.rationMax = res.data.rationMax;
+      } else {
+        this.rationMax = 100 + "";
+      }
       console.log(res);
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>

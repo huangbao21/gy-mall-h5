@@ -9,7 +9,7 @@
             salesInfo.canWithdrawNumber
           }}</span>
         </div>
-        <div class="money-withdrawal-btn">提现</div>
+        <div class="money-withdrawal-btn" @click="handleWithdrawal">提现</div>
       </div>
       <div class="money-data">
         <div class="total-sales">
@@ -106,7 +106,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 // import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
-import { fetchSalesData } from "../services/home";
+import { fetchSalesData, transferMoney } from "../services/home";
 import Utils from "../utils/index";
 export default defineComponent({
   name: "Home",
@@ -161,6 +161,9 @@ export default defineComponent({
     },
     handleItemClick($event: any) {
       console.log($event);
+    },
+    async handleWithdrawal() {
+      await transferMoney({ transferMoney: this.salesInfo.canWithdrawNumber });
     }
   }
 });

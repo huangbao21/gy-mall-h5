@@ -152,7 +152,7 @@
           type="primary"
           @click="batchAction = true"
           class="batch"
-          >批量处理</van-button
+          >批量管理</van-button
         >
       </template>
       <template v-else>
@@ -412,6 +412,10 @@ export default defineComponent({
     onClickRight() {
       if (this.batchAction) {
         this.batchAction = false;
+        this.checkedNum = 0;
+        this.list.map((item: any) => {
+          item.checked = false;
+        });
       } else {
         this.$router.push("/goodsChoose");
       }
@@ -438,11 +442,11 @@ export default defineComponent({
         (this.$refs as any).goodsDropRef.toggle();
       } else if (el === "category") {
         this.categoryValue = Number(cell.value);
-        this.categoryTitle = cell.text;
         if (this.categoryValue !== -1) {
           this.treeActiveIndex = treeIndex;
           return;
         }
+        this.categoryTitle = cell.text;
         (this.$refs as any).categoryDropRef.toggle();
       } else if (el === "categoryChild") {
         this.treeActiveId = Number(cell.value);
@@ -463,6 +467,7 @@ export default defineComponent({
     },
     reloadList() {
       this.current = 0;
+      this.checkedNum = 0;
       this.batchAction = false;
       this.finished = false;
       this.list = [];

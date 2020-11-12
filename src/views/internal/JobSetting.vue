@@ -1,11 +1,11 @@
 <template>
   <div class="job-setting nav-bar">
     <van-nav-bar
-      title="新增职位"
+      :title="type === 'add' ? '新增职位' : '编辑职位'"
       right-text="保存"
       left-arrow
       @click-left="onClickLeft"
-      @click-right="handleCommissionSave"
+      @click-right="handleSave"
     >
       <template #left>
         <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
@@ -16,12 +16,10 @@
         <p class="input-label">职位名称</p>
         <div class="input-wrapper">
           <van-field
-            v-model="sellNumber"
+            v-model="jobInfo.name"
             rows="1"
-            type="number"
             autosize
             placeholder="请输入职位名称"
-            @blur="handleSalesInputBlur"
           />
         </div>
       </div>
@@ -29,17 +27,16 @@
         <p class="input-label">分佣比例</p>
         <div class="input-wrapper">
           <van-field
-            v-model="ration"
+            v-model="jobInfo.ration"
             rows="1"
             type="number"
             autosize
             placeholder="请输入分佣比例"
-            @blur="handleRationInputBlur"
           />
           <span class="input-sign">%</span>
         </div>
         <p class="input-tips">
-          可配置分佣比例区间:{{ rationMin }}-{{ rationMax }}
+          可配置分佣波比区间：0～100%
         </p>
       </div>
     </div>
@@ -48,73 +45,63 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Toast } from "vant";
-import {
-  saveCommissionSetting,
-  fetchCommissionLimit,
-} from "../../services/reseller";
+import { addJob, updateJob } from "../../services/internal";
 export default defineComponent({
   name: "CommissionSetting",
   data() {
     return {
-      ration: "",
-      sellNumber: "",
-      rationMin: "",
-      sellNumberMin: "",
-      rationMax: "",
-      sellNumberMax: "",
+      type: "add",
+      jobInfo: {
+        name: "",
+        ration: "",
+        customerRank: 0,
+        id: 0
+      }
     };
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.ration !== undefined) {
-      next((vm: any) => {
-        vm.ration = to.query.ration;
-        vm.sellNumber = to.query.sellNumber;
-      });
-    } else {
-      next();
+  mounted() {
+    if (this.$route.query.ration !== undefined) {
+      this.jobInfo = { ...this.jobInfo, ...this.$route.query };
+      console.log(this.jobInfo);
+      this.type = "edit";
     }
   },
   methods: {
-    async handleCommissionSave() {
-      if (!this.sellNumber.length) {
-        Toast(`请设置销售额`);
+    async handleSave() {
+      if (!this.jobInfo.name.length) {
+        Toast(`请设置职位名称`);
         return;
       }
-      if (!this.ration.length) {
+      if (!this.jobInfo.ration.length) {
         Toast(`请设置分佣比例`);
         return;
       }
-      await saveCommissionSetting({
-        sellNumber: Number(this.sellNumber),
-        ration: Number(this.ration),
-      });
+      if (this.type === "add") {
+        await addJob({
+          name: this.jobInfo.name,
+          ration: Number(this.jobInfo.ration)
+        });
+      } else if (this.type === "edit") {
+        await updateJob({
+          id: Number(this.jobInfo.id),
+          name: this.jobInfo.name,
+          ration: Number(this.jobInfo.ration),
+          customerRank: Number(this.jobInfo.customerRank)
+        });
+      }
+      this.$router.go(-1);
     },
     onClickLeft() {
       this.$dialog
         .confirm({
-          message: "权益信息未保存，确认返回？",
-          className: "gy-dialog",
+          message: "职位信息未保存，确认返回？",
+          className: "gy-dialog"
         })
         .then(() => {
           this.$router.go(-1);
         });
-    },
-    async handleRationInputBlur() {
-      const res = await fetchCommissionLimit({
-        ration: Number(this.ration),
-      });
-      this.sellNumberMin = res.data.sellNumber;
-      this.sellNumberMax = res.data.sellNumberMax;
-    },
-    async handleSalesInputBlur() {
-      const res = await fetchCommissionLimit({
-        sellNumber: Number(this.sellNumber),
-      });
-      this.rationMin = res.data.ration;
-      this.rationMax = res.data.rationMax;
-      console.log(res);
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>
