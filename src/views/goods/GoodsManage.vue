@@ -358,6 +358,10 @@ export default defineComponent({
     onClickRight() {
       if (this.batchAction) {
         this.batchAction = false;
+        this.checkedNum = 0;
+        this.list.map((item: any) => {
+          item.checked = false;
+        });
       } else {
         this.$router.push("/goodsAdd");
       }
@@ -409,6 +413,7 @@ export default defineComponent({
     },
     reloadList() {
       this.current = 0;
+      this.checkedNum = 0;
       this.batchAction = false;
       this.finished = false;
       this.list = [];

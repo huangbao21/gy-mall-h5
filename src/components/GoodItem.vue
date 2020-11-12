@@ -10,9 +10,9 @@
       <van-image :src="good.mainImageUrl">
         <span class="card-good--status" v-if="good.status !== 2">{{
           good.status === 0
-            ? "待申请"
+            ? "待上架"
             : good.status === 1
-            ? "待审核"
+            ? "上架审核中"
             : good.status === 3
             ? "已下架"
             : "审核失败"
