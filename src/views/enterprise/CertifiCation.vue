@@ -4,25 +4,36 @@
       title="填写资料"
       left-arrow
       :border="false"
-      @click-left="onClickLeft"
+      @click-left="toBackApp"
     >
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/common/icon-left.png"
-        />
+        <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
     <main>
       <div class="content">
         <span>营业执照</span>
-        <!-- <p>查看事例</p> -->
         <a @click="toCase">查看事例</a>
+        <van-popup v-model:show="show">
+          <h3>营业执照拍照示例</h3>
+          <img src="../../assets/imgs/common/timg.jpeg" alt="" />
+          <div class="content_regulations">
+            <p>1.请保证营业执照的照片清晰无遮挡；</p>
+            <p>
+              2.请保证拍摄的营业执照照片内的文字内容清晰可辨；
+              营业执照支持企业、个体户性质的营业执照。
+            </p>
+          </div>
+          <div class="content_upload">
+            <p @click="toUpload">去上传</p>
+          </div>
+        </van-popup>
       </div>
       <div class="summary">
-        <span>上传最新版三证合一的营业执照正面图，系统识别相关信息自动填充</span>
+        <span
+          >上传最新版三证合一的营业执照正面图，系统识别相关信息自动填充</span
+        >
       </div>
-
       <!-- 上传 s  -->
       <div class="upload">
         <van-cell-group>
@@ -137,6 +148,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import useBackAppApi from "@/composables/useBackAppApi";
 // import { Uploader } from 'vant';
 import {
   findQuqlification,
@@ -147,6 +159,13 @@ import { uploadFile } from "@/services/common";
 import { Toast } from "vant";
 export default defineComponent({
   name: "CertifiCation",
+  setup() {
+    const { toBackApp } = useBackAppApi();
+    return {
+      toBackApp,
+    };
+  },
+
   data() {
     return {
       enterprise: "",
@@ -158,7 +177,7 @@ export default defineComponent({
       fileList: [],
       imgData: {},
       showText: true,
-      imgSrc: require("@/assets/imgs/common/timg.jpeg"),
+      show: false,
     };
   },
   methods: {
@@ -205,20 +224,11 @@ export default defineComponent({
       }
     },
     toCase() {
-      this.$dialog
-        .confirm({
-          allowHtml: true,
-          confirmButtonText: "去上传",
-          messageAlign: "left",
-          showCancelButton: false,
-          title: "营业执照拍照事例",
-          message: `<div style="margin: auto;"><img src= ${this.imgSrc} style="width: 105px; height: 140px; margin: 10px 55px;" alt='' /><p style="color: #fff;">1.请保证营业执照的照片清晰无遮挡;\n2.请保证拍摄的营业执照照片内的文字内容清晰可辨;\n营业执照支持企业、个体户性质的营业执照。</p ></div>`,
-          className: "gy-dialog",
-        })
-        .then(() => {
-          this.$router.go(1);
-        });
+      this.show = true;
     },
+    toUpload() {
+      this.show = false;
+    }
   },
 });
 </script>
@@ -239,6 +249,35 @@ main {
   display: flex;
   justify-content: space-between;
 }
+h3 {
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: 400;
+}
+.content img {
+  width: 105px;
+  height: 140px;
+  margin: 10px;
+}
+.content_regulations {
+  width: 240px;
+  height: 126px;
+  margin: auto;
+  p {
+    text-align: left;
+  }
+}
+.content_upload {
+  width: 270px;
+  height: 44px;
+  margin-top: 28px;
+  border-top: 1px solid #fff;
+  p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #00ffd2;
+  }
+}
 span {
   font-size: 14px;
 }
@@ -247,15 +286,19 @@ a {
   font-size: 12px;
   color: #e55051;
 }
-.summary {
-  width: 360px;
+.content {
+  :deep .van-popup {
+    background-color: #28244d;
+  }
+}
+ .summary {
   height: 15px;
   margin-top: 10px;
 }
 .summary span {
-  margin-left: -70px;
+  margin-left: -50px;
   font-size: 10px;
-  -webkit-transform:scale(0.8);
+  -webkit-transform: scale(0.8);
   display: block;
   color: #ccc;
 }
@@ -274,11 +317,17 @@ a {
     font-size: 12px;
   }
 }
-.van-uploader  {
+.van-uploader {
   :deep .van-uploader__preview-image {
     width: 105px;
     height: 140px;
   }
+}
+.van-cell-group {
+  background-color: #1e183c;
+}
+.van-hairline--top-bottom::after {
+  border-width: 0px;
 }
 .van-uploader {
   :deep .van-uploader__upload {
@@ -289,11 +338,6 @@ a {
 .content-input {
   margin-top: 12px;
 }
-/* .gy-dialog.van-dialog {
-  width: 270px !important;
-  height: 412px !important;
-  margin-top: 35px !important;
-} */
 .van-cell {
   line-height: 30px;
   padding: 10px 15px;
