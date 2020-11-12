@@ -20,7 +20,11 @@
         >
           <div class="job-cell-header">
             <span class="job-cell-header-title">{{ item.name }}</span>
-            <van-button type="primary" plain round @click.stop="handleJobEdit(item)"
+            <van-button
+              type="primary"
+              plain
+              round
+              @click.stop="handleJobEdit(item)"
               >编辑</van-button
             >
           </div>
@@ -93,6 +97,7 @@ export default defineComponent({
 @import "../../styles/base";
 .internal-management {
   height: 100%;
+  overflow: hidden;
   .nav-bar-right {
     &-text {
       color: rgba(0, 255, 210, 1);
@@ -111,11 +116,11 @@ export default defineComponent({
   }
   .internal-management-content {
     padding: 0 18px;
-    height: calc(100% - 44px);
+    height: 100%;
     .job-list {
       display: flex;
       flex-direction: column;
-      height: calc(100% - 164px);
+      height: calc(100% - 92px);
       overflow-y: scroll;
       .job-cell {
         width: 339px;
