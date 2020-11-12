@@ -412,6 +412,10 @@ export default defineComponent({
     onClickRight() {
       if (this.batchAction) {
         this.batchAction = false;
+        this.checkedNum = 0;
+        this.list.map((item: any) => {
+          item.checked = false;
+        });
       } else {
         this.$router.push("/goodsChoose");
       }

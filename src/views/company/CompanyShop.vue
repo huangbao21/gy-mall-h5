@@ -312,13 +312,6 @@ export default defineComponent({
       }
     },
 
-    onClickRight() {
-      if (this.batchAction) {
-        this.batchAction = false;
-      } else {
-        this.$router.push("/goodsAdd");
-      }
-    },
     onLoad() {
       this.current += 1;
       this.getGoodsList();
