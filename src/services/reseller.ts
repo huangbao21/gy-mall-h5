@@ -1,7 +1,7 @@
 import axios, { PostData } from '@/axios';
 import API from '@/axios/api';
 
-export function fetchAgencyApplyList(data: { current: number; size: number }): Promise<PostData> {
+export function fetchAgencyApplyList(data: { current: number; size: number; auditStatus: number }): Promise<PostData> {
   return axios.post(API.AGENCY_APPLY_LIST, data);
 }
 export function auditAgencyApply(data: { auditStatus: number; id: number }): Promise<PostData> {

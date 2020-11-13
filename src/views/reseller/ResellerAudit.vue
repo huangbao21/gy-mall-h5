@@ -39,7 +39,7 @@
 import { defineComponent } from "vue";
 import {
   fetchAgencyApplyList,
-  auditAgencyApply,
+  auditAgencyApply
 } from "../../services/reseller";
 import { AuditStatus } from "../../utils/const";
 import { Toast } from "vant";
@@ -51,7 +51,7 @@ export default defineComponent({
       current: 0,
       size: 10,
       loading: false,
-      finished: false,
+      finished: false
     };
   },
   mounted() {
@@ -77,7 +77,8 @@ export default defineComponent({
       const res = await fetchAgencyApplyList({
         current: this.current,
         size: this.size,
-      }).catch((err) => {
+        auditStatus: AuditStatus.Audit
+      }).catch(err => {
         this.loading = false;
         this.finished = true;
         return Promise.reject(err);
@@ -99,8 +100,8 @@ export default defineComponent({
     },
     onClickLeft() {
       this.$router.go(-1);
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>
