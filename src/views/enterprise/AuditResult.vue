@@ -1,5 +1,5 @@
 <template>
-  <div class="submitaudit nav-bar">
+  <div class="audit-result nav-bar">
     <van-nav-bar
       :title="
         status === 0
@@ -15,9 +15,7 @@
       @click-left="toBackApp"
     >
       <template #left>
-        <img
-          class="leftIcon"
-          src="./../../assets/imgs/common/icon-left.png"/>
+        <img class="leftIcon" src="./../../assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
     <main>
@@ -56,7 +54,7 @@
           <p style="margin-left: -19px">提交资料</p>
           <p style="margin-left: 15px">后台审核</p>
           <p v-if="status === 1" style="margin-right: -20px">通过审核</p>
-          <p v-if="status === 2" style="color: #ea4a72;  margin-right: -25px;">
+          <p v-if="status === 2" style="color: #ea4a72; margin-right: -25px">
             审核未通过
           </p>
         </div>
@@ -81,10 +79,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { submitQuqlification } from "@/services/enterprise";
+import { queryQualification } from "@/services/enterprise";
 import useBackAppApi from "@/composables/useBackAppApi";
 export default defineComponent({
-  name: "SubmitAudit",
+  name: "AuditResult",
   setup() {
     const { toBackApp } = useBackAppApi();
     return {
@@ -93,20 +91,22 @@ export default defineComponent({
   },
   data() {
     return {
-      status: 2,
+      status: -1,
       title: "",
+      id: -1,
     };
   },
   mounted() {
-    this.submitQuqlification();
+    this.getQualification();
   },
   methods: {
-    async submitQuqlification() {
-      const info = await submitQuqlification();
-      // this.status = info.data.status;
+    async getQualification() {
+      const info = await queryQualification();
+      this.status = info.data.status;
+      this.id = info.data.id;
     },
     toResubmit() {
-      this.$router.replace({ path: "/CertifiCation" });
+      this.$router.replace({ path: "/certifiCation", query: { id: this.id } });
     },
   },
 });
@@ -114,7 +114,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/styles/base.scss";
-.submitaudit {
+.audit-result {
   min-height: 100%;
   background-color: $bgColor;
   color: #fff;
