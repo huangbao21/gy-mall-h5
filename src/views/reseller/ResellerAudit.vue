@@ -49,7 +49,7 @@ export default defineComponent({
     return {
       applyRecord: [] as object[],
       current: 0,
-      size: 1,
+      size: 10,
       loading: false,
       finished: false,
     };
