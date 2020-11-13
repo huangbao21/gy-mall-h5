@@ -154,7 +154,7 @@ export default defineComponent({
       this.$router.push({ path: "/goodsManage" });
     },
     goOrderManage() {
-      this.$router.push({ path: "AgentManage" });
+      this.$router.push({ path: "/enterpriseOrder" });
     },
     goInternal() {
       this.$router.push({ path: "/internalManage" });

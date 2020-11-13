@@ -129,7 +129,7 @@ export default defineComponent({
       this.$router.push({ path: "/goodsManage" });
     },
     goOrderManage() {
-      this.$router.push({ path: "AgentManage" });
+      this.$router.push({ path: "/agentOrder" });
     },
     handleItemClick($event: any) {
       console.log($event);
