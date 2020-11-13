@@ -126,7 +126,7 @@ export default defineComponent({
       this.$router.push({ path: "/resellerManagement" });
     },
     goGoodsManage() {
-      this.$router.push({ path: "/goodsManage" });
+      this.$router.push({ path: "/agentGoodsManage" });
     },
     goOrderManage() {
       this.$router.push({ path: "/agentOrder" });
