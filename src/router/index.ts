@@ -48,10 +48,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '企业认证' }
   },
   {
-    path: '/submitAudit',
-    name: 'SubmitAudit',
-    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/SubmitAudit.vue'),
-    meta: { title: '提交审核' }
+    path: '/auditResult',
+    name: 'AuditResult',
+    component: () => import(/* webpackChunkName: "enterprise" */ '../views/enterprise/AuditResult.vue'),
+    meta: { title: '审核结果' }
   },
   {
     path: '/goodsAdd',
@@ -254,6 +254,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Staff',
     component: () => import('../views/internal/Staff.vue'),
     meta: { title: '员工列表' }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    redirect: '/'
   }
 ]
 

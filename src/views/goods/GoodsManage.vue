@@ -362,6 +362,7 @@ export default defineComponent({
         this.list.map((item: any) => {
           item.checked = false;
         });
+        this.allChecked = false;
       } else {
         this.$router.push("/goodsAdd");
       }

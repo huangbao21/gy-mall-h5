@@ -58,11 +58,11 @@ export default class API {
   static UPLOAD_FILE = `${APP_SERVICE}upload`
 
   // 营业执照识别
-  static DISCERN_QUQLIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
+  static DISCERN_QUALIFICATION = `${APP_SERVICE}authc/qualification/discern_license`
   // 保存资质信息
   static KEEP_QUQLIFICATION = `${APP_SERVICE}/authc/qualification/save`
   // 提交审核  查询资质信息
-  static SUBMIT_AUDIT = `${APP_SERVICE}/authc/qualification/find_by_userId`
+  static FIND_QUALIFICATION = `${APP_SERVICE}/authc/qualification/find_by_userId`
   // 修改资质信息
   static MODIFY_QUALIFICATION = `${APP_SERVICE}/authc/qualification/update`
 

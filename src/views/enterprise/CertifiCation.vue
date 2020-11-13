@@ -13,7 +13,7 @@
     <main>
       <div class="content">
         <span>营业执照</span>
-        <a @click="toCase">查看事例</a>
+        <a @click="show = true">查看事例</a>
         <van-popup v-model:show="show">
           <h3>营业执照拍照示例</h3>
           <img src="../../assets/imgs/common/timg.jpeg" alt="" />
@@ -25,7 +25,7 @@
             </p>
           </div>
           <div class="content_upload">
-            <p @click="toUpload">去上传</p>
+            <p @click="show = false">去上传</p>
           </div>
         </van-popup>
       </div>
@@ -41,9 +41,9 @@
             v-model="fileList"
             :max-count="1"
             :after-read="afterRead"
+            upload-text="点击上传"
           />
         </van-cell-group>
-        <span v-if="showText">点击上传</span>
       </div>
       <!-- 上传 e  -->
 
@@ -58,8 +58,8 @@
           rows="1"
           autosize
           type="text"
-          :disabled="flag"
           placeholder="企业/个体户"
+          :disabled="isDisabled"
         />
       </div>
       <!-- 主体类型 e  -->
@@ -74,8 +74,8 @@
           rows="1"
           autosize
           type="text"
-          :disabled="flag"
           placeholder="请输入企业名称"
+          :disabled="isDisabled"
         />
       </div>
       <!-- 企业名称 e  -->
@@ -86,11 +86,12 @@
       </div>
       <div class="content-input">
         <van-field
-          v-model="imgData.shopName"
+          v-model="shopName"
           rows="1"
           autosize
           type="text"
           placeholder="请输入店铺名称"
+          :disabled="isDisabled"
         />
       </div>
       <!-- 店铺名称 e  -->
@@ -105,8 +106,8 @@
           rows="1"
           autosize
           type="text"
-          :disabled="flag"
           placeholder="请输入您的社会信用代码"
+          :disabled="isDisabled"
         />
       </div>
       <!-- 统一社会信用代码 e  -->
@@ -121,11 +122,10 @@
           rows="1"
           autosize
           type="text"
-          :disabled="flag"
           placeholder="请输入您的有效期"
+          :disabled="isDisabled"
         />
       </div>
-      <!-- 有效期 e  -->
       <div class="footer">
         <van-radio-group v-model="radio">
           <van-radio name="1" checked-color="#EA4A72" icon-size="14px">
@@ -138,22 +138,29 @@
           >提交后即视为您理解并确认遵守行业准入规则
         </span>
       </div>
-      <div style="margin-top: 16px" @click="toSubmit">
-        <div :class="radio == '1' ? 'button activeBtn' : 'button'">
-          <span>提交</span>
-        </div>
+      <div class="footer-action">
+        <van-button
+          round
+          type="primary"
+          @click="toSubmit"
+          :disabled="
+            !enterprise || !enterprisename || !unified || !period || !shopName
+          "
+          >提交</van-button
+        >
       </div>
     </main>
   </div>
 </template>
 <script lang="ts">
+/*  eslint-disable @typescript-eslint/no-explicit-any */
 import { defineComponent } from "vue";
 import useBackAppApi from "@/composables/useBackAppApi";
-// import { Uploader } from 'vant';
 import {
-  findQuqlification,
+  discernQualification,
   saveQuqlification,
-  modifyQuqlification,
+  modifyQualification,
+  queryQualification,
 } from "@/services/enterprise";
 import { uploadFile } from "@/services/common";
 import { Toast } from "vant";
@@ -173,66 +180,89 @@ export default defineComponent({
       unified: "",
       period: "",
       radio: false,
-      flag: true,
-      fileList: [],
-      imgData: {},
-      showText: true,
+      fileList: [] as any[],
+      enterpriseInfo: {} as any,
+      shopName: "",
       show: false,
+      qualificationInfo: {} as any,
+      isDisabled: true,
+      imgData: {
+        imgUrl: "",
+        id: "",
+      },
     };
   },
+  mounted() {
+    this.getQualificationInfo();
+  },
   methods: {
+    async getQualificationInfo() {
+      const res = await queryQualification();
+      this.qualificationInfo = res.data;
+      if (this.qualificationInfo && !this.$route.query.id) {
+        this.$router.replace("/auditResult");
+      }
+      if (this.$route.query.id) {
+        this.setInputValue(this.qualificationInfo);
+        this.imgData.imgUrl = this.qualificationInfo.licenseImageUrl;
+        this.imgData.id = this.qualificationInfo.licenseImageId;
+        this.fileList = [{ url: this.imgData.imgUrl, isImage: true }];
+        this.isDisabled = false;
+        this.enterpriseInfo = this.qualificationInfo;
+      }
+    },
     // 资质信息保存
     async toSubmit() {
       if (!this.radio) {
         return Toast("请勾选并同意服务协议");
       }
-      // 访问保存的接口
-      const res = await saveQuqlification(this.imgData);
-      // console.log(this.imgData);
-      console.log(res);
-      this.$router.replace({ path: "/SubmitAudit" });
-      this.flag = true;
+      this.enterpriseInfo.name = this.enterprisename;
+      this.enterpriseInfo.validPeriod = this.period;
+      this.enterpriseInfo.regNum = this.unified;
+      this.enterpriseInfo.type = this.enterprise;
+      this.enterpriseInfo.shopName = this.shopName;
+      this.enterpriseInfo.licenseImageUrl = this.imgData.imgUrl;
+      this.enterpriseInfo.licenseImageId = this.imgData.id;
+      if (this.$route.query.id) {
+        await modifyQualification(this.enterpriseInfo);
+        this.$router.replace({ path: "/auditResult" });
+      } else {
+        // 访问保存的接口
+        await saveQuqlification(this.enterpriseInfo);
+        this.$router.replace({ path: "/auditResult" });
+      }
     },
     // 修改资质信息
-    async toResubmit() {
-      if (!this.radio) {
-        return Toast("请勾选并同意服务协议");
-      }
-      // 修改资质信息的接口
-      const res = await modifyQuqlification(this.imgData);
-      console.log(res);
-      this.$router.replace({ path: "/SubmitAudit" });
-      this.flag = true;
-    },
     afterRead(file: any) {
-      this.showText = false;
-      console.log(file);
       const formData = new FormData();
       formData.append("file", file.file);
       this.uploadFile(formData);
     },
     async uploadFile(file: any) {
       const res = await uploadFile(file);
-      const info = await findQuqlification({ param: res.data.fileUrl });
-      if (info.status === "000000") {
-        // 图片识别的信息存放
-        this.imgData = info.data;
-        this.enterprisename = info.data.name;
-        this.period = info.data.validPeriod;
-        this.unified = info.data.regNum;
-        this.enterprise = info.data.type;
-      }
+      const info = await discernQualification({
+        param: res.data.fileUrl,
+      }).catch((err) => {
+        this.setInputValue({});
+        return Promise.reject(err);
+      });
+      this.imgData.imgUrl = res.data.fileUrl;
+      this.imgData.id = res.data.id;
+      this.isDisabled = false;
+      this.enterpriseInfo = info.data;
+      this.setInputValue(info.data);
     },
-    toCase() {
-      this.show = true;
+    setInputValue(info: any) {
+      this.enterprisename = info.name;
+      this.period = info.validPeriod;
+      this.unified = info.regNum;
+      this.enterprise = info.type;
+      this.shopName = info.shopName;
     },
-    toUpload() {
-      this.show = false;
-    }
   },
 });
 </script>
-<style lang= "scss" scoped>
+<style lang="scss" scoped>
 @import "@/styles/base.scss";
 .certification {
   min-height: 100%;
@@ -291,31 +321,21 @@ a {
     background-color: #28244d;
   }
 }
- .summary {
-  height: 15px;
+.summary {
   margin-top: 10px;
-}
-.summary span {
-  margin-left: -50px;
-  font-size: 10px;
-  -webkit-transform: scale(0.8);
-  display: block;
-  color: #ccc;
+  span {
+    font-size: 10px;
+    display: block;
+    color: #ccc;
+    text-align: left;
+  }
 }
 .upload {
   width: 105px;
-  height: 140px;
   margin-top: 10px;
   border-radius: 4px;
   background: #1e183c;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
-  span {
-    width: 50px;
-    height: 20px;
-    display: block;
-    margin-left: 27px;
-    font-size: 12px;
-  }
 }
 .van-uploader {
   :deep .van-uploader__preview-image {
@@ -363,25 +383,11 @@ a {
     color: #e55051;
   }
 }
-.button {
-  width: 300px;
-  height: 44px;
-  border-radius: 22px;
-  margin: auto;
-  background: #09696a;
-  span {
-    line-height: 45px;
-    font-size: 18px;
-    font-weight: 500;
-    color: #0d0420;
+.footer-action {
+  .van-button--primary {
+    @include gy-btn-primary;
+    width: 100%;
+    margin-top: 15px;
   }
-}
-.activeBtn {
-  background-color: #00ffd2;
-}
-.business img {
-  width: 105px;
-  height: 140px;
-  background-color: #fff;
 }
 </style>
