@@ -1,6 +1,6 @@
 <template>
   <div class="company-manage nav-bar">
-    <van-nav-bar title="企业主管理" :border="false" @click-left="toView">
+    <van-nav-bar title="企业主管理" :border="false" @click-left="onClickLeft">
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
@@ -123,6 +123,9 @@ export default defineComponent({
     }
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     viewCompanyGoods(companyItem: any) {
       this.$router.push({
         path: "/companyShop",
