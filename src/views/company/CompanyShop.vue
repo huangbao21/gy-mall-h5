@@ -368,7 +368,7 @@ export default defineComponent({
       const categoryIds =
         this.categoryValue === -1 ? undefined : this.treeActiveIds;
       const res = await fetchCompanyGoodsListOnline({
-        agencyId: this.agencyId,
+        agencyId: Number(this.agencyId),
         current: this.current,
         size: this.size,
         descOrders,

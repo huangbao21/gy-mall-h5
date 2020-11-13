@@ -1,30 +1,10 @@
 <template>
   <div class="company-manage nav-bar">
-    <van-nav-bar title="企业主管理" :border="false" @click-left="toView">
+    <van-nav-bar title="企业主管理" :border="false" @click-left="onClickLeft">
       <template #left>
         <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
       </template>
     </van-nav-bar>
-    <van-search
-      v-model="searchValue"
-      shape="round"
-      placeholder="搜索商品"
-      :clearable="false"
-      show-action
-      class="gy-search"
-    >
-      <template #right-icon>
-        <img
-          v-show="searchValue"
-          class="gy-clear"
-          src="@/assets/imgs/common/ic_clear.png"
-          @click="searchValue = ''"
-        />
-      </template>
-      <template #action>
-        <div class="search-btn" @click="onSearch">搜索</div>
-      </template>
-    </van-search>
     <van-tabs
       v-model:active="tabActive"
       class="gy-tabs"
@@ -47,7 +27,7 @@
       </van-tab>
       <van-tab title="审核中" name="toDeliver">
         <div class="company-list">
-          <van-list v-model="loading" :finished="finished" @load="onLoad">
+          <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
             <company-item
               v-for="item in list"
               :key="item.agencyId"
@@ -60,7 +40,7 @@
       </van-tab>
       <van-tab title="未通过" name="toReject">
         <div class="company-list">
-          <van-list v-model="loading" :finished="finished" @load="onLoad">
+          <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
             <company-item
               v-for="item in list"
               :key="item.agencyId"
@@ -123,6 +103,9 @@ export default defineComponent({
     }
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     viewCompanyGoods(companyItem: any) {
       this.$router.push({
         path: "/companyShop",
@@ -212,6 +195,7 @@ export default defineComponent({
 @import "@/styles/base.scss";
 .company-manage {
   height: 100%;
+  overflow: hidden;
 }
 .gy-search {
   margin-left: 16px;
@@ -220,11 +204,17 @@ export default defineComponent({
 .company-manage {
   width: 100%;
 }
+.van-tabs {
+  height: 100%;
+  :deep(.van-tabs__content) {
+    height: 100%;
+  }
+  :deep(.van-tab__pane){
+    height: 100%;
+  }
+}
 .company-list {
-  /*   display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: calc(100% - 154);
-  overflow-y: scroll; */
+  height: calc(100% - 92px);
+  overflow-y: scroll;
 }
 </style>

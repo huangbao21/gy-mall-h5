@@ -4,7 +4,7 @@
       style="display:flex;padding-bottom:13px"
       @click="viewGoodsList(companyInfo)"
     >
-      <img :src="companyInfo.avatar" alt="" class="company-item__avatar" />
+      <van-image  :src="companyInfo.avatar" class="company-item__avatar" />
       <div class="company-item__info">
         <div class="company-item__info--name">
           {{ companyInfo.shopName }}

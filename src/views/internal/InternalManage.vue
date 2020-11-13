@@ -80,11 +80,9 @@ export default defineComponent({
       });
     },
     handleJobEdit(item: any) {
-      console.log(`编辑职位`);
       this.$router.push({ path: "/jobSetting", query: { ...item } });
     },
     handleJobAdd() {
-      console.log(`新增职位`);
       this.$router.push({ path: "/jobSetting" });
     },
     onClickRight() {
