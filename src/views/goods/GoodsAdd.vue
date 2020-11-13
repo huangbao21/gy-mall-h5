@@ -188,15 +188,15 @@ export default defineComponent({
             retailPrice: "",
             sign: "string",
             skuJson: "string",
-            storeNumber: "",
-          },
-        ] as object[],
+            storeNumber: ""
+          }
+        ] as object[]
       },
       currentCoverIndex: 0,
       maxCount: 6,
       operateType: "add",
       goodId: 0,
-      navTitle: "新增商品",
+      navTitle: "新增商品"
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -204,7 +204,7 @@ export default defineComponent({
       next((vm: any) => {
         vm.goodsInfo.productSkuList[0] = {
           ...vm.goodsInfo.productSkuList[0],
-          ...to.query,
+          ...to.query
         };
       });
     } else if (to.query.categoryId !== undefined) {
@@ -255,7 +255,7 @@ export default defineComponent({
       this.goodsInfo.bannerList.push({
         id: res.data.id,
         fileUrl: res.data.fileUrl,
-        mainStatus: len === 0 ? 1 : 0,
+        mainStatus: len === 0 ? 1 : 0
       });
       this.currentCoverIndex = this.goodsInfo.bannerList.length - 1;
     },
@@ -271,15 +271,15 @@ export default defineComponent({
         path: "/goodsCategory",
         query: {
           activeIndex: this.goodsInfo.activeIndex,
-          activeId: this.goodsInfo.categoryId,
-        },
+          activeId: this.goodsInfo.categoryId
+        }
       });
     },
     handleSkuClick() {
       this.saveTempData();
       this.$router.replace({
         path: "/goodsSKU",
-        query: { ...this.goodsInfo.productSkuList[0] },
+        query: { ...this.goodsInfo.productSkuList[0] }
       });
     },
     async detailAfterRead(file: any) {
@@ -290,7 +290,7 @@ export default defineComponent({
       this.goodsInfo.productInfoList.push({
         id: res.data.id,
         fileUrl: res.data.fileUrl,
-        sort: 0,
+        sort: 0
       });
     },
     deleteDetailImgFromList(index: number) {
@@ -303,11 +303,11 @@ export default defineComponent({
       }
       if (this.operateType === "add") {
         await saveGoods({
-          ...this.goodsInfo,
+          ...this.goodsInfo
         });
       } else if (this.operateType === "edit") {
         await updateGoods({
-          ...this.goodsInfo,
+          ...this.goodsInfo
         });
       }
 
@@ -318,13 +318,14 @@ export default defineComponent({
       this.$dialog
         .confirm({
           message: "商品信息未保存，确认返回",
-          className: "gy-dialog",
+          className: "gy-dialog"
         })
         .then(() => {
+          this.clearTempData();
           this.$router.go(-1);
         });
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss" scoped>
