@@ -131,7 +131,12 @@
         @click="handleGoodsStocks(1)"
         >进货</van-button
       >
-      <van-button round plain type="primary" class="batch soldout" @click="handleGoodsStocks(0)"
+      <van-button
+        round
+        plain
+        type="primary"
+        class="batch soldout"
+        @click="handleGoodsStocks(0)"
         >退货</van-button
       >
     </div>
@@ -218,6 +223,7 @@ export default defineComponent({
     this.goodsTitle = this.goodsOption[0].text;
     this.categoryTitle = this.categoryOption[0].text;
     this.getSupplierList();
+    window.scrollTo(0, 0);
   },
   methods: {
     toView() {
@@ -369,9 +375,14 @@ export default defineComponent({
   margin-right: 16px;
 }
 .cards-wrapper {
-  padding-bottom: 50px;
   flex: 1;
   overflow-y: scroll;
+  &::after{
+    content: '';
+    height: 50px;
+    width: 100%;
+    display: block;
+  }
 }
 .cards {
   padding-left: 10px;
@@ -388,6 +399,7 @@ export default defineComponent({
   padding-bottom: 27px;
   justify-content: space-between;
   position: relative;
+  // margin-top:10px;
   .info {
     position: absolute;
     top: -28px;

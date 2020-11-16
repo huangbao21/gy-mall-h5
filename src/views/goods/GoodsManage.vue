@@ -464,9 +464,14 @@ export default defineComponent({
   margin-right: 16px;
 }
 .cards-wrapper {
-  padding-bottom: 50px;
   flex: 1;
   overflow-y: scroll;
+  &::after{
+    content: '';
+    height: 50px;
+    width: 100%;
+    display: block;
+  }
 }
 .cards {
   padding-left: 10px;
