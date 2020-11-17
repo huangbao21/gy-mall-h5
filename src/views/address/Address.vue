@@ -96,6 +96,12 @@ export default defineComponent({
     this.fetchAddressList();
   },
   methods: {
+    onClickLeft() {
+      this.$router.replace({
+        path: "/placeOrder",
+        query: { ...this.$route.query }
+      });
+    },
     handleAddressSelect(addressId: number) {
       // 要判断来源是app还是订单
       console.log(addressId);
