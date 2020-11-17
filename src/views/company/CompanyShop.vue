@@ -111,7 +111,7 @@
       </div>
     </div>
 
-    <div class="footer-action" v-if="tabActive==='toApply'">
+    <div class="footer-action" v-if="tabActive === 'toApply'">
       <van-button type="primary" @click="handleApply"
         >申请成为代理商</van-button
       >
@@ -198,7 +198,8 @@ export default defineComponent({
       checkedNum: 0,
       sortTitle: "",
       goodsTitle: "",
-      categoryTitle: ""
+      categoryTitle: "",
+      tabActive: "toApply"
     };
   },
   mounted() {
