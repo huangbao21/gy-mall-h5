@@ -103,7 +103,7 @@ export default defineComponent({
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.operateType !== undefined) {
+    if (to.query.goodId !== undefined) {
       next((vm: any) => {
         console.log(11);
         vm.operateType = to.query.operateType;
