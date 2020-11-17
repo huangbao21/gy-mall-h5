@@ -27,7 +27,12 @@
       </van-tab>
       <van-tab title="审核中" name="toDeliver">
         <div class="company-list">
-          <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            @load="onLoad"
+            finished-text="没有更多了"
+          >
             <company-item
               v-for="item in list"
               :key="item.agencyId"
@@ -40,7 +45,12 @@
       </van-tab>
       <van-tab title="未通过" name="toReject">
         <div class="company-list">
-          <van-list v-model="loading" :finished="finished" @load="onLoad" finished-text="没有更多了">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            @load="onLoad"
+            finished-text="没有更多了"
+          >
             <company-item
               v-for="item in list"
               :key="item.agencyId"
@@ -111,7 +121,8 @@ export default defineComponent({
         path: "/companyShop",
         query: {
           agencyId: companyItem.agencyId,
-          shopName: companyItem.shopName
+          shopName: companyItem.shopName,
+          tabActive: this.tabActive
         }
       });
     },
@@ -209,7 +220,7 @@ export default defineComponent({
   :deep(.van-tabs__content) {
     height: 100%;
   }
-  :deep(.van-tab__pane){
+  :deep(.van-tab__pane) {
     height: 100%;
   }
 }

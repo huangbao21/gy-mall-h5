@@ -111,7 +111,7 @@
       </div>
     </div>
 
-    <div class="footer-action">
+    <div class="footer-action" v-if="tabActive==='toApply'">
       <van-button type="primary" @click="handleApply"
         >申请成为代理商</van-button
       >
@@ -142,6 +142,7 @@ export default defineComponent({
       next((vm: any) => {
         vm.agencyId = to.query.agencyId;
         vm.shopName = to.query.shopName;
+        vm.tabActive = to.query.tabActive;
       });
     } else {
       next();
@@ -409,8 +410,8 @@ export default defineComponent({
 .cards-wrapper {
   flex: 1;
   overflow-y: scroll;
-  &::after{
-    content: '';
+  &::after {
+    content: "";
     height: 50px;
     width: 100%;
     display: block;
