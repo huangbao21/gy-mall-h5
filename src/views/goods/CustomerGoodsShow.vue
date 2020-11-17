@@ -32,11 +32,6 @@
               goodsInfo.productSkuList[0].price
             }}</span></van-col
           >
-          <van-col class="goods-profit" span="7"
-            ><span class="goods-profit-triangle"></span>分佣¥{{
-              goodsInfo.productSkuList[0].profit
-            }}</van-col
-          >
         </van-cell>
         <van-cell class="goods-origin-wrapper">
           <van-col class="goods-origin-price" span="14"

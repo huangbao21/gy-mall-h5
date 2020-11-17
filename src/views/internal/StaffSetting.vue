@@ -1,7 +1,7 @@
 <template>
   <div class="staff-setting nav-bar">
     <van-nav-bar
-      :title="type==='add'?'新增员工':'编辑员工'"
+      :title="type === 'add' ? '新增员工' : '编辑员工'"
       right-text="完成"
       left-arrow
       @click-left="onClickLeft"
@@ -92,9 +92,11 @@ export default defineComponent({
       this.showPicker = false;
     },
     async handleCommissionSave() {
-      if (!this.mobile.length) {
-        Toast(`请设置手机号`);
-        return;
+      if (this.type === "add") {
+        if (!this.mobile.length) {
+          Toast(`请设置手机号`);
+          return;
+        }
       }
       if (!this.jobTitle.length) {
         Toast(`请设置职位`);
