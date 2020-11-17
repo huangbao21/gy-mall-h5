@@ -114,7 +114,11 @@ export default defineComponent({
       if (url === "/address") {
         this.$router.replace({
           path: url,
-          query: { goodId: this.goodId, agencyId: this.agencyId },
+          query: {
+            goodId: this.goodId,
+            agencyId: this.agencyId,
+            chosenAddressId: this.chosenAddressId,
+          },
         });
       } else {
         this.$router.go(-1);

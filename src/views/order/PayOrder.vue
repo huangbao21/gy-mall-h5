@@ -39,7 +39,7 @@
       </div>
     </main>
     <div class="footer-action">
-      <van-button round type="primary" :disabled="btnDisable" @click="pay"
+      <van-button round type="primary"  @click="pay"
         >支付￥{{ orderInfo.payAmount }}</van-button
       >
     </div>
@@ -83,13 +83,11 @@ export default defineComponent({
     countDown(time: string) {
       const now = +moment();
       const next = +moment(time);
-      console.log(time, 222);
       console.log(moment(time).format("YYYY-MM-DD HH:mm:ss"));
       return next - now;
     },
     finishCountDown(time: string) {
       if (time) {
-        console.log(123);
         this.btnDisable = true;
       }
     },
