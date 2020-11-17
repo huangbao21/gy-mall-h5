@@ -13,7 +13,7 @@
     <main>
       <div class="content">
         <span>营业执照</span>
-        <a @click="show = true">查看事例</a>
+        <a @click="show = true">查看示例</a>
         <van-popup v-model:show="show">
           <h3>营业执照拍照示例</h3>
           <img src="../../assets/imgs/common/timg.jpeg" alt="" />
@@ -127,11 +127,11 @@
         />
       </div>
       <div class="footer">
-        <van-radio-group v-model="radio">
+        <!-- <van-radio-group v-model="radio">
           <van-radio name="1" checked-color="#EA4A72" icon-size="14px">
           </van-radio>
-        </van-radio-group>
-
+        </van-radio-group> -->
+        <van-checkbox v-model="radio" name="1" icon-size="14px" :checked-color="checkRadioColor"> </van-checkbox>
         <span
           >同意并遵守<a href="#">《平台企业服务协议》</a>以及<a href="#"
             >《平台企业认证审核标准指引》</a
@@ -156,6 +156,7 @@
 /*  eslint-disable @typescript-eslint/no-explicit-any */
 import { defineComponent } from "vue";
 import useBackAppApi from "@/composables/useBackAppApi";
+import usePropsCom from "@/composables/usePropsCom";
 import {
   discernQualification,
   saveQuqlification,
@@ -168,8 +169,11 @@ export default defineComponent({
   name: "CertifiCation",
   setup() {
     const { toBackApp } = useBackAppApi();
+    const { checkRadioColor } = usePropsCom();
+
     return {
       toBackApp,
+      checkRadioColor,
     };
   },
 
@@ -193,7 +197,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.getQualificationInfo();
+    // this.getQualificationInfo();
   },
   methods: {
     async getQualificationInfo() {
@@ -370,13 +374,16 @@ a {
 }
 .footer {
   width: 335px;
-  height: 28px;
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  .van-checkbox {
+    width: 50px;
+    margin-top: 3px;
+  }
   span {
-    font-size: 10px;
-    margin-top: -2px;
+    text-align: left;
   }
   a {
     text-decoration: none;
