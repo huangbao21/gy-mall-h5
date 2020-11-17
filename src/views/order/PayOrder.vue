@@ -39,7 +39,7 @@
       </div>
     </main>
     <div class="footer-action">
-      <van-button round type="primary"  @click="pay"
+      <van-button round type="primary" :disabled="btnDisable" @click="pay"
         >支付￥{{ orderInfo.payAmount }}</van-button
       >
     </div>

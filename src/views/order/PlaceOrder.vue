@@ -10,12 +10,12 @@
         <div class="order-info__adress-wrap" @click="toView('/address')">
           <div class="order-info__adress-user">
             <small
-              >{{ addressInfo.provinceName }}{{ addressInfo.cityName
-              }}{{ addressInfo.districtName }}</small
+              >{{ addressInfo?.provinceName }}{{ addressInfo?.cityName
+              }}{{ addressInfo?.districtName }}</small
             >
-            <span>{{ addressInfo.street }}</span>
+            <span>{{ addressInfo?.street }}</span>
             <span class="phone"
-              >{{ addressInfo.linkman }} {{ addressInfo.mobile }}</span
+              >{{ addressInfo?.linkman }} {{ addressInfo?.mobile }}</span
             >
           </div>
           <van-icon name="arrow" />
@@ -59,6 +59,7 @@
           type="primary"
           style="margin-left: 10px"
           @click="submitOrder"
+          :disabled="!chosenAddressId"
           >提交订单</van-button
         >
       </div>
@@ -144,7 +145,7 @@ export default defineComponent({
         });
       } else {
         res = await queryDefaultAddress();
-        this.chosenAddressId = res.data.id;
+        this.chosenAddressId = res.data?.id;
       }
       this.addressInfo = res.data;
     },
