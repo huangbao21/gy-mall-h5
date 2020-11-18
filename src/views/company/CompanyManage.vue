@@ -86,6 +86,7 @@ import {
 } from "@/services/company.ts";
 import { AppliedStatus } from "@/utils/const.ts";
 import CompanyItem from "./component/CompanyItem.vue";
+import useBackAppApi from "@/composables/useBackAppApi";
 export default defineComponent({
   name: "Home",
   components: {
@@ -99,22 +100,30 @@ export default defineComponent({
       list: [] as object[],
       tabActive: "toApply",
       loading: false,
-      finished: false
+      finished: false,
+      fromApp: true
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.from !== undefined) {
-      next((vm: any) => {
+    console.log(from);
+    next((vm: any) => {
+      if (to.query.from !== undefined) {
         vm.tabActive = "toDeliver";
         vm.scrollToDeliver();
-      });
-    } else {
-      next();
-    }
+      }
+      if (from.name !== undefined) {
+        vm.fromApp = false;
+      }
+    });
   },
   methods: {
     onClickLeft() {
-      this.$router.go(-1);
+      if (this.fromApp) {
+        const { toBackApp } = useBackAppApi();
+        toBackApp();
+      } else {
+        this.$router.go(-1);
+      }
     },
     viewCompanyGoods(companyItem: any) {
       this.$router.push({

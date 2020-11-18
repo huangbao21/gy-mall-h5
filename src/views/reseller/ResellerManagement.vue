@@ -53,7 +53,9 @@
               <span class="profit-des">分佣比例</span>
             </div>
             <div class="sales">
-              <span class="sales-data">{{ Utils.addNumberUnit(item.sellNumber) }}</span>
+              <span class="sales-data">{{
+                Utils.addNumberUnit(item.sellNumber)
+              }}</span>
               <span class="sales-des">销售额</span>
             </div>
           </div>
@@ -74,7 +76,7 @@ import {
   queryAgencyAndSales,
   fetchApplyNumber
 } from "../../services/reseller";
-import Utils from "@/utils/index"
+import Utils from "@/utils/index";
 export default defineComponent({
   name: "ResellerManagement",
   data() {
