@@ -164,8 +164,8 @@ export default defineComponent({
           this.tabActive === "toReject"
             ? AppliedStatus.reject
             : this.tabActive === "toResolve"
-            ? AppliedStatus.resolve
-            : AppliedStatus.deliver;
+              ? AppliedStatus.resolve
+              : AppliedStatus.deliver;
         res = await fetchAppliedRecords({
           size: this.size,
           current: this.current,
