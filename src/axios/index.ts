@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { Toast } from 'vant';
+import { Dialog, Toast } from 'vant';
 export interface PostData {
   msg: string;
   status: string;
@@ -29,7 +29,7 @@ service.interceptors.request.use(
       config.headers.common.token = localStorage.token;
     } else {
       // config.headers.common.token = 'j009vB9Buya6JjvZgjRAX14UVaPAGVTZ'
-      Toast('请先登录哦~')
+      Dialog.alert({ message: '请先登录哦~', className: 'gy-dialog' })
     }
     return config
   },
