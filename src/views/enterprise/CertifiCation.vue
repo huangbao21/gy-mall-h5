@@ -197,7 +197,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    // this.getQualificationInfo();
+    this.getQualificationInfo();
   },
   methods: {
     async getQualificationInfo() {

@@ -114,12 +114,19 @@ import {
   receiptOrder as receiptOrderService,
 } from "@/services/order";
 import ExpressPopup from "./components/ExpressPopup.vue";
+import useBackAppApi from "@/composables/useBackAppApi";
 
 export default defineComponent({
   name: "CustomerOrder",
   components: {
     OrderItem,
     ExpressPopup,
+  },
+  setup() {
+    const { toBackApp } = useBackAppApi();
+    return {
+      toBackApp,
+    };
   },
   data() {
     return {
@@ -133,11 +140,21 @@ export default defineComponent({
       currentOrder: {} as object,
       expressInfo: {} as object,
       expressPopup: false,
+      fromApp: false,
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm: any) => {
+      if (!from.name) vm.fromApp = true;
+    });
   },
   methods: {
     toView() {
-      this.$router.go(-1);
+      if (this.fromApp) {
+        this.toBackApp();
+      } else {
+        this.$router.go(-1);
+      }
     },
     async viewExpress(order: any) {
       const res = await queryLogistics({ id: order.id });

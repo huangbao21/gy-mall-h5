@@ -102,8 +102,8 @@ export default defineComponent({
   methods: {
     async getQualification() {
       const info = await queryQualification();
-      this.status = info.data.status;
-      this.id = info.data.id;
+      this.status = info.data?.status;
+      this.id = info.data?.id;
     },
     toResubmit() {
       this.$router.replace({ path: "/certifiCation", query: { id: this.id } });

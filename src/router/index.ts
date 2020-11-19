@@ -9,6 +9,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '工作台' }
   },
   {
+    path: '/introduce',
+    name: 'IntroducePoster',
+    component: () => import('@/views/poster/Introduce.vue'),
+    meta: { title: '光鹰' }
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
