@@ -297,6 +297,26 @@ export default defineComponent({
       this.goodsInfo.productInfoList.splice(index, 1);
     },
     async onSave() {
+      if (!this.goodsInfo.bannerList.length) {
+        Toast(`请添加商品封面图`);
+        return;
+      }
+      if (!this.goodsInfo.name.length) {
+        Toast(`请输入商品名称`);
+        return;
+      }
+      if (this.goodsInfo.categoryId < 0) {
+        Toast(`请选择商品类目`);
+        return;
+      }
+      if (!(this.goodsInfo.productSkuList[0] as any).price.length) {
+        Toast(`请设置商品价格`);
+        return;
+      }
+      if (!this.goodsInfo.productInfoList.length) {
+        Toast(`请上传商品详情图`);
+        return;
+      }
       const len = this.goodsInfo.productInfoList.length;
       for (let i = 0; i < len; i++) {
         (this.goodsInfo.productInfoList[i] as any).sort = i;
