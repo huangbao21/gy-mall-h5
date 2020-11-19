@@ -70,7 +70,7 @@
 import { defineComponent } from "vue";
 import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
-import { saveGoods, fetchGoodDetail } from "@/services/goods";
+import { saveGoods, fetchAgentGoodDetail } from "@/services/goods";
 export default defineComponent({
   name: "agentGoodsShow",
   data() {
@@ -120,12 +120,12 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.fetchGoodDetail();
+    this.fetchAgentGoodDetail();
   },
   methods: {
-    async fetchGoodDetail() {
+    async fetchAgentGoodDetail() {
       console.log(this.goodId);
-      const res = await fetchGoodDetail({ id: this.goodId });
+      const res = await fetchAgentGoodDetail({ id: this.goodId });
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };
     },
