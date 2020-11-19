@@ -92,6 +92,12 @@ export default defineComponent({
   components: {
     CompanyItem
   },
+  setup() {
+    const { toBackApp } = useBackAppApi();
+    return {
+      toBackApp
+    };
+  },
   data() {
     return {
       searchValue: "",
@@ -119,8 +125,7 @@ export default defineComponent({
   methods: {
     onClickLeft() {
       if (this.fromApp) {
-        const { toBackApp } = useBackAppApi();
-        toBackApp();
+        this.toBackApp();
       } else {
         this.$router.go(-1);
       }

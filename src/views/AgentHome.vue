@@ -1,82 +1,92 @@
 <template>
-  <div class="home">
-    <div class="money">
-      <div class="title">可提现</div>
-      <div class="money-withdrawal">
-        <div class="money-withdrawal-amount">
-          ¥
-          <span class="money-withdrawal-amount-num">{{
-            salesInfo.canWithdrawNumber
-          }}</span>
-        </div>
-        <div class="money-withdrawal-btn" @click="handleWithdrawal">提现</div>
-      </div>
-      <div class="money-data">
-        <div class="total-sales">
-          <div class="total-sales-number">
+  <div class="home nav-bar">
+    <van-nav-bar title="工作台" :border="false" @click-left="onClickLeft">
+      <template #left>
+        <img class="leftIcon" src="@/assets/imgs/common/icon-left.png" />
+      </template>
+    </van-nav-bar>
+    <div style="padding: 0 18px;">
+      <div class="money">
+        <div class="title">可提现</div>
+        <div class="money-withdrawal">
+          <div class="money-withdrawal-amount">
             ¥
-            <span class="total-sales-number-num">{{
-              salesInfo.totalSalesNumber
+            <span class="money-withdrawal-amount-num">{{
+              salesInfo.canWithdrawNumber
             }}</span>
           </div>
-          <div class="total-sales-text">总销售金额</div>
+          <div class="money-withdrawal-btn" @click="handleWithdrawal">提现</div>
         </div>
-        <div class="money-balance">
-          <div class="money-balance-number">
-            ¥
-            <span class="money-balance-number-num">{{
-              salesInfo.waitSettleNumber
-            }}</span>
+        <div class="money-data">
+          <div class="total-sales">
+            <div class="total-sales-number">
+              ¥
+              <span class="total-sales-number-num">{{
+                salesInfo.totalSalesNumber
+              }}</span>
+            </div>
+            <div class="total-sales-text">总销售金额</div>
           </div>
-          <div class="money-balance-text">待结算余额</div>
-        </div>
-      </div>
-    </div>
-    <div class="today-data">
-      <div class="today-data__title">
-        <div class="today-data__title-left">今日数据</div>
-        <div class="today-data__title-right">
-          更新于：{{ salesInfo.updateTime }}
-        </div>
-      </div>
-      <div class="today-data__body">
-        <div class="today-order">
-          <div class="today-order-number">
-            {{ salesInfo.todayOrdersNumber }}
+          <div class="money-balance">
+            <div class="money-balance-number">
+              ¥
+              <span class="money-balance-number-num">{{
+                salesInfo.waitSettleNumber
+              }}</span>
+            </div>
+            <div class="money-balance-text">待结算余额</div>
           </div>
-          <div class="today-order-text">今日订单数</div>
         </div>
-        <div class="today-sales">
-          <div class="today-sales-body">
-            ¥
-            <span class="today-sales-number">{{
-              salesInfo.todaySalesNumber
-            }}</span>
+      </div>
+      <div class="today-data">
+        <div class="today-data__title">
+          <div class="today-data__title-left">今日数据</div>
+          <div class="today-data__title-right">
+            更新于：{{ salesInfo.updateTime }}
           </div>
-          <div class="today-sales-text">今日销售额</div>
+        </div>
+        <div class="today-data__body">
+          <div class="today-order">
+            <div class="today-order-number">
+              {{ salesInfo.todayOrdersNumber }}
+            </div>
+            <div class="today-order-text">今日订单数</div>
+          </div>
+          <div class="today-sales">
+            <div class="today-sales-body">
+              ¥
+              <span class="today-sales-number">{{
+                salesInfo.todaySalesNumber
+              }}</span>
+            </div>
+            <div class="today-sales-text">今日销售额</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="operate">
-      <div class="operate-item" @click="goCompanyManage">
-        <img
-          class="operate-item__icon"
-          src="../assets/imgs/home/ic_business_owner.png"
-        />
-        <div class="operate-item__text">企业主管理</div>
+      <div class="operate">
+        <div class="operate-item" @click="goCompanyManage">
+          <img
+            class="operate-item__icon"
+            src="../assets/imgs/home/ic_business_owner.png"
+          />
+          <div class="operate-item__text">企业主管理</div>
+        </div>
+        <div class="operate-item" @click="goGoodsManage">
+          <img
+            class="operate-item__icon"
+            src="../assets/imgs/home/ic_good.png"
+          />
+          <div class="operate-item__text">商品管理</div>
+        </div>
+        <div class="operate-item" @click="goOrderManage">
+          <img
+            class="operate-item__icon"
+            src="../assets/imgs/home/ic_order.png"
+          />
+          <div class="operate-item__text">订单管理</div>
+        </div>
+        <div class="operate-item"></div>
       </div>
-      <div class="operate-item" @click="goGoodsManage">
-        <img class="operate-item__icon" src="../assets/imgs/home/ic_good.png" />
-        <div class="operate-item__text">商品管理</div>
-      </div>
-      <div class="operate-item" @click="goOrderManage">
-        <img
-          class="operate-item__icon"
-          src="../assets/imgs/home/ic_order.png"
-        />
-        <div class="operate-item__text">订单管理</div>
-      </div>
-      <div class="operate-item"></div>
     </div>
   </div>
 </template>
@@ -86,8 +96,15 @@ import { defineComponent } from "vue";
 // import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
 import { fetchSalesData, transferMoney } from "../services/home";
 import Utils from "../utils/index";
+import useBackAppApi from "@/composables/useBackAppApi";
 export default defineComponent({
   name: "Home",
+  setup() {
+    const { toBackApp } = useBackAppApi();
+    return {
+      toBackApp
+    };
+  },
   data() {
     return {
       salesInfo: {
@@ -108,6 +125,9 @@ export default defineComponent({
     this.fetchSalesData();
   },
   methods: {
+    onClickLeft() {
+      this.toBackApp();
+    },
     formatTime(stamp: number) {
       const date = new Date(stamp);
       return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -141,9 +161,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-@import "../styles/base";
+@import "@/styles/base.scss";
 .home {
-  padding: 0 18px;
   height: 100%;
   .money {
     display: flex;
