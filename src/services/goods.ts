@@ -28,6 +28,9 @@ export function fetchGoodsSelect(data: { current: number; size: number; status?:
 export function fetchGoodDetail(data: { id: number }): Promise<PostData> {
   return axios.post(API.GOOD_DETAIL, data);
 }
+export function fetchAgentGoodDetail(data: { id: number }): Promise<PostData> {
+  return axios.post(API.AGENT_GOOD_DETAIL, data);
+}
 export function fetchCustomerGoodDetail(data: { id: number; agencyId: number }): Promise<PostData> {
   return axios.post(API.CUSTOMER_GOOD_DETAIL, data);
 }
