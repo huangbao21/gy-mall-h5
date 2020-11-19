@@ -15,7 +15,6 @@
       <span class="label">快递单号</span>
       <van-field
         v-model="sn"
-        type="digit"
         class="sn-input"
         placeholder="请输入快递单号"
       />
