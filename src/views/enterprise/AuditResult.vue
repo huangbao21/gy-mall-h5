@@ -102,7 +102,8 @@ export default defineComponent({
   methods: {
     async getQualification() {
       const info = await queryQualification();
-      this.status = info.data?.status;
+      // this.status = info.data?.status;
+      this.status = 1
       this.id = info.data?.id;
     },
     toResubmit() {
@@ -130,6 +131,7 @@ main {
 }
 .content img {
   width: 80px;
+  height: 80px;
 }
 span {
   font-size: 12px;
