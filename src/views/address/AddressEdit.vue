@@ -133,6 +133,9 @@ export default defineComponent({
         cityCode: res.data.cityCode,
         provinceCode: res.data.provinceCode
       };
+      if (res.data.byDefault) {
+        this.checked = true;
+      }
     },
     dealAreaListData(list: any) {
       const res = {
@@ -174,6 +177,7 @@ export default defineComponent({
         });
       } else {
         await editAddressInfo({
+          id: this.addressId,
           byDefault: this.checked ? 1 : 0,
           cityName: addressInfo.city,
           districtCode: addressInfo.areaCode,
