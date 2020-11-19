@@ -12,6 +12,7 @@ export interface AddressInfo {
   addressDetail: string;
 }
 export interface AddressInfoServe {
+  id?: number;
   byDefault: number;
   cityName: string;
   districtCode: string;
