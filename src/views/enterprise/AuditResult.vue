@@ -66,13 +66,8 @@
           拒绝原因：营业执照已过期，请重新提交认证资料
         </p>
       </div>
-
-      <div class="button" v-if="status === 0">
-        <span @click="toBackApp">返回我的</span>
-      </div>
-      <div class="button" v-if="status === 2">
-        <span @click="toResubmit">重新提交认证资料</span>
-      </div>
+      <van-button type="primary" round v-if="status === 0" @click="toBackApp">返回我的</van-button>
+      <van-button type="primary" round v-if="status === 2" @click="toResubmit">重新提交认证资料</van-button>
     </main>
   </div>
 </template>
@@ -179,6 +174,14 @@ span {
       color: #ffb300;
     }
   }
+}
+.van-button--primary {
+  @include gy-btn-primary;
+  width: 300px;
+  height: 44px;
+  color: #0d0420;
+  font-size: 18px;
+  font-weight: bold;
 }
 .button {
   width: 300px;
