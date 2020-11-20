@@ -242,8 +242,13 @@ export default defineComponent({
   methods: {
     async fetchGoodDetail() {
       const res = await fetchGoodDetail({ id: this.goodId });
+      const tempGoodsInfo = localStorage.getItem("tempGoodsInfo");
       res.data.categoryText = res.data.categoryName;
-      this.goodsInfo = { ...this.goodsInfo, ...res.data };
+      if (tempGoodsInfo) {
+        this.goodsInfo = { ...res.data, ...this.goodsInfo };
+      } else {
+        this.goodsInfo = { ...this.goodsInfo, ...res.data };
+      }
     },
     handleItemClick(index: number) {
       this.currentCoverIndex = index;
