@@ -25,7 +25,7 @@
             <span class="title">钱包余额支付</span>
             <van-radio :name="3" />
           </div>
-          <div class="cell">
+          <div class="cell" v-if="wxFlag">
             <img src="@/assets/imgs/common/ic_wechatpay.png" />
             <span class="title">划转到金币余额</span>
             <van-radio :name="2" />
@@ -54,6 +54,7 @@ import { callPayOrder } from "@/services/native";
 import { queryCustomerOrderDetail, fetchPayParam } from "@/services/order";
 import usePropsCom from "@/composables/usePropsCom";
 import moment from "moment";
+import Utils from '@/utils';
 
 export default defineComponent({
   name: "PayOrder",
@@ -74,10 +75,14 @@ export default defineComponent({
       orderId: -1,
       orderInfo: {} as any,
       btnDisable: false,
+      wxFlag: true,
     };
   },
   mounted() {
     this.getOrderDetail();
+    if (Utils.isIOS()) {
+      this.wxFlag = false;
+    }
   },
   methods: {
     countDown(time: string) {
