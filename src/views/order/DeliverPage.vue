@@ -13,15 +13,12 @@
     </van-nav-bar>
     <main>
       <span class="label">快递单号</span>
-      <van-field
-        v-model="sn"
-        class="sn-input"
-        placeholder="请输入快递单号"
-      />
+      <van-field v-model="sn" class="sn-input" placeholder="请输入快递单号" />
     </main>
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defineComponent } from "vue";
 import { deliverOrder } from "@/services/order";
 export default defineComponent({
