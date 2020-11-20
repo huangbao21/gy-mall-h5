@@ -185,6 +185,7 @@ export default defineComponent({
       });
       await receiptOrderService({ id: order.id });
       order.orderStatus = 4;
+      if (this.tabActive === "toReceive") this.reloadList();
     },
     onLoad() {
       this.current += 1;
