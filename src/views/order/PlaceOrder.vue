@@ -23,7 +23,7 @@
         <div class="good-wrap">
           <van-image :src="goodInfo.mainImageUrl" />
           <div class="good-info">
-            <p class="good-info--name">宠物小精灵</p>
+            <p class="good-info--name">{{goodInfo.name}}</p>
             <p class="good-info--prop">
               <span>单价 ￥ {{ goodInfo.price }}</span>
               <span class="stepper"> <van-stepper v-model="quantity" /></span>

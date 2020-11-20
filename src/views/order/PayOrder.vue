@@ -113,7 +113,7 @@ export default defineComponent({
         type: this.waysRadio,
       });
       await callPayOrder({
-        recordId: String(this.orderId),
+        recordId: res.data.paySn,
         sdk:
           res.data.type,
         money: res.data.payAmount,
