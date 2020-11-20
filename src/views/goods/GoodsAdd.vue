@@ -215,20 +215,26 @@ export default defineComponent({
       next((vm: any) => {
         vm.operateType = to.query.operateType;
         vm.goodId = to.query.goodId;
+        localStorage.setItem("goodId", to.query.goodId as string);
       });
     } else {
       next();
     }
   },
   created() {
+    console.log(localStorage.getItem("operateType"));
+    if (localStorage.getItem("operateType") === "edit") {
+      this.operateType = "edit";
+    }
     const tempGoodsInfo = localStorage.getItem("tempGoodsInfo");
     if (tempGoodsInfo) {
       this.goodsInfo = JSON.parse(tempGoodsInfo);
     }
   },
   mounted() {
-    console.log(`组件挂载`);
     if (this.operateType === "edit") {
+      localStorage.setItem("operateType", this.operateType);
+      this.goodId = Number(localStorage.getItem("goodId"));
       this.fetchGoodDetail();
       this.navTitle = `编辑商品`;
     }
@@ -263,6 +269,8 @@ export default defineComponent({
       localStorage.setItem("tempGoodsInfo", JSON.stringify(this.goodsInfo));
     },
     clearTempData() {
+      localStorage.removeItem("operateType");
+      localStorage.removeItem("goodId");
       localStorage.setItem("tempGoodsInfo", "");
     },
     handleCategoryClick() {
@@ -277,9 +285,16 @@ export default defineComponent({
     },
     handleSkuClick() {
       this.saveTempData();
+      const productSku = this.goodsInfo.productSkuList[0] as any;
       this.$router.replace({
         path: "/goodsSKU",
-        query: { ...this.goodsInfo.productSkuList[0] }
+        query: {
+          price: productSku.price,
+          profit: productSku.profit,
+          retailPrice: productSku.retailPrice,
+          storeNumber: productSku.storeNumber,
+          ...this.$route.query
+        }
       });
     },
     async detailAfterRead(file: any) {
@@ -309,7 +324,7 @@ export default defineComponent({
         Toast(`请选择商品类目`);
         return;
       }
-      if (!(this.goodsInfo.productSkuList[0] as any).price.length) {
+      if (!(this.goodsInfo.productSkuList[0] as any).price) {
         Toast(`请设置商品价格`);
         return;
       }
