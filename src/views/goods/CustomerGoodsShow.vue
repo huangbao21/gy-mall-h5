@@ -73,6 +73,7 @@ import { defineComponent } from "vue";
 import { Toast } from "vant";
 import { uploadFile } from "@/services/common";
 import { saveGoods, fetchCustomerGoodsDetail } from "@/services/goods";
+import useBackAppApi from "@/composables/useBackAppApi";
 export default defineComponent({
   name: "customerGoodsShow",
   data() {
@@ -102,19 +103,28 @@ export default defineComponent({
       maxCount: 6,
       operateType: "show",
       goodId: 0,
-      agencyId: 0
+      agencyId: 0,
+      fromApp: false
+    };
+  },
+  setup() {
+    const { toBackApp } = useBackAppApi();
+    return {
+      toBackApp
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.goodId !== undefined) {
-      next((vm: any) => {
+    next((vm: any) => {
+      if (to.query.productId !== undefined) {
         vm.operateType = to.query.operateType;
-        vm.goodId = to.query.goodId;
+        vm.goodId = to.query.productId;
         vm.agencyId = to.query.agencyId;
-      });
-    } else {
-      next();
-    }
+      }
+      if (!from.name) {
+        vm.fromApp = true;
+        localStorage.setItem("fromApp", "1");
+      }
+    });
   },
   created() {
     const tempGoodsInfo = localStorage.getItem("tempGoodsInfo");
@@ -186,7 +196,12 @@ export default defineComponent({
       this.clearTempData();
     },
     onClickLeft() {
-      this.$router.go(-1);
+      if (Number(localStorage.getItem("fromApp"))) {
+        localStorage.removeItem("fromApp");
+        this.toBackApp();
+      } else {
+        this.$router.go(-1);
+      }
     },
     buyGood() {
       this.$router.push({
