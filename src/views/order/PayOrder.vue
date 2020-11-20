@@ -38,7 +38,7 @@
         </van-radio-group>
       </div>
     </main>
-    <div class="footer-action">
+    <div class="footer-action" v-if="orderInfo.orderStatus == 0">
       <van-button round type="primary" :disabled="btnDisable" @click="pay"
         >支付￥{{ orderInfo.payAmount }}</van-button
       >
@@ -54,7 +54,7 @@ import { callPayOrder } from "@/services/native";
 import { queryCustomerOrderDetail, fetchPayParam } from "@/services/order";
 import usePropsCom from "@/composables/usePropsCom";
 import moment from "moment";
-import Utils from '@/utils';
+import Utils from "@/utils";
 
 export default defineComponent({
   name: "PayOrder",
@@ -106,6 +106,7 @@ export default defineComponent({
     async getOrderDetail() {
       const res = await queryCustomerOrderDetail({ id: this.orderId });
       this.orderInfo = res.data;
+      if (this.orderInfo.orderStatus !== 0) this.$router.go(-1);
     },
     async pay() {
       const res = await fetchPayParam({
@@ -114,8 +115,7 @@ export default defineComponent({
       });
       await callPayOrder({
         recordId: res.data.paySn,
-        sdk:
-          res.data.type,
+        sdk: res.data.type,
         money: res.data.payAmount,
         sign: res.data.sign,
       });
