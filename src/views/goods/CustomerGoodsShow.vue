@@ -32,7 +32,9 @@
               goodsInfo.productSkuList[0].price
             }}</span></van-col
           >
-           <van-col span="17" style="text-align: right;color:rgba(255, 255, 255, 0.4);"
+          <van-col
+            span="17"
+            style="text-align: right;color:rgba(255, 255, 255, 0.4);"
             >销量{{ goodsInfo.salesVolume }}件</van-col
           >
         </van-cell>
@@ -46,7 +48,7 @@
         </van-cell>
       </div>
       <div class="goods-cells-edit">
-        <van-cell title="商品类目"  :value="goodsInfo.categoryText" />
+        <van-cell title="商品类目" :value="goodsInfo.categoryText" />
         <van-cell class="goods-express" title="运费" value="免邮" />
       </div>
       <div class="goods-detail-img-wrapper">
@@ -127,8 +129,8 @@ export default defineComponent({
     async fetchCustomerGoodsDetail() {
       console.log(this.goodId);
       const res = await fetchCustomerGoodsDetail({
-        id: this.goodId,
-        agencyId: this.agencyId
+        id: Number(this.goodId),
+        agencyId: Number(this.agencyId)
       });
       res.data.categoryText = res.data.categoryName;
       this.goodsInfo = { ...this.goodsInfo, ...res.data };

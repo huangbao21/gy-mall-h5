@@ -110,11 +110,7 @@ export default defineComponent({
       await callPayOrder({
         recordId: String(this.orderId),
         sdk:
-          res.data.type === 1
-            ? "alipay"
-            : res.data.type === 2
-            ? "wechat"
-            : "wallet",
+          res.data.type,
         money: res.data.payAmount,
         sign: res.data.sign,
       });
