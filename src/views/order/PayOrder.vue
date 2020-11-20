@@ -27,12 +27,12 @@
           </div>
           <div class="cell" v-if="wxFlag">
             <img src="@/assets/imgs/common/ic_wechatpay.png" />
-            <span class="title">划转到金币余额</span>
+            <span class="title">微信支付</span>
             <van-radio :name="2" />
           </div>
           <div class="cell">
             <img src="@/assets/imgs/common/ic_alipay.png" />
-            <span class="title">划转到金币余额</span>
+            <span class="title">支付宝支付</span>
             <van-radio :name="1" />
           </div>
         </van-radio-group>
