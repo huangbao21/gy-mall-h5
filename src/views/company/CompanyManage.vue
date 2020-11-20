@@ -107,7 +107,7 @@ export default defineComponent({
       tabActive: "toApply",
       loading: false,
       finished: false,
-      fromApp: true
+      fromApp: false
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -117,14 +117,16 @@ export default defineComponent({
         vm.tabActive = "toDeliver";
         vm.scrollToDeliver();
       }
-      if (from.name !== undefined) {
-        vm.fromApp = false;
+      if (!from.name) {
+        vm.fromApp = true;
+        localStorage.setItem("fromApp", "1");
       }
     });
   },
   methods: {
     onClickLeft() {
-      if (this.fromApp) {
+      if (Number(localStorage.getItem("fromApp"))) {
+        localStorage.removeItem('fromApp');
         this.toBackApp();
       } else {
         this.$router.go(-1);
