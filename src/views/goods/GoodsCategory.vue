@@ -93,7 +93,7 @@ export default defineComponent({
         path: "/goodsAdd",
         query: {
           categoryId: this.activeId,
-          categoryText: `${this.goodsCategory[this.activeIndex].text}/${
+          categoryName: `${this.goodsCategory[this.activeIndex].text}/${
             this.itemText
           }`,
           activeIndex: this.activeIndex

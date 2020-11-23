@@ -107,7 +107,7 @@
           title="商品类目"
           is-link
           @click="handleCategoryClick"
-          :value="goodsInfo.categoryText"
+          :value="goodsInfo.categoryName"
         />
         <van-cell title="价格/分佣/库存" is-link @click="handleSkuClick" />
         <van-cell class="goods-express" title="运费" value="免邮" />
@@ -176,7 +176,7 @@ export default defineComponent({
         productInfoList: [] as object[],
         name: "",
         categoryId: -1,
-        categoryText: "",
+        categoryName: "",
         activeIndex: 0,
         productSkuList: [
           {
@@ -243,7 +243,6 @@ export default defineComponent({
     async fetchGoodDetail() {
       const res = await fetchGoodDetail({ id: this.goodId });
       const tempGoodsInfo = localStorage.getItem("tempGoodsInfo");
-      res.data.categoryText = res.data.categoryName;
       if (tempGoodsInfo) {
         this.goodsInfo = { ...res.data, ...this.goodsInfo };
       } else {
