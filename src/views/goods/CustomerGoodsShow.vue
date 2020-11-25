@@ -23,6 +23,7 @@
         type="textarea"
         placeholder="请输入商品名称(最多40个字)"
         show-word-limit
+        readonly
       />
       <div class="goods-price-info" v-if="goodsInfo.productSkuList[0].price">
         <van-cell>
