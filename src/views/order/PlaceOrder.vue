@@ -23,7 +23,7 @@
         <div class="good-wrap">
           <van-image :src="goodInfo.mainImageUrl" />
           <div class="good-info">
-            <p class="good-info--name">{{goodInfo.name}}</p>
+            <p class="good-info--name">{{ goodInfo.name }}</p>
             <p class="good-info--prop">
               <span>单价 ￥ {{ goodInfo.price }}</span>
               <span class="stepper"> <van-stepper v-model="quantity" /></span>
@@ -104,6 +104,7 @@ export default defineComponent({
       vm.goodId = to.query.goodId;
       vm.agencyId = to.query.agencyId;
       vm.chosenAddressId = to.query.chosenAddressId;
+      vm.quantity = Number(to.query.quantity ? to.query.quantity : 1);
     });
   },
   mounted() {
@@ -119,6 +120,7 @@ export default defineComponent({
             goodId: this.goodId,
             agencyId: this.agencyId,
             chosenAddressId: this.chosenAddressId,
+            quantity: this.quantity,
           },
         });
       } else {
