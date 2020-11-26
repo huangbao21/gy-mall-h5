@@ -29,14 +29,14 @@
               <span class="stepper"> <van-stepper v-model="quantity" /></span>
             </p>
             <p class="good-info--total">
-              总价 ￥{{ goodInfo.price * quantity }}
+              总价 ￥{{ parseFloat((goodInfo.price * quantity).toFixed(2)) }}
             </p>
           </div>
         </div>
         <div class="order-info__money">
           <div class="order-info__money-row">
             <span>商品总额</span>
-            <span>￥ {{ goodInfo.price * quantity }}</span>
+            <span>￥ {{ (goodInfo.price * quantity).toFixed(2) }}</span>
           </div>
           <div class="order-info__money-row">
             <span>运费</span>
@@ -44,14 +44,14 @@
           </div>
           <div class="order-info__money-row--total">
             <span>合计付款：</span>
-            <span class="sum">￥ {{ goodInfo.price * quantity }}</span>
+            <span class="sum">￥ {{ parseFloat((goodInfo.price * quantity).toFixed(2)) }}</span>
           </div>
         </div>
       </div>
       <div class="footer-action">
         <span>应付金额：</span>
         <span class="real-money"
-          >￥ <strong>{{ goodInfo.price * quantity }}</strong></span
+          >￥ <strong>{{ parseFloat((goodInfo.price * quantity).toFixed(2)) }}</strong></span
         >
         <van-button
           round
