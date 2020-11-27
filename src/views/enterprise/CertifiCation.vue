@@ -133,7 +133,7 @@
         </van-radio-group> -->
         <van-checkbox v-model="radio" name="1" icon-size="14px" :checked-color="checkRadioColor"> </van-checkbox>
         <span
-          >同意并遵守<a href="#">《平台企业服务协议》</a>以及<a href="#"
+          >同意并遵守<a href="https://quanmingjx.oss-cn-shanghai.aliyuncs.com/images/9e64461d20fa41118d8770ef416e8441">《平台企业服务协议》</a>以及<a href="https://quanmingjx.oss-cn-shanghai.aliyuncs.com/images/d38cd2b623344887975518d6013ed37b"
             >《平台企业认证审核标准指引》</a
           >提交后即视为您理解并确认遵守行业准入规则
         </span>
